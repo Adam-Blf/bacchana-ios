@@ -1,5 +1,5 @@
 import XCTest
-@testable import BlackOutCore
+@testable import LaTaverneCore
 
 final class PenaltyCalculatorTests: XCTestCase {
     func testMultipliersMatchReference() {

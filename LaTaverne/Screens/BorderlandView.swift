@@ -1,5 +1,5 @@
 import SwiftUI
-import BlackOutCore
+import LaTaverneCore
 
 struct BorderlandView: View {
     @EnvironmentObject private var appState: AppState

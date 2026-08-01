@@ -1,5 +1,5 @@
 import SwiftUI
-import BlackOutCore
+import LaTaverneCore
 
 /// Generic screen for every content-pack driven mode (Picolo, Action/Vérité,
 /// Tu préfères, etc). Borderland has its own dedicated card-flip screen.

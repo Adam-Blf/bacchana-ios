@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the BlackOut 1024x1024 App Store icon.
+"""Generate the La Taverne 1024x1024 App Store icon.
 
 Neo-Tokyo Borderland signature: dark arena background, a tilted white card
 with a black spade pip, soft red neon halo. No transparency (App Store
@@ -15,7 +15,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-OUTPUT = REPO_ROOT / "BlackOut" / "Assets.xcassets" / "AppIcon.appiconset" / "AppIcon-1024.png"
+OUTPUT = REPO_ROOT / "La Taverne" / "Assets.xcassets" / "AppIcon.appiconset" / "AppIcon-1024.png"
 
 SIZE = 1024
 BG = (9, 9, 11, 255)          # #09090B

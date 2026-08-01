@@ -10,7 +10,7 @@ protocol EntitlementProviding: AnyObject {
 
 // TODO(billing): wire RevenueCat (preferred, cross-platform parity with the
 // Android app) or plain StoreKit 2 once the App Store Connect in-app
-// purchase (non-consumable "BlackOut Premium") is created. Until then every
+// purchase (non-consumable "La Taverne Premium") is created. Until then every
 // build ships with `StubEntitlements`, isPremium always false, premium packs
 // stay visibly locked in the Hub. See README > Conformite App Store.
 //
@@ -18,7 +18,7 @@ protocol EntitlementProviding: AnyObject {
 //
 // final class StoreKitEntitlements: EntitlementProviding {
 //     private(set) var isPremium = false
-//     private let premiumProductID = "com.beloucif.blackout.premium"
+//     private let premiumProductID = "com.beloucif.lataverne.premium"
 //
 //     func refresh() async {
 //         for await result in Transaction.currentEntitlements {

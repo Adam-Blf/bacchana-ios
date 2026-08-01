@@ -1,6 +1,6 @@
 import Foundation
 import Combine
-import BlackOutCore
+import LaTaverneCore
 
 /// Top-level app navigation state and player roster, persisted lightly via
 /// `UserDefaults` so a group does not re-type names between sessions.
@@ -27,7 +27,7 @@ final class AppState: ObservableObject {
     let entitlements: EntitlementProviding
     let analytics: AnalyticsProviding
 
-    private let playerNamesKey = "blackout.playerNames"
+    private let playerNamesKey = "lataverne.playerNames"
 
     init(entitlements: EntitlementProviding = StubEntitlements(),
          analytics: AnalyticsProviding = StubAnalytics()) {

@@ -1,5 +1,5 @@
 import XCTest
-@testable import BlackOutCore
+@testable import LaTaverneCore
 
 final class CardDeckTests: XCTestCase {
     func testCreateDeckHasFiftyTwoCards() {

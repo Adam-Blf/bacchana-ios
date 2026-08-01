@@ -1,5 +1,5 @@
 import Foundation
-import BlackOutCore
+import LaTaverneCore
 
 /// Metadata-only entry for the Hub grid, decoded from `premium-catalog.json`.
 /// Premium entries never carry `items`, so a locked pack ships with zero

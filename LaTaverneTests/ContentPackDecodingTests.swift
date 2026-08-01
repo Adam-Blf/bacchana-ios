@@ -1,5 +1,5 @@
 import XCTest
-@testable import BlackOutCore
+@testable import LaTaverneCore
 
 final class ContentPackDecodingTests: XCTestCase {
     func testDecodesMinimalPack() throws {

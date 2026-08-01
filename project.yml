@@ -1,4 +1,4 @@
-name: BlackOut
+name: LaTaverne
 options:
   bundleIdPrefix: com.beloucif
   deploymentTarget:
@@ -16,51 +16,51 @@ settings:
     SWIFT_STRICT_CONCURRENCY: complete
 
 targets:
-  BlackOutCore:
+  LaTaverneCore:
     type: framework
     platform: iOS
     sources:
-      - path: BlackOutCore/Sources/BlackOutCore
+      - path: LaTaverneCore/Sources/LaTaverneCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.blackout.core
+        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.lataverne.core
         GENERATE_INFOPLIST_FILE: YES
         DEFINES_MODULE: YES
         SKIP_INSTALL: YES
 
-  BlackOutTests:
+  LaTaverneTests:
     type: bundle.unit-test
     platform: iOS
     sources:
-      - path: BlackOutTests
+      - path: LaTaverneTests
     dependencies:
-      - target: BlackOutCore
+      - target: LaTaverneCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.blackout.coretests
+        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.lataverne.coretests
         GENERATE_INFOPLIST_FILE: YES
 
-  BlackOut:
+  LaTaverne:
     type: application
     platform: iOS
     sources:
-      - path: BlackOut
+      - path: LaTaverne
         excludes:
           - "**/.DS_Store"
           - "Resources/Packs/**"
       # Folder reference (blue folder): preserves the Packs/ subdirectory in
       # the built bundle, required by ContentLibrary's
       # `subdirectory: "Packs"` lookup.
-      - path: BlackOut/Resources/Packs
+      - path: LaTaverne/Resources/Packs
         type: folder
         buildPhase: resources
     dependencies:
-      - target: BlackOutCore
+      - target: LaTaverneCore
         embed: true
     info:
-      path: BlackOut/Info.plist
+      path: LaTaverne/Info.plist
       properties:
-        CFBundleDisplayName: BlackOut
+        CFBundleDisplayName: La Taverne
         UILaunchScreen: {}
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
@@ -77,38 +77,38 @@ targets:
           - SpaceGrotesk-Bold.ttf
           - SpaceMono-Regular.ttf
           - SpaceMono-Bold.ttf
-        NSUserTrackingUsageDescription: "BlackOut n'utilise aucun suivi publicitaire."
+        NSUserTrackingUsageDescription: "La Taverne n'utilise aucun suivi publicitaire."
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.blackout
-        PRODUCT_NAME: BlackOut
+        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.lataverne
+        PRODUCT_NAME: LaTaverne
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         TARGETED_DEVICE_FAMILY: "1,2"
         SUPPORTS_MACCATALYST: NO
 
 schemes:
-  BlackOut:
+  LaTaverne:
     build:
       targets:
-        BlackOut: all
-        BlackOutCore: all
-        BlackOutTests: [test]
+        LaTaverne: all
+        LaTaverneCore: all
+        LaTaverneTests: [test]
     test:
       config: Debug
       targets:
-        - BlackOutTests
+        - LaTaverneTests
     run:
       config: Debug
     archive:
       config: Release
 
-  BlackOutCore:
+  LaTaverneCore:
     build:
       targets:
-        BlackOutCore: all
-        BlackOutTests: [test]
+        LaTaverneCore: all
+        LaTaverneTests: [test]
     test:
       config: Debug
       targets:
-        - BlackOutTests
+        - LaTaverneTests

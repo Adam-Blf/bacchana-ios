@@ -1,12 +1,12 @@
-# BlackOut iOS
+# La Taverne iOS
 
 [![version](https://img.shields.io/badge/version-0.1.0-D4A437?style=flat-square)](CHANGELOG.md)
-[![CI](https://img.shields.io/github/actions/workflow/status/Adam-Blf/blackout-ios/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Adam-Blf/blackout-ios/actions/workflows/ci.yml)
-[![release](https://img.shields.io/github/actions/workflow/status/Adam-Blf/blackout-ios/release.yml?label=release&style=flat-square)](RELEASING.md)
+[![CI](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-taverne-ios/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Adam-Blf/la-taverne-ios/actions/workflows/ci.yml)
+[![release](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-taverne-ios/release.yml?label=release&style=flat-square)](RELEASING.md)
 [![platform](https://img.shields.io/badge/platform-iOS%2017%2B-001329?style=flat-square)](project.yml)
 [![license](https://img.shields.io/badge/license-proprietary-D4A437?style=flat-square)](LICENSE)
 
-App iOS native de BlackOut, jeu de cartes et de défis pour soirées entre
+App iOS native de La Taverne, jeu de cartes et de défis pour soirées entre
 adultes. Direction artistique Neo-Tokyo Borderland : noir profond, néon
 rouge, carte blanche géante comme élément signature.
 
@@ -19,7 +19,7 @@ validée par la CI avant merge.
 ## Stack
 
 - Swift 5.10, SwiftUI, iOS 17+
-- XcodeGen (`project.yml`) pour générer `BlackOut.xcodeproj`
+- XcodeGen (`project.yml`) pour générer `La Taverne.xcodeproj`
 - XCTest pour la couverture du moteur de jeu
 - GitHub Actions (`macos-15`) pour build + tests
 
@@ -28,11 +28,11 @@ validée par la CI avant merge.
 ```bash
 brew install xcodegen
 xcodegen generate
-open BlackOut.xcodeproj
+open La Taverne.xcodeproj
 ```
 
-Pour resynchroniser les packs de contenu depuis `blackout-content` (dépôt
-frère, chemin relatif `../blackout-content`) :
+Pour resynchroniser les packs de contenu depuis `la-taverne-content` (dépôt
+frère, chemin relatif `../la-taverne-content`) :
 
 ```bash
 python scripts/sync_content.py
@@ -48,7 +48,7 @@ python scripts/gen_app_icon.py
 
 ```mermaid
 flowchart TD
-    subgraph Core["BlackOutCore (framework, logique pure, zéro dépendance UI)"]
+    subgraph Core["La TaverneCore (framework, logique pure, zéro dépendance UI)"]
         Deck["Deck / Card / Rank / Suit"]
         Player["Player / PlayerRotation"]
         Penalty["PenaltyCalculator / ContestState"]
@@ -57,7 +57,7 @@ flowchart TD
         Prompt["PromptSession (tirage, règles persistantes, interpolation)"]
     end
 
-    subgraph App["BlackOut (SwiftUI app)"]
+    subgraph App["La Taverne (SwiftUI app)"]
         Theme["Theme (couleurs / polices Neo-Tokyo)"]
         Welcome["WelcomeView (check-in joueurs)"]
         Hub["HubView (grille des modes)"]
@@ -92,13 +92,13 @@ flowchart TD
 ## Contenu
 
 Les packs de contenu (Action ou Vérité, Picolo, Tu préfères, etc.) sont
-maintenus dans le dépôt frère `blackout-content` et synchronisés ici via
+maintenus dans le dépôt frère `la-taverne-content` et synchronisés ici via
 `scripts/sync_content.py` :
 
 - **Packs gratuits** (`premium=false`) : copiés intégralement dans
-  `BlackOut/Resources/Packs/`, embarqués dans le binaire.
+  `La Taverne/Resources/Packs/`, embarqués dans le binaire.
 - **Packs premium** : seules les métadonnées (titre, mode, intensité)
-  vivent dans `BlackOut/Resources/premium-catalog.json`, pour afficher les
+  vivent dans `La Taverne/Resources/premium-catalog.json`, pour afficher les
   cartes verrouillées du Hub. Le contenu réel n'est jamais livré tant que
   le billing n'est pas branché (zéro spoiler dans le binaire gratuit).
 
@@ -129,7 +129,7 @@ maintenus dans le dépôt frère `blackout-content` et synchronisés ici via
 
 1. **Compte Apple Developer Program** (99 $/an) rattaché à l'identité
    d'Adam Beloucif ou à une entité, condition préalable à toute soumission.
-2. **App Store Connect** : créer l'app (bundle id `com.beloucif.blackout`),
+2. **App Store Connect** : créer l'app (bundle id `com.beloucif.lataverne`),
    remplir fiche (description, mots-clés, captures d'écran, catégorie
    Jeux/Divertissement, classification d'âge 17+).
 3. **Signing** : générer un certificat de distribution + provisioning

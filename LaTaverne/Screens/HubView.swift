@@ -1,5 +1,5 @@
 import SwiftUI
-import BlackOutCore
+import LaTaverneCore
 
 struct HubView: View {
     @EnvironmentObject private var appState: AppState

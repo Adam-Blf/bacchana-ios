@@ -1,5 +1,5 @@
 import XCTest
-@testable import BlackOutCore
+@testable import LaTaverneCore
 
 final class PromptSessionTests: XCTestCase {
     private func makePack(itemCount: Int = 5) -> ContentPack {

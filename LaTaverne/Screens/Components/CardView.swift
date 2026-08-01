@@ -1,5 +1,5 @@
 import SwiftUI
-import BlackOutCore
+import LaTaverneCore
 
 /// The signature giant playing card, face shown centered on the dark arena.
 struct CardView: View {

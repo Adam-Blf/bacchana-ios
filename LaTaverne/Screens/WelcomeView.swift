@@ -8,7 +8,7 @@ struct WelcomeView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             VStack(alignment: .leading, spacing: 8) {
-                Text("BLACKOUT")
+                Text("LA TAVERNE")
                     .font(Theme.Font.display(48))
                     .foregroundStyle(Theme.Color.ink)
                     .accessibilityAddTraits(.isHeader)

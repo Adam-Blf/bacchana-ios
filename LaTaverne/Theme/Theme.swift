@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Neo-Tokyo Borderland design tokens, ported 1:1 from
-/// `blackout-content/tokens/tokens.json`. Source of truth lives there;
+/// `la-taverne-content/tokens/tokens.json`. Source of truth lives there;
 /// update both when the palette changes.
 enum Theme {
     enum Color {

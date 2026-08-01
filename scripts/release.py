@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Release automation for blackout-ios.
+"""Release automation for la-taverne-ios.
 
 Bumps MARKETING_VERSION and CURRENT_PROJECT_VERSION in project.yml,
 commits, creates an annotated tag, and pushes to origin.
@@ -108,7 +108,7 @@ def git_push(dry_run=False):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Release automation for blackout-ios"
+        description="Release automation for la-taverne-ios"
     )
     parser.add_argument(
         "--version",
