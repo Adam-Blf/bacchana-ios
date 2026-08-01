@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "packs": [
+    {
+      "id": "action-verite-classique",
+      "mode": "truthOrDare",
+      "lang": "fr",
+      "title": "Action ou Vérité - Classique",
+      "subtitle": "Choisis ton camp",
+      "premium": false,
+      "intensity": "soft"
+    },
+    {
+      "id": "action-verite-extreme",
+      "mode": "truthOrDare",
+      "lang": "fr",
+      "title": "Action ou Vérité - Extrême",
+      "subtitle": "Interdit aux timides",
+      "premium": true,
+      "intensity": "hot"
+    },
+    {
+      "id": "cest-un-10-classique",
+      "mode": "itsA10But",
+      "lang": "fr",
+      "title": "C'est un 10 mais - Classique",
+      "subtitle": "Le deal-breaker ultime",
+      "premium": false,
+      "intensity": "medium"
+    },
+    {
+      "id": "cest-un-10-redflags",
+      "mode": "itsA10But",
+      "lang": "fr",
+      "title": "C'est un 10 mais - Red Flags",
+      "subtitle": "Les drapeaux rouges qui piquent",
+      "premium": true,
+      "intensity": "hot"
+    },
+    {
+      "id": "never-classique",
+      "mode": "neverHaveIEver",
+      "lang": "fr",
+      "title": "Je n'ai jamais - Classique",
+      "subtitle": "Avoue si tu l'as déjà fait",
+      "premium": false,
+      "intensity": "soft"
+    },
+    {
+      "id": "never-hot",
+      "mode": "neverHaveIEver",
+      "lang": "fr",
+      "title": "Je n'ai jamais - Hot",
+      "subtitle": "Les confessions montent en température",
+      "premium": true,
+      "intensity": "hot"
+    },
+    {
+      "id": "picolo-chaos",
+      "mode": "picolo",
+      "lang": "fr",
+      "title": "Le Meneur - Chaos",
+      "subtitle": "La soirée part en vrille",
+      "premium": true,
+      "minPlayers": 3,
+      "intensity": "chaos"
+    },
+    {
+      "id": "picolo-soiree",
+      "mode": "picolo",
+      "lang": "fr",
+      "title": "Le Meneur - Soirée",
+      "subtitle": "Le meneur de jeu de ta soirée",
+      "premium": false,
+      "minPlayers": 3,
+      "intensity": "medium"
+    },
+    {
+      "id": "qui-de-nous-classique",
+      "mode": "whoAmong",
+      "lang": "fr",
+      "title": "Qui de nous - Classique",
+      "subtitle": "Désigne le coupable",
+      "premium": false,
+      "minPlayers": 3,
+      "intensity": "soft"
+    },
+    {
+      "id": "qui-de-nous-sale",
+      "mode": "whoAmong",
+      "lang": "fr",
+      "title": "Qui de nous - Sale",
+      "subtitle": "Les votes qui fâchent",
+      "premium": true,
+      "minPlayers": 3,
+      "intensity": "hot"
+    },
+    {
+      "id": "sept-secondes-classique",
+      "mode": "sevenSeconds",
+      "lang": "fr",
+      "title": "7 Secondes - Classique",
+      "subtitle": "Réponds vite ou prends une pénalité",
+      "premium": false,
+      "intensity": "soft"
+    },
+    {
+      "id": "tu-preferes-classique",
+      "mode": "wouldYouRather",
+      "lang": "fr",
+      "title": "Tu préfères - Classique",
+      "subtitle": "Fais ton choix impossible",
+      "premium": false,
+      "intensity": "soft"
+    }
+  ]
+}
