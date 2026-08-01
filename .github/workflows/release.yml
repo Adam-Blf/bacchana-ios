@@ -68,7 +68,7 @@ jobs:
         run: xcodegen generate
 
       - name: Build for simulator (no signing)
-        if: secrets.MATCH_GIT_URL == ''
+        if: ${{ secrets.MATCH_GIT_URL == '' }}
         run: |
           set -o pipefail
           xcodebuild build \
@@ -79,7 +79,7 @@ jobs:
             CODE_SIGNING_ALLOWED=NO
 
       - name: Build and upload to TestFlight
-        if: secrets.MATCH_GIT_URL != '' && secrets.APP_STORE_CONNECT_API_KEY_JSON != ''
+        if: ${{ secrets.MATCH_GIT_URL != '' && secrets.APP_STORE_CONNECT_API_KEY_JSON != '' }}
         run: bundle exec fastlane ios beta
         env:
           MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
