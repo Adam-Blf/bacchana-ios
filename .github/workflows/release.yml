@@ -49,6 +49,9 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 45
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+    env:
+      HAS_MATCH: ${{ secrets.MATCH_GIT_URL != '' }}
+      HAS_ASC: ${{ secrets.APP_STORE_CONNECT_API_KEY_JSON != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -68,7 +71,7 @@ jobs:
         run: xcodegen generate
 
       - name: Build for simulator (no signing)
-        if: ${{ secrets.MATCH_GIT_URL == '' }}
+        if: ${{ env.HAS_MATCH != 'true' }}
         run: |
           set -o pipefail
           xcodebuild build \
@@ -79,7 +82,7 @@ jobs:
             CODE_SIGNING_ALLOWED=NO
 
       - name: Build and upload to TestFlight
-        if: ${{ secrets.MATCH_GIT_URL != '' && secrets.APP_STORE_CONNECT_API_KEY_JSON != '' }}
+        if: ${{ env.HAS_MATCH == 'true' && env.HAS_ASC == 'true' }}
         run: bundle exec fastlane ios beta
         env:
           MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
