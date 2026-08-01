@@ -1,0 +1,41 @@
+# Xcode / XcodeGen generated project (regenerated in CI from project.yml)
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+.build/
+.swiftpm/
+
+# Build artifacts
+*.ipa
+*.dSYM.zip
+*.dSYM
+*.xcarchive
+*.xcresult
+
+# Signing / provisioning (never commit)
+*.mobileprovision
+*.p12
+*.cer
+*.p8
+*.pem
+*.keystore
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+ExportOptions.plist
+
+# Secrets
+.env
+.env.*
+*secret*
+*.token
+*_APIKEY*
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
