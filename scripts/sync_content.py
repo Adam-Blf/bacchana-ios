@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Sync BlackOut content packs from blackout-content into the iOS app bundle.
+"""Sync La Taverne content packs from la-taverne-content into the iOS app bundle.
 
 Copies every free (premium=false) pack verbatim into
-BlackOut/Resources/Packs/, and writes a premium-catalog.json with metadata
+La Taverne/Resources/Packs/, and writes a premium-catalog.json with metadata
 only (no items) for every pack, so the Hub can render locked premium cards
 without shipping their content.
 
@@ -19,10 +19,10 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-CONTENT_ROOT = REPO_ROOT.parent / "blackout-content"
+CONTENT_ROOT = REPO_ROOT.parent / "la-taverne-content"
 PACKS_SRC = CONTENT_ROOT / "content" / "fr" / "packs"
-PACKS_DST = REPO_ROOT / "BlackOut" / "Resources" / "Packs"
-CATALOG_DST = REPO_ROOT / "BlackOut" / "Resources" / "premium-catalog.json"
+PACKS_DST = REPO_ROOT / "La Taverne" / "Resources" / "Packs"
+CATALOG_DST = REPO_ROOT / "La Taverne" / "Resources" / "premium-catalog.json"
 
 
 def main() -> int:

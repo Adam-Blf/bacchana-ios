@@ -1,4 +1,4 @@
-# Publication BlackOut iOS
+# Publication La Taverne iOS
 
 Ce document décrit le processus de publication sur l'App Store.
 
@@ -15,7 +15,7 @@ Avant la première publication, exécuter ces étapes une seule fois.
 ### 2. Créer l'app dans App Store Connect
 
 - Aller sur https://appstoreconnect.apple.com
-- Ajouter une nouvelle app (Bundle ID `com.beloucif.blackout`)
+- Ajouter une nouvelle app (Bundle ID `com.beloucif.lataverne`)
 - Remplir la fiche produit (description, captures d'écran, catégorie Jeux, classification d'âge 17+)
 - Configurer les prix et disponibilité
 
@@ -49,7 +49,7 @@ fastlane match appstore -u adam.beloucif@efrei.net --team_id=XXXXXXXXXX
 
 Cela va :
 - Créer un certificat de distribution dans Apple Developer
-- Générer un profil de provisioning "BlackOut App Store"
+- Générer un profil de provisioning "La Taverne App Store"
 - Stocker le tout chiffré dans le repo certificates
 
 Mémoriser ou sauvegarder le mot de passe git - il sera requis pour dechiffrer les certs en CI.
@@ -160,7 +160,7 @@ Vérifier que `project.yml` est bien valide YAML. Lancer localement (sur une Mac
 
 ```bash
 xcodegen generate
-open BlackOut.xcodeproj
+open La Taverne.xcodeproj
 ```
 
 ### Vérifier les secrets GitHub

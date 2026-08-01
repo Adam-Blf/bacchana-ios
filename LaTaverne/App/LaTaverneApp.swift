@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct BlackOutApp: App {
+struct LaTaverneApp: App {
     @StateObject private var appState = AppState()
 
     var body: some Scene {
