@@ -1,0 +1,12 @@
+# Appfile for fastlane
+# Docs: https://docs.fastlane.tools/actions/app/
+
+app_identifier "com.beloucif.blackout"
+
+apple_id ENV["FASTLANE_APPLE_ID"] || "adam.beloucif@efrei.net"
+
+team_id ENV["FASTLANE_TEAM_ID"] || "XXXXXXXXXX"  # Replace with your Team ID from Apple Developer Program
+
+# Optional for Xcode Cloud or CI
+# apple_dev_portal_id ENV["APPLE_DEV_PORTAL_ID"]
+# app_store_connect_api_key_content ENV["APP_STORE_CONNECT_API_KEY_CONTENT"]

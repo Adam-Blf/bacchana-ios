@@ -2,6 +2,7 @@
 
 [![version](https://img.shields.io/badge/version-0.1.0-D4A437?style=flat-square)](CHANGELOG.md)
 [![CI](https://img.shields.io/github/actions/workflow/status/Adam-Blf/blackout-ios/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Adam-Blf/blackout-ios/actions/workflows/ci.yml)
+[![release](https://img.shields.io/github/actions/workflow/status/Adam-Blf/blackout-ios/release.yml?label=release&style=flat-square)](RELEASING.md)
 [![platform](https://img.shields.io/badge/platform-iOS%2017%2B-001329?style=flat-square)](project.yml)
 [![license](https://img.shields.io/badge/license-proprietary-D4A437?style=flat-square)](LICENSE)
 
