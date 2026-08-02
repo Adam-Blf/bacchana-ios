@@ -1,14 +1,16 @@
 # La Taverne iOS
 
-[![version](https://img.shields.io/badge/version-0.1.0-D4A437?style=flat-square)](CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-0.2.0-D4A437?style=flat-square)](CHANGELOG.md)
 [![CI](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-taverne-ios/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Adam-Blf/la-taverne-ios/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-taverne-ios/release.yml?label=release&style=flat-square)](RELEASING.md)
 [![platform](https://img.shields.io/badge/platform-iOS%2017%2B-001329?style=flat-square)](project.yml)
 [![license](https://img.shields.io/badge/license-proprietary-D4A437?style=flat-square)](LICENSE)
 
 App iOS native de La Taverne, jeu de cartes et de défis pour soirées entre
-adultes. Direction artistique Neo-Tokyo Borderland : noir profond, néon
-rouge, carte blanche géante comme élément signature.
+adultes. Direction artistique néobrutalisme taverne, thème clair par
+défaut : papier crème, encre noire, accent orange, ombres dures noires,
+carte blanche géante comme élément signature. Le jeu de cartes s'appelle
+Le Coupe-Gorge.
 
 Développé sur Windows. Aucun compilateur Swift local n'est disponible sur
 cette machine : le projet Xcode est **généré par XcodeGen** depuis
@@ -58,10 +60,10 @@ flowchart TD
     end
 
     subgraph App["La Taverne (SwiftUI app)"]
-        Theme["Theme (couleurs / polices Neo-Tokyo)"]
+        Theme["Theme (palette taverne / polices, tokens.json v2)"]
         Welcome["WelcomeView (check-in joueurs)"]
         Hub["HubView (grille des modes)"]
-        Borderland["BorderlandView (carte, flip, contest)"]
+        Borderland["BorderlandView (Le Coupe-Gorge : carte, flip, contest)"]
         PromptView["PromptView (générique multi-modes)"]
         Recap["RecapView (podium)"]
         Billing["Billing: EntitlementProviding (stub, TODO StoreKit 2 / RevenueCat)"]
