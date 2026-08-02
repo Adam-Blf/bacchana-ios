@@ -1,28 +1,28 @@
 import SwiftUI
 
-/// Neo-Tokyo Borderland design tokens, ported 1:1 from
-/// `la-taverne-content/tokens/tokens.json`. Source of truth lives there;
-/// update both when the palette changes.
+/// La Taverne design tokens: tavern neobrutalist palette, mirrors
+/// `la-taverne-content/tokens/tokens.json` v2. Source of truth lives there;
+/// update both when the palette changes. Light is the default theme.
 enum Theme {
     enum Color {
-        static let background = SwiftUI.Color(hex: 0x09090B)
-        static let backgroundRaised = SwiftUI.Color(hex: 0x0E0E12)
-        static let surface = SwiftUI.Color(hex: 0x15151A)
-        static let surfaceElevated = SwiftUI.Color(hex: 0x1C1C23)
-        static let ink = SwiftUI.Color(hex: 0xFAFAF7)
-        static let inkSecondary = SwiftUI.Color(hex: 0xA1A1AA)
-        static let inkMuted = SwiftUI.Color(hex: 0x63636B)
-        static let neon = SwiftUI.Color(hex: 0xFF3B41)
-        static let neonDeep = SwiftUI.Color(hex: 0xDC2626)
-        static let neonSoft = SwiftUI.Color(hex: 0xFF6B6E)
-        static let cardFace = SwiftUI.Color(hex: 0xF7F5F0)
-        static let cardInk = SwiftUI.Color(hex: 0x111114)
+        static let background = SwiftUI.Color(hex: 0xFFF9F0)
+        static let backgroundRaised = SwiftUI.Color(hex: 0xFFFFFF)
+        static let surface = SwiftUI.Color(hex: 0xFFFFFF)
+        static let surfaceElevated = SwiftUI.Color(hex: 0xFFFFFF)
+        static let ink = SwiftUI.Color(hex: 0x111111)
+        static let inkSecondary = SwiftUI.Color(hex: 0x44444A)
+        static let inkMuted = SwiftUI.Color(hex: 0x6B6B70)
+        static let neon = SwiftUI.Color(hex: 0xFF5C00)
+        static let neonDeep = SwiftUI.Color(hex: 0xE24E00)
+        static let neonSoft = SwiftUI.Color(hex: 0xFF8A3D)
+        static let cardFace = SwiftUI.Color(hex: 0xFFFFFF)
+        static let cardInk = SwiftUI.Color(hex: 0x111111)
         static let cardRed = SwiftUI.Color(hex: 0xE5323E)
-        static let premium = SwiftUI.Color(hex: 0xD4A437)
-        static let success = SwiftUI.Color(hex: 0x10B981)
-        static let warning = SwiftUI.Color(hex: 0xF59E0B)
-        static let border = SwiftUI.Color(hex: 0xFAFAF7).opacity(0.08)
-        static let borderStrong = SwiftUI.Color(hex: 0xFAFAF7).opacity(0.16)
+        static let premium = SwiftUI.Color(hex: 0xA87718)
+        static let success = SwiftUI.Color(hex: 0x1B8A5A)
+        static let warning = SwiftUI.Color(hex: 0xB45309)
+        static let border = SwiftUI.Color(hex: 0x111111).opacity(0.08)
+        static let borderStrong = SwiftUI.Color(hex: 0x111111).opacity(0.16)
     }
 
     enum Font {

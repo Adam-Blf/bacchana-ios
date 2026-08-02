@@ -1,7 +1,7 @@
 import SwiftUI
 import LaTaverneCore
 
-/// The signature giant playing card, face shown centered on the dark arena.
+/// The signature giant playing card, face shown centered on the paper table.
 struct CardView: View {
     let card: Card?
     var isFlipped: Bool = true
@@ -27,7 +27,12 @@ struct CardView: View {
             }
         }
         .frame(width: 220, height: 320)
-        .shadow(color: Theme.Color.neon.opacity(isFlipped ? 0.3 : 0), radius: 28)
+        // Hard black offset shadow, no glow (neobrutalist token shadow.brutal-lg).
+        .shadow(color: Theme.Color.ink, radius: 0, x: 7, y: 7)
+        .overlay(
+            RoundedRectangle(cornerRadius: Theme.Radius.card)
+                .stroke(Theme.Color.ink, lineWidth: 2)
+        )
         .accessibilityLabel(card.map(accessibilityDescription) ?? "Carte face cachée")
     }
 
