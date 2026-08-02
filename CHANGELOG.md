@@ -4,6 +4,26 @@ Toutes les modifications notables de La Taverne iOS sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 versionnement [semver](https://semver.org/lang/fr/).
 
+## [0.2.0] - 2026-08-02
+
+### Modifié
+
+- Refonte visuelle complète vers la direction artistique taverne
+  néobrutaliste, thème clair par défaut : papier crème (#FFF9F0), encre
+  noire (#111111), accent orange (#FF5C00), surfaces blanches, ombres
+  dures noires sans halo. Palette portée depuis
+  `la-taverne-content/tokens/tokens.json` v2 dans `Theme.swift`.
+- L'app force désormais le mode clair (`preferredColorScheme(.light)`),
+  la couleur d'accent du catalogue d'assets passe à l'orange.
+- Le jeu de cartes s'affiche sous son nom de taverne "Le Coupe-Gorge"
+  dans le hub et les libellés d'accessibilité. Les identifiants
+  techniques (modes, routes, moteur) restent inchangés.
+- Carte signature : ombre dure noire décalée et contour encre à la place
+  du halo néon.
+- Icône App Store régénérée aux couleurs taverne (fond papier, plaque
+  orange, carte blanche, pique noir, ombre dure) via
+  `scripts/gen_app_icon.py`, chemin de sortie corrigé vers `LaTaverne/`.
+
 ## [0.1.0] - 2026-08-01
 
 ### Ajouté
