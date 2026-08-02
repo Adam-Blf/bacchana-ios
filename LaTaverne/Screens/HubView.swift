@@ -55,7 +55,7 @@ struct HubView: View {
                     .font(.system(size: 28))
                     .foregroundStyle(Theme.Color.neon)
                 Spacer()
-                Text("BORDERLAND")
+                Text("LE COUPE-GORGE")
                     .font(Theme.Font.display(18))
                     .foregroundStyle(Theme.Color.ink)
                 Text("Le jeu de cartes")
@@ -72,7 +72,7 @@ struct HubView: View {
                     .stroke(Theme.Color.neon.opacity(0.4), lineWidth: 1)
             )
         }
-        .accessibilityLabel("Borderland, le jeu de cartes")
+        .accessibilityLabel("Le Coupe-Gorge, le jeu de cartes")
     }
 }
 
