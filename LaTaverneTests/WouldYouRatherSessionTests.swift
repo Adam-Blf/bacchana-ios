@@ -99,20 +99,27 @@ final class WouldYouRatherSessionTests: XCTestCase {
     }
 
     func testPenaltiesAccumulateAcrossMultipleRounds() {
-        var session = createWouldYouRatherSession(questions: makeQuestions(2), players: [alice, bob], rng: { 0 })
+        // Carol lands in the minority on two separate rounds: her penalty
+        // count must sum across `nextRound`, not just record the latest one.
+        var session = createWouldYouRatherSession(questions: makeQuestions(2), players: [alice, bob, carol], rng: { 0 })
         session = castVote(session, playerId: alice.id, side: .optionA)
-        session = castVote(session, playerId: bob.id, side: .optionB)
+        session = castVote(session, playerId: bob.id, side: .optionA)
+        session = castVote(session, playerId: carol.id, side: .optionB)
         session = revealVotes(session)
+        XCTAssertEqual(session.penaltyCounts[carol.id], minorityPenalty)
+
         session = nextRound(session)
         XCTAssertEqual(session.phase, .voting)
         XCTAssertTrue(session.votes.isEmpty, "votes must reset between rounds")
 
-        session = castVote(session, playerId: alice.id, side: .optionA)
-        session = castVote(session, playerId: bob.id, side: .optionA)
+        session = castVote(session, playerId: alice.id, side: .optionB)
+        session = castVote(session, playerId: bob.id, side: .optionB)
+        session = castVote(session, playerId: carol.id, side: .optionA)
         session = revealVotes(session)
 
-        XCTAssertEqual(session.penaltyCounts[bob.id], minorityPenalty)
+        XCTAssertEqual(session.penaltyCounts[carol.id], minorityPenalty * 2, "penalty must accumulate, not reset, across rounds")
         XCTAssertNil(session.penaltyCounts[alice.id])
+        XCTAssertNil(session.penaltyCounts[bob.id])
     }
 
     func testQueueExhaustionFinishesSession() {
