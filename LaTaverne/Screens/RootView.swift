@@ -16,6 +16,8 @@ struct RootView: View {
                 BorderlandView()
             case .prompt(let packID):
                 PromptView(packID: packID)
+            case .roulette:
+                RouletteView()
             case .recap:
                 RecapView()
             }
