@@ -1,6 +1,6 @@
 # La Taverne iOS
 
-[![version](https://img.shields.io/badge/version-0.7.0-D4A437?style=flat-square)](CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-0.8.0-D4A437?style=flat-square)](CHANGELOG.md)
 [![CI](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-taverne-ios/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Adam-Blf/la-taverne-ios/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-taverne-ios/release.yml?label=release&style=flat-square)](RELEASING.md)
 [![platform](https://img.shields.io/badge/platform-iOS%2017%2B-001329?style=flat-square)](project.yml)
@@ -60,6 +60,7 @@ flowchart TD
         TribunalSession["TribunalSession (moteur pur : accusations, pickAccused, verdicts)"]
         AuctionContent["AuctionContent (50 thèmes, pickTheme sans répétition)"]
         QuizSession["QuizSession (moteur pur : cagnotte, choice cumuler/distribuer)"]
+        RankingSession["RankingSession (moteur pur : podium secret, guessQuestion)"]
     end
 
     subgraph App["La Taverne (SwiftUI app)"]
@@ -72,6 +73,7 @@ flowchart TD
         TribunalView["TribunalView (Le Pilori, embarqué, récap local)"]
         AuctionView["AuctionView (La Criée, embarqué, chrono 60s)"]
         QuizView["QuizView (Quitte ou Trinque, embarqué, récap local)"]
+        RankingView["RankingView (Le Tableau d'Honneur, embarqué, récap local)"]
         Recap["RecapView (podium)"]
         Billing["Billing: EntitlementProviding (stub, TODO StoreKit 2 / RevenueCat)"]
         Analytics["Analytics: AnalyticsProviding (stub, TODO PostHog)"]
@@ -89,6 +91,7 @@ flowchart TD
     Hub --> TribunalView
     Hub --> AuctionView
     Hub --> QuizView
+    Hub --> RankingView
     Borderland --> Recap
     PromptView --> Recap
     Engine --> Deck
@@ -98,11 +101,13 @@ flowchart TD
     TribunalSession --> Player
     TribunalSession -.mirrors.-> Prompt
     QuizSession --> Player
+    RankingSession --> Player
     Borderland -.uses.-> Engine
     PromptView -.uses.-> Prompt
     TribunalView -.uses.-> TribunalSession
     AuctionView -.uses.-> AuctionContent
     QuizView -.uses.-> QuizSession
+    RankingView -.uses.-> RankingSession
     App -.embeds.-> Core
     App -.loads.-> Resources
     Hub -.gates premium.-> Billing

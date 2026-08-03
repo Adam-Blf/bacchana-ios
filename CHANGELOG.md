@@ -4,6 +4,30 @@ Toutes les modifications notables de La Taverne iOS sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 versionnement [semver](https://semver.org/lang/fr/).
 
+## [0.8.0] - 2026-08-03
+
+### Ajouté
+
+- Mode "Le Tableau d'Honneur" (ranking) : le 5e et dernier mode. Un juge
+  découvre une question de classement secrète et classe les autres joueurs
+  selon elle, le groupe doit ensuite retrouver la vraie question parmi 4
+  propositions sans jamais la voir avant le reveal, portées fidèlement
+  depuis `la-taverne/src/core/engine/rankingSession.ts` et
+  `la-taverne/src/content/ranking.ts` (`RankingSession.swift`,
+  `RankingContent.swift`, LaTaverneCore ; `RankingView.swift`). 40 questions
+  embarquées.
+- `RankingSessionState` : moteur pur à état de valeur (aléatoire injectable),
+  phases handoff → judging → return → guessing → reveal → finished. Bonne
+  devinette : le juge prend `rankingJudgePenalty` (3) pénalités. Mauvaise :
+  chaque non-juge prend `rankingGroupPenalty` (1) pénalité. Le rôle de juge
+  tourne à chaque manche (`nextRound`). Ne mute jamais `Player` : le récap
+  de fin (`RankingRecapView`, intégré à `RankingView`) lit `penaltyCounts`
+  en interne au lieu de passer par `RecapView`.
+- Tuile "Le Tableau d'Honneur" dans le hub (minimum 4 joueurs pour garder un
+  juge distinct d'au moins 3 candidats à classer), route `.ranking` dans
+  `AppState`/`RootView`, `session_completed` (`mode: "ranking"`,
+  `turns: roundNumber`) au retour au hub.
+
 ## [0.7.0] - 2026-08-03
 
 ### Ajouté
