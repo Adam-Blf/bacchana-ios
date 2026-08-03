@@ -21,8 +21,8 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CONTENT_ROOT = REPO_ROOT.parent / "la-taverne-content"
 PACKS_SRC = CONTENT_ROOT / "content" / "fr" / "packs"
-PACKS_DST = REPO_ROOT / "La Taverne" / "Resources" / "Packs"
-CATALOG_DST = REPO_ROOT / "La Taverne" / "Resources" / "premium-catalog.json"
+PACKS_DST = REPO_ROOT / "LaTaverne" / "Resources" / "Packs"
+CATALOG_DST = REPO_ROOT / "LaTaverne" / "Resources" / "premium-catalog.json"
 
 
 def main() -> int:
