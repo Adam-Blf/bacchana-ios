@@ -55,7 +55,7 @@ struct PaywallView: View {
         }
         .padding(20)
         .task {
-            appState.analytics.track("paywall_shown")
+            appState.analytics.track("paywall_shown", properties: [:])
             isLoadingPackages = true
             packages = await appState.entitlements.fetchPackages()
             isLoadingPackages = false
@@ -74,7 +74,7 @@ struct PaywallView: View {
             }
             Spacer()
             Button {
-                appState.analytics.track("paywall_dismissed")
+                appState.analytics.track("paywall_dismissed", properties: [:])
                 appState.route = .hub
             } label: {
                 Image(systemName: "xmark.circle.fill")
@@ -199,7 +199,7 @@ struct PaywallView: View {
             defer { isRestoring = false }
             do {
                 try await appState.entitlements.restorePurchases()
-                appState.analytics.track("restore_completed")
+                appState.analytics.track("restore_completed", properties: [:])
                 if appState.entitlements.isPremium {
                     appState.route = .hub
                 } else {
