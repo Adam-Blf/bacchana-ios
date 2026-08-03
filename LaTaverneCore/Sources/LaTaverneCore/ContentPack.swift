@@ -13,6 +13,7 @@ public enum GameMode: String, Codable, CaseIterable, Sendable {
     case tribunal
     case roulette
     case auction
+    case quiz
 }
 
 public enum Intensity: String, Codable, Sendable {

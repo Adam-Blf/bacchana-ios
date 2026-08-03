@@ -4,6 +4,27 @@ Toutes les modifications notables de La Taverne iOS sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 versionnement [semver](https://semver.org/lang/fr/).
 
+## [0.7.0] - 2026-08-03
+
+### Ajouté
+
+- Mode "Quitte ou Trinque" (quiz) : chaque joueur répond à une question de
+  culture générale valant 1 à 3 points tirés au hasard, portées fidèlement
+  depuis `la-taverne/src/core/engine/quizSession.ts` et
+  `la-taverne/src/content/quiz.ts` (`QuizSession.swift`, `QuizContent.swift`,
+  LaTaverneCore ; `QuizView.swift`). 60 questions embarquées, 6 catégories
+  (Histoire-géo, Culture G, Sport, Musique, Ciné & séries, À table).
+- `QuizSessionState` : moteur pur à état de valeur (aléatoire injectable),
+  bonne réponse → cagnotte, puis choix cumuler (`keepPot`, risque le tout au
+  tour suivant) ou distribuer (`distributePot`, gloire sans pénalité pour le
+  distributeur) ; mauvaise réponse (`answerWrong`) prend la cagnotte + les
+  points en jeu en pénalité et fait tourner la file. Ne mute jamais `Player` :
+  le récap de fin (`QuizRecapView`, intégré à `QuizView`) lit `penaltyCounts`
+  en interne au lieu de passer par `RecapView`.
+- Tuile "Quitte ou Trinque" dans le hub, route `.quiz` dans
+  `AppState`/`RootView`, `session_completed` (`mode: "quiz"`,
+  `turns: turnNumber`) au retour au hub.
+
 ## [0.6.0] - 2026-08-03
 
 ### Ajouté
