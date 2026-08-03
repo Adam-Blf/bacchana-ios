@@ -85,7 +85,7 @@ public struct QuizSessionState {
 /// Injectable uniform draw in `0..<1`, overridable in tests for determinism.
 public typealias QuizRng = () -> Double
 
-private func defaultRng() -> Double {
+public func defaultRng() -> Double {
     Double.random(in: 0..<1)
 }
 
