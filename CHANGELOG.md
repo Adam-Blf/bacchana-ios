@@ -4,6 +4,34 @@ Toutes les modifications notables de La Taverne iOS sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 versionnement [semver](https://semver.org/lang/fr/).
 
+## [0.9.0] - 2026-08-03
+
+### Ajouté
+
+- Mode "Tu préfères" (wouldYouRather) transformé en mode embarqué à
+  mécanique de vote, en parité avec la version web : un dilemme A ou B
+  s'affiche, le téléphone tourne, chaque joueur actif tape son camp en
+  privé (`votes: [playerId: Side]`). Au reveal, la minorité trinque
+  (`minorityPenalty`) ; égalité parfaite ou vote unanime, personne ne
+  trinque. Porté fidèlement depuis
+  `la-taverne/src/core/engine/wouldYouRatherSession.ts` et
+  `la-taverne/src/content/wouldYouRather.ts`
+  (`WouldYouRatherSession.swift`, `WouldYouRatherContent.swift`, LaTaverneCore ;
+  `WouldYouRatherView.swift`). 84 dilemmes embarqués.
+- `WouldYouRatherSessionState` : moteur pur à état de valeur (aléatoire
+  injectable), phases voting → reveal → finished. Ne mute jamais `Player` :
+  le récap de fin lit `penaltyCounts` en interne au lieu de passer par
+  `RecapView`.
+- Tuile "Tu préfères" dans le hub, route `.wouldYouRather` dans
+  `AppState`/`RootView`, `session_completed` (`mode: "wouldYouRather"`,
+  `turns: roundNumber`) au retour au hub.
+
+### Changé
+
+- "Tu préfères" quitte la voie prompt-carte passive : le pack
+  `tu-preferes-classique` et son entrée dans `premium-catalog.json` sont
+  retirés du binaire iOS au profit du mode embarqué ci-dessus.
+
 ## [0.8.0] - 2026-08-03
 
 ### Ajouté

@@ -26,6 +26,8 @@ struct RootView: View {
                 QuizView()
             case .ranking:
                 RankingView()
+            case .wouldYouRather:
+                WouldYouRatherView()
             case .recap:
                 RecapView()
             }

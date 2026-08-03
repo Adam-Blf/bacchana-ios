@@ -21,6 +21,7 @@ struct HubView: View {
                     auctionTile
                     quizTile
                     rankingTile
+                    wouldYouRatherTile
 
                     ForEach(catalog) { entry in
                         PackTile(entry: entry, isUnlocked: !entry.premium || appState.entitlements.isPremium) {
@@ -265,6 +266,34 @@ struct HubView: View {
                 ? "Le Tableau d'Honneur, le classement"
                 : "Le Tableau d'Honneur, minimum \(rankingMinPlayers) joueurs"
         )
+    }
+    private var wouldYouRatherTile: some View {
+        Button {
+            appState.route = .wouldYouRather
+        } label: {
+            VStack(alignment: .leading, spacing: 8) {
+                Image(systemName: "arrow.left.arrow.right")
+                    .font(.system(size: 28))
+                    .foregroundStyle(Theme.Color.neon)
+                Spacer()
+                Text("TU PRÉFÈRES")
+                    .font(Theme.Font.display(18))
+                    .foregroundStyle(Theme.Color.ink)
+                Text("Le dilemme")
+                    .font(Theme.Font.body(12))
+                    .foregroundStyle(Theme.Color.inkSecondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(16)
+            .frame(height: 140)
+            .background(Theme.Color.surface)
+            .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.card))
+            .overlay(
+                RoundedRectangle(cornerRadius: Theme.Radius.card)
+                    .stroke(Theme.Color.neon.opacity(0.4), lineWidth: 1)
+            )
+        }
+        .accessibilityLabel("Tu préfères, le dilemme")
     }
 }
 
