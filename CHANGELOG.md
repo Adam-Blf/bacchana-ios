@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.12.0] - 2026-08-03
+
+### Ajouté
+
+- Thème sombre "pop" sur encre neutre, à parité avec le refresh DA du web
+  (PR web #52/#53, `la-taverne/src/styles/tokens.css`) : `Theme.Color` est
+  désormais entièrement dynamique (`Theme.dynamic(light:dark:)`, `UIColor`
+  résolu au trait collection courant), plus de token `orangeInk` (texte
+  orange accessible) et de pops `popYellow`/`popPink`/`popBlue`/`popLime`.
+  Corrections a11y appliquées aussi en clair (`cardRed` -> `#C71F2D`,
+  `premium` -> `#855C12`). Préférence `ThemeMode` (système/clair/sombre)
+  persistée dans `AppState.themeMode`, bascule discrète dans `HubView`
+  (icône soleil/lune), aucune police serif introduite.
+- Genre et statut relationnel facultatifs par joueur (feature #54) :
+  `Player.gender` / `Player.relationship` (`LaTaverneCore`), saisis sur
+  `WelcomeView` dans un panneau replié par défaut, jamais requis pour
+  jouer. 100 % local (`AppState.playerAttributes`, `UserDefaults`),
+  **jamais envoyés en analytics**.
+- `LaTaverneCore/Targeting.swift` : résout `PromptTarget.genderMasculine`/
+  `.genderFeminine`/`.single`/`.couple`/`.pair` vers un ou deux joueurs
+  concrets, RNG injectable et seedable par tour, repli gracieux sur un
+  joueur actif aléatoire si personne ne correspond au critère. Branché sur
+  `PromptView` (bannière "C'est à … de jouer"), à parité avec
+  `la-taverne/src/core/engine/targeting.ts` et
+  `PromptGameScreen.tsx`. Couvert par `TargetingTests.swift`.
+
 ## [0.11.0] - 2026-08-03
 
 - Contenu natif de La Roue du Destin porté de 8 à 40 segments et Le Pilori

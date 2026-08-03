@@ -8,7 +8,7 @@ struct LaTaverneApp: App {
         WindowGroup {
             RootView()
                 .environmentObject(appState)
-                .preferredColorScheme(.light)
+                .preferredColorScheme(appState.themeMode.colorScheme)
                 .task {
                     // Best-effort refresh so a returning premium user sees unlocked packs
                     // without waiting for their first purchase/restore action. No-op in guest

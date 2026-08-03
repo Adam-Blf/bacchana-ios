@@ -37,6 +37,11 @@ public enum PromptTarget: String, Codable, Sendable {
     case genderMasculine = "gender-m"
     case genderFeminine = "gender-f"
     case pair
+    /// Résolu par `Targeting.resolve` vers un joueur ayant déclaré ce statut
+    /// (`Player.relationship`) - aucun contenu ne les utilise encore, ajoutés
+    /// pour parité avec `la-taverne/src/types/index.ts` (feature #54).
+    case single
+    case couple
 }
 
 public struct PromptRule: Codable, Equatable, Sendable {

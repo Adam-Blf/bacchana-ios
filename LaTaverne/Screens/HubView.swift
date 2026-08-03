@@ -3,7 +3,14 @@ import LaTaverneCore
 
 struct HubView: View {
     @EnvironmentObject private var appState: AppState
+    @Environment(\.colorScheme) private var systemColorScheme
     private let columns = [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)]
+
+    /// Thème effectif courant : suit l'OS quand la préférence est `.system`,
+    /// comme `resolveTheme` côté web.
+    private var isDark: Bool {
+        appState.themeMode.colorScheme.map { $0 == .dark } ?? (systemColorScheme == .dark)
+    }
 
     private var catalog: [PackCatalogEntry] {
         PackCatalog.loadAll()
@@ -23,9 +30,11 @@ struct HubView: View {
                     rankingTile
                     wouldYouRatherTile
 
-                    ForEach(catalog) { entry in
+                    ForEach(Array(catalog.enumerated()), id: \.element.id) { offset, entry in
                         PackTile(
                             entry: entry,
+                            // Continue la rotation "pop" après les 7 tuiles embarquées.
+                            accent: Theme.Color.pop(offset + 7),
                             isUnlocked: !entry.premium || appState.entitlements.isPremium,
                             action: { appState.route = .prompt(packID: entry.id) },
                             onLockedTap: { appState.route = .paywall }
@@ -62,8 +71,24 @@ struct HubView: View {
                     .foregroundStyle(Theme.Color.inkSecondary)
             }
             .frame(minHeight: 44)
+
+            themeToggle
         }
         .padding(.top, 16)
+    }
+
+    /// Bascule discrète clair/sombre, place identique au web (`HubScreen.tsx`).
+    /// Fige la préférence sur le résolu courant plutôt que de cycler
+    /// `.system` : un appui = un aller-retour clair/sombre explicite.
+    private var themeToggle: some View {
+        Button {
+            appState.themeMode = isDark ? .light : .dark
+        } label: {
+            Image(systemName: isDark ? "sun.max.fill" : "moon.fill")
+                .foregroundStyle(Theme.Color.inkSecondary)
+        }
+        .frame(width: 44, height: 44)
+        .accessibilityLabel(isDark ? "Passer en mode clair" : "Passer en mode sombre")
     }
 
     private var borderlandTile: some View {
@@ -73,7 +98,7 @@ struct HubView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Image(systemName: "suit.spade.fill")
                     .font(.system(size: 28))
-                    .foregroundStyle(Theme.Color.neon)
+                    .foregroundStyle(Theme.Color.pop(0))
                 Spacer()
                 Text("LE COUPE-GORGE")
                     .font(Theme.Font.display(18))
@@ -102,7 +127,7 @@ struct HubView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Image(systemName: "circle.grid.cross.fill")
                     .font(.system(size: 28))
-                    .foregroundStyle(Theme.Color.neon)
+                    .foregroundStyle(Theme.Color.pop(1))
                 Spacer()
                 Text("LA ROUE DU DESTIN")
                     .font(Theme.Font.display(18))
@@ -140,7 +165,7 @@ struct HubView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Image(systemName: "scalemass.fill")
                     .font(.system(size: 28))
-                    .foregroundStyle(Theme.Color.neon)
+                    .foregroundStyle(Theme.Color.pop(2))
                 Spacer()
                 Text("LE PILORI")
                     .font(Theme.Font.display(18))
@@ -181,7 +206,7 @@ struct HubView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Image(systemName: "megaphone.fill")
                     .font(.system(size: 28))
-                    .foregroundStyle(Theme.Color.neon)
+                    .foregroundStyle(Theme.Color.pop(3))
                 Spacer()
                 Text("LA CRIÉE")
                     .font(Theme.Font.display(18))
@@ -210,7 +235,7 @@ struct HubView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Image(systemName: "questionmark.diamond.fill")
                     .font(.system(size: 28))
-                    .foregroundStyle(Theme.Color.neon)
+                    .foregroundStyle(Theme.Color.pop(4))
                 Spacer()
                 Text("QUITTE OU TRINQUE")
                     .font(Theme.Font.display(18))
@@ -248,7 +273,7 @@ struct HubView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Image(systemName: "trophy.fill")
                     .font(.system(size: 28))
-                    .foregroundStyle(Theme.Color.neon)
+                    .foregroundStyle(Theme.Color.pop(5))
                 Spacer()
                 Text("LE TABLEAU D'HONNEUR")
                     .font(Theme.Font.display(18))
@@ -288,7 +313,7 @@ struct HubView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Image(systemName: "arrow.left.arrow.right")
                     .font(.system(size: 28))
-                    .foregroundStyle(Theme.Color.neon)
+                    .foregroundStyle(Theme.Color.pop(6))
                 Spacer()
                 Text("TU PRÉFÈRES")
                     .font(Theme.Font.display(18))
@@ -313,6 +338,7 @@ struct HubView: View {
 
 private struct PackTile: View {
     let entry: PackCatalogEntry
+    let accent: Color
     let isUnlocked: Bool
     let action: () -> Void
     let onLockedTap: () -> Void
@@ -323,7 +349,7 @@ private struct PackTile: View {
                 HStack {
                     Image(systemName: glyph(for: entry.mode))
                         .font(.system(size: 22))
-                        .foregroundStyle(Theme.Color.neon)
+                        .foregroundStyle(accent)
                     Spacer()
                     if entry.premium {
                         Text("PREMIUM")
