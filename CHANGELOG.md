@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.10.0] - 2026-08-03
+
+- Contenu des packs gratuits porte a 80 items chacun (sync depuis la-taverne-content 1.10.0).
+- Correction du script scripts/sync_content.py : chemin de destination LaTaverne (le nom de dossier reel, sans espace).
+
 Toutes les modifications notables de La Taverne iOS sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 versionnement [semver](https://semver.org/lang/fr/).
