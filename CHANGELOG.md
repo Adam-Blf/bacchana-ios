@@ -4,6 +4,21 @@ Toutes les modifications notables de La Taverne iOS sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 versionnement [semver](https://semver.org/lang/fr/).
 
+## [0.6.0] - 2026-08-03
+
+### Ajouté
+
+- Mode "La Criée" (auction) : phases enchère → défi (chrono 60s) → résultat,
+  portées fidèlement depuis `la-taverne/src/content/auction.ts` et
+  `AuctionScreen.tsx` (`AuctionContent.swift`, `AuctionView.swift`).
+  50 thèmes embarqués, tirage sans répétition immédiate (`pickTheme`).
+- Timer de défi (`Timer.scheduledTimer`, 1s) invalidé à la sortie
+  (`onDisappear`) et à chaque relance pour éviter toute fuite. Échec
+  automatique à 0s, succès dès que le compte cité rattrape l'enchère.
+- Tuile "La Criée" dans le hub, route `.auction` dans `AppState`/`RootView`,
+  `session_completed` (`mode: "auction"`, `turns: roundsPlayed`) au retour
+  au hub. Comme la roulette, aucun joueur nommé, aucune addition, aucun récap.
+
 ## [0.5.0] - 2026-08-03
 
 ### Ajouté

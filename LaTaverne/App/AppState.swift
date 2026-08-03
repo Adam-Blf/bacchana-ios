@@ -13,6 +13,7 @@ final class AppState: ObservableObject {
         case prompt(packID: String)
         case roulette
         case tribunal
+        case auction
         case recap
     }
 
