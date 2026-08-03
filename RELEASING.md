@@ -160,7 +160,7 @@ Vérifier que `project.yml` est bien valide YAML. Lancer localement (sur une Mac
 
 ```bash
 xcodegen generate
-open La Taverne.xcodeproj
+open LaTaverne.xcodeproj
 ```
 
 ### Vérifier les secrets GitHub
