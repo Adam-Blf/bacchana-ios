@@ -103,15 +103,6 @@
       "subtitle": "Réponds vite ou prends une pénalité",
       "premium": false,
       "intensity": "soft"
-    },
-    {
-      "id": "tu-preferes-classique",
-      "mode": "wouldYouRather",
-      "lang": "fr",
-      "title": "Tu préfères - Classique",
-      "subtitle": "Fais ton choix impossible",
-      "premium": false,
-      "intensity": "soft"
     }
   ]
 }

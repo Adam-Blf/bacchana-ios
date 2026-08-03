@@ -16,6 +16,7 @@ final class AppState: ObservableObject {
         case auction
         case quiz
         case ranking
+        case wouldYouRather
         case recap
     }
 
