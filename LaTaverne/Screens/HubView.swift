@@ -16,6 +16,7 @@ struct HubView: View {
 
                 LazyVGrid(columns: columns, spacing: 12) {
                     borderlandTile
+                    rouletteTile
 
                     ForEach(catalog) { entry in
                         PackTile(entry: entry, isUnlocked: !entry.premium || appState.entitlements.isPremium) {
@@ -73,6 +74,35 @@ struct HubView: View {
             )
         }
         .accessibilityLabel("Le Coupe-Gorge, le jeu de cartes")
+    }
+
+    private var rouletteTile: some View {
+        Button {
+            appState.route = .roulette
+        } label: {
+            VStack(alignment: .leading, spacing: 8) {
+                Image(systemName: "circle.grid.cross.fill")
+                    .font(.system(size: 28))
+                    .foregroundStyle(Theme.Color.neon)
+                Spacer()
+                Text("LA ROUE DU DESTIN")
+                    .font(Theme.Font.display(18))
+                    .foregroundStyle(Theme.Color.ink)
+                Text("La roulette")
+                    .font(Theme.Font.body(12))
+                    .foregroundStyle(Theme.Color.inkSecondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(16)
+            .frame(height: 140)
+            .background(Theme.Color.surface)
+            .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.card))
+            .overlay(
+                RoundedRectangle(cornerRadius: Theme.Radius.card)
+                    .stroke(Theme.Color.neon.opacity(0.4), lineWidth: 1)
+            )
+        }
+        .accessibilityLabel("La Roue du Destin, la roulette")
     }
 }
 

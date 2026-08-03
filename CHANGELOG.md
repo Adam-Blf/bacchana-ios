@@ -4,6 +4,23 @@ Toutes les modifications notables de La Taverne iOS sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 versionnement [semver](https://semver.org/lang/fr/).
 
+## [0.4.0] - 2026-08-03
+
+### Ajouté
+
+- Mode "La Roue du Destin" (roulette) : roue à 8 segments embarquée
+  (`RouletteContent.swift`, LaTaverneCore), portée fidèlement depuis
+  `la-taverne/src/content/roulette.ts` et `RouletteScreen.tsx`. Aucun
+  joueur nommé, aucune addition, aucun récap : la roue compte
+  uniquement les tours joués pour clôturer la session (`session_completed`,
+  `mode: "roulette"`, `turns: spinsPlayed`).
+- Animation de spin "casino" (`.timingCurve(0.17, 0.67, 0.12, 0.99)`,
+  3.2s), 5 tours complets + alignement sur le segment tiré, haptics
+  moyen au lancer et lourd au résultat. Dégrade proprement en résultat
+  direct sans rotation si `accessibilityReduceMotion` est actif.
+- Tuile "La Roue du Destin" dans le hub, route `.roulette` dans
+  `AppState`/`RootView`.
+
 ## [0.3.0] - 2026-08-03
 
 ### Corrigé

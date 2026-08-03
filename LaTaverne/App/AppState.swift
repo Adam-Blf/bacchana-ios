@@ -11,6 +11,7 @@ final class AppState: ObservableObject {
         case hub
         case borderland
         case prompt(packID: String)
+        case roulette
         case recap
     }
 
