@@ -9,6 +9,44 @@ Toutes les modifications notables de La Taverne iOS sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 versionnement [semver](https://semver.org/lang/fr/).
 
+## [0.10.0] - 2026-08-03
+
+### Ajouté
+
+- Billing réel via RevenueCat (`RevenueCatEntitlements`, package SPM
+  `purchases-ios` 5.83.0), gated par `REVENUECAT_API_KEY` : clé absente
+  (CI, clone frais) → `StubEntitlements` inchangé, mode invité, zéro
+  crash. Entitlement `La Taverne Pro`, produits `premium_monthly`
+  (4,99 €) / `premium_yearly` (19,99 €) / `premium_lifetime` (34,99 €),
+  offering `default` - parité avec `la-taverne/src/lib/billing.ts`.
+- Analytics réel via PostHog EU (`PostHogAnalytics`, package SPM
+  `posthog-ios` 3.69.0), gated par `POSTHOG_API_KEY` et par le
+  consentement explicite `AnalyticsProviding.isEnabled` (jamais pré-coché) :
+  clé absente → `StubAnalytics` inchangé. Autocapture et écrans
+  désactivés, seuls les événements explicites sont envoyés.
+  Événements paywall : `paywall_shown`, `paywall_dismissed`,
+  `purchase_started`, `purchase_completed`, `restore_completed`.
+- `PaywallView` (SwiftUI) : 3 offres (mensuel / annuel / à vie mis en
+  avant comme meilleure offre), prix toujours affichés (repli si les
+  offerings RevenueCat ne sont pas chargés), aucun essai gratuit
+  annoncé, achat désactivé ("Bientôt disponible") sans provider réel,
+  bouton de restauration. Accessible depuis le bouton "Premium" du Hub
+  et depuis tout pack premium verrouillé (nouvelle route `.paywall`).
+- `LaTaverneCore/PremiumPlan.swift` : catalogue de plans et prix de
+  repli, logique pure testée (`PremiumPlanTests.swift`), partagée entre
+  le paywall et les providers de billing.
+- `LaTaverne/Config/Config.xcconfig` (committé, clés vides par défaut) +
+  `Config.local.xcconfig` (gitignored) + `.example` : les clés
+  RevenueCat/PostHog s'injectent dans l'Info.plist via xcconfig, jamais
+  en dur, jamais commitées.
+
+### Changé
+
+- `EntitlementProviding`/`AnalyticsProviding` étendus (`fetchPackages`,
+  `purchase` ; sélection du provider via `EntitlementsFactory`/
+  `AnalyticsFactory`) sans changer le comportement par défaut en mode
+  invité.
+
 ## [0.9.0] - 2026-08-03
 
 ### Ajouté

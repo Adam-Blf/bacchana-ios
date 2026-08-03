@@ -18,6 +18,7 @@ final class AppState: ObservableObject {
         case ranking
         case wouldYouRather
         case recap
+        case paywall
     }
 
     @Published var route: Route = .welcome
@@ -35,8 +36,8 @@ final class AppState: ObservableObject {
 
     private let playerNamesKey = "lataverne.playerNames"
 
-    init(entitlements: EntitlementProviding = StubEntitlements(),
-         analytics: AnalyticsProviding = StubAnalytics()) {
+    init(entitlements: EntitlementProviding = EntitlementsFactory.make(),
+         analytics: AnalyticsProviding = AnalyticsFactory.make()) {
         self.entitlements = entitlements
         self.analytics = analytics
         self.playerNames = UserDefaults.standard.stringArray(forKey: playerNamesKey) ?? []

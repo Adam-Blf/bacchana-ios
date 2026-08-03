@@ -30,6 +30,8 @@ struct RootView: View {
                 WouldYouRatherView()
             case .recap:
                 RecapView()
+            case .paywall:
+                PaywallView()
             }
         }
         .animation(.easeInOut(duration: Theme.Motion.base), value: appState.route)

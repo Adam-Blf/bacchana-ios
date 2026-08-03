@@ -1,0 +1,4 @@
+// Copy this file to Config.local.xcconfig (gitignored) and fill in real values to enable real
+// billing/analytics locally. Never commit Config.local.xcconfig.
+REVENUECAT_API_KEY = appl_your_revenuecat_public_sdk_key
+POSTHOG_API_KEY = phc_your_posthog_project_api_key

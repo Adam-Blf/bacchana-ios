@@ -15,6 +15,14 @@ settings:
     ENABLE_USER_SCRIPT_SANDBOXING: NO
     SWIFT_STRICT_CONCURRENCY: complete
 
+packages:
+  RevenueCat:
+    url: https://github.com/RevenueCat/purchases-ios.git
+    from: 5.83.0
+  PostHog:
+    url: https://github.com/PostHog/posthog-ios.git
+    from: 3.69.0
+
 targets:
   LaTaverneCore:
     type: framework
@@ -62,6 +70,13 @@ targets:
     dependencies:
       - target: LaTaverneCore
         embed: true
+      - package: RevenueCat
+        product: RevenueCat
+      - package: PostHog
+        product: PostHog
+    configFiles:
+      Debug: LaTaverne/Config/Config.xcconfig
+      Release: LaTaverne/Config/Config.xcconfig
     info:
       path: LaTaverne/Info.plist
       properties:
@@ -83,6 +98,8 @@ targets:
           - SpaceMono-Regular.ttf
           - SpaceMono-Bold.ttf
         NSUserTrackingUsageDescription: "La Taverne n'utilise aucun suivi publicitaire."
+        REVENUECAT_API_KEY: "$(REVENUECAT_API_KEY)"
+        POSTHOG_API_KEY: "$(POSTHOG_API_KEY)"
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.lataverne

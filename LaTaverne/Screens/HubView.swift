@@ -24,9 +24,12 @@ struct HubView: View {
                     wouldYouRatherTile
 
                     ForEach(catalog) { entry in
-                        PackTile(entry: entry, isUnlocked: !entry.premium || appState.entitlements.isPremium) {
-                            appState.route = .prompt(packID: entry.id)
-                        }
+                        PackTile(
+                            entry: entry,
+                            isUnlocked: !entry.premium || appState.entitlements.isPremium,
+                            action: { appState.route = .prompt(packID: entry.id) },
+                            onLockedTap: { appState.route = .paywall }
+                        )
                     }
                 }
             }
@@ -40,6 +43,17 @@ struct HubView: View {
                 .font(Theme.Font.display(28))
                 .foregroundStyle(Theme.Color.ink)
             Spacer()
+            if !appState.entitlements.isPremium {
+                Button {
+                    appState.route = .paywall
+                } label: {
+                    Text("Premium")
+                        .font(Theme.Font.body(13, weight: .medium))
+                        .foregroundStyle(Theme.Color.premium)
+                }
+                .frame(minHeight: 44)
+                .accessibilityLabel("Découvrir La Taverne Premium")
+            }
             Button {
                 appState.route = .recap
             } label: {
@@ -301,9 +315,10 @@ private struct PackTile: View {
     let entry: PackCatalogEntry
     let isUnlocked: Bool
     let action: () -> Void
+    let onLockedTap: () -> Void
 
     var body: some View {
-        Button(action: isUnlocked ? action : {}) {
+        Button(action: isUnlocked ? action : onLockedTap) {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Image(systemName: glyph(for: entry.mode))

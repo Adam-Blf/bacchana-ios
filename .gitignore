@@ -32,6 +32,7 @@ ExportOptions.plist
 *secret*
 *.token
 *_APIKEY*
+LaTaverne/Config/Config.local.xcconfig
 
 # macOS
 .DS_Store

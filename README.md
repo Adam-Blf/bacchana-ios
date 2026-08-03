@@ -24,6 +24,9 @@ validée par la CI avant merge.
 - XcodeGen (`project.yml`) pour générer `LaTaverne.xcodeproj`
 - XCTest pour la couverture du moteur de jeu
 - GitHub Actions (`macos-15`) pour build + tests
+- RevenueCat (`purchases-ios` 5.83.0) pour le billing, PostHog
+  (`posthog-ios` 3.69.0) pour l'analytics, les deux gated par clé de
+  configuration (voir Monétisation)
 
 ## Démarrage (sur une machine macOS avec Xcode)
 
@@ -77,8 +80,9 @@ flowchart TD
         RankingView["RankingView (Le Tableau d'Honneur, embarqué, récap local)"]
         WouldYouRatherView["WouldYouRatherView (Tu préfères, embarqué, récap local)"]
         Recap["RecapView (podium)"]
-        Billing["Billing: EntitlementProviding (stub, TODO StoreKit 2 / RevenueCat)"]
-        Analytics["Analytics: AnalyticsProviding (stub, TODO PostHog)"]
+        Paywall["PaywallView (3 offres, achat + restauration)"]
+        Billing["Billing: EntitlementProviding (RevenueCatEntitlements si clé, sinon StubEntitlements)"]
+        Analytics["Analytics: AnalyticsProviding (PostHogAnalytics si clé + consentement, sinon StubAnalytics)"]
     end
 
     subgraph Resources["Resources"]
@@ -116,6 +120,9 @@ flowchart TD
     App -.embeds.-> Core
     App -.loads.-> Resources
     Hub -.gates premium.-> Billing
+    Hub --> Paywall
+    Paywall -.purchase/restore.-> Billing
+    Paywall -.paywall_shown/dismissed/purchase_*.-> Analytics
 ```
 
 ## Contenu
@@ -144,22 +151,58 @@ de `la-taverne-content` reste à retirer côté dépôt frère lors du prochain
   (guideline 1.4.3). Wording store-safe : "pénalité" / "PÉNALITÉ MAJEURE",
   jamais de gorgée, shot ou alcool nommés. Mention "Jouez responsable."
   affichée sur l'écran d'accueil.
-- **Achats in-app** (guideline 3.1.1) : aucun achat actif dans cette
-  version. `Billing/EntitlementProviding` définit le contrat, `StubEntitlements`
-  renvoie `isPremium = false` par défaut, chaque pack premium reste
-  visuellement verrouillé. L'intégration StoreKit 2 / RevenueCat est
-  esquissée en commentaire dans `EntitlementProviding.swift`, à activer une
-  fois le produit non-consommable créé dans App Store Connect.
+- **Achats in-app** (guideline 3.1.1) : billing réel via RevenueCat (voir
+  section Monétisation), gated par clé de configuration absente par
+  défaut. Sans clé (CI, clone frais), `StubEntitlements` renvoie
+  `isPremium = false`, chaque pack premium reste visuellement verrouillé,
+  et le bouton d'achat du paywall affiche "Bientôt disponible" au lieu
+  d'un checkout cassé.
 - **Suppression de compte** : l'app ne crée aucun compte serveur en v0.1
-  (pas d'auth, pas de backend). Si un compte est introduit plus tard
-  (sync cloud, achats liés à un identifiant), une fonctionnalité de
+  (pas d'auth, pas de backend). RevenueCat identifie l'utilisateur par un
+  identifiant anonyme géré par le SDK, pas de compte à supprimer. Si un
+  compte serveur est introduit plus tard, une fonctionnalité de
   suppression de compte devra être ajoutée avant soumission (guideline 5.1.1v).
 - **Vie privée** : `Analytics/AnalyticsProviding` est désactivée par défaut
   (`isEnabled = false`), aucune télémétrie n'est envoyée sans consentement
-  explicite. Aucune donnée personnelle collectée en v0.1 (les noms de
-  joueurs restent en local, `UserDefaults`, jamais transmis).
+  explicite, même quand une clé PostHog est configurée. Aucune donnée
+  personnelle collectée en v0.1 (les noms de joueurs restent en local,
+  `UserDefaults`, jamais transmis).
 - **Polices et assets** : entièrement embarqués (`Resources/Fonts/`,
   `Assets.xcassets`), aucune dépendance CDN, fonctionne hors ligne.
+
+## Monétisation
+
+Billing (RevenueCat) et analytics (PostHog) sont **gated par configuration** :
+sans clé, l'app tourne entièrement en mode invité, jamais de crash.
+
+- **Entitlement** : `La Taverne Pro`, identique au web
+  (`la-taverne/src/lib/billing.ts`) - ne jamais renommer sans migrer le
+  dashboard RevenueCat.
+- **Produits** : `premium_monthly` (4,99 €), `premium_yearly` (19,99 €),
+  `premium_lifetime` (34,99 €, mis en avant comme meilleure offre),
+  offering `default`. Le catalogue de plans et les prix de repli vivent
+  dans `LaTaverneCore/PremiumPlan.swift` (pur, testé).
+- **Sélection du provider** : `EntitlementsFactory.make()` /
+  `AnalyticsFactory.make()` lisent `REVENUECAT_API_KEY` /
+  `POSTHOG_API_KEY` dans l'Info.plist (interpolées depuis
+  `LaTaverne/Config/Config.xcconfig` + `Config.local.xcconfig`, gitignored).
+  Clé absente → `StubEntitlements` / `StubAnalytics`, comportement
+  identique à avant cette version.
+- **Configuration locale** : copier
+  `LaTaverne/Config/Config.local.xcconfig.example` vers
+  `LaTaverne/Config/Config.local.xcconfig` (jamais commité) et renseigner
+  les clés RevenueCat/PostHog réelles.
+- **Paywall** : `Screens/PaywallView.swift`, accessible depuis le bouton
+  "Premium" du Hub et depuis tout pack premium verrouillé. Affiche
+  toujours les 3 prix annoncés (prix de repli si les offerings
+  RevenueCat ne sont pas encore chargés), aucun essai gratuit annoncé,
+  bouton d'achat désactivé tant qu'aucun package réel n'est disponible.
+- **Analytics** : PostHog EU (`https://eu.i.posthog.com`), autocapture et
+  écrans désactivés, uniquement les événements explicites déjà en place
+  (`session_completed`, etc.) plus `paywall_shown`, `paywall_dismissed`,
+  `purchase_started`, `purchase_completed`, `restore_completed`. Capture
+  coupée tant que `isEnabled` n'est pas activé par un écran de
+  consentement (à venir).
 
 ## Ce qu'il reste pour TestFlight
 
@@ -182,6 +225,7 @@ de `la-taverne-content` reste à retirer côté dépôt frère lors du prochain
 6. **Icône finale** : le PNG 1024x1024 généré par `scripts/gen_app_icon.py`
    est une v1 fonctionnelle, à faire relire par un regard design avant
    soumission finale.
-7. **Billing réel** avant toute mise en avant de contenu premium : StoreKit 2
-   ou RevenueCat, produit non-consommable créé côté App Store Connect,
-   tests sur compte sandbox.
+7. **Produits App Store Connect** : créer les 3 produits (`premium_monthly`
+   abonnement, `premium_yearly` abonnement, `premium_lifetime`
+   non-consommable) et l'offering `default` côté dashboard RevenueCat,
+   puis tester l'achat/restauration sur compte sandbox avant soumission.
