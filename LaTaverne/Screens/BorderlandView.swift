@@ -84,7 +84,7 @@ struct BorderlandView: View {
 
     private func setupIfNeeded() {
         guard engine == nil else { return }
-        let players = appState.activePlayers.isEmpty ? appState.playerNames.map(Player.init) : appState.activePlayers
+        let players = appState.activePlayers.isEmpty ? appState.playerNames.map { Player(name: $0) } : appState.activePlayers
         engine = BorderlandEngine(players: players)
     }
 
