@@ -4,6 +4,31 @@ Toutes les modifications notables de La Taverne iOS sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 versionnement [semver](https://semver.org/lang/fr/).
 
+## [0.3.0] - 2026-08-03
+
+### Corrigé
+
+- Fastlane : nom de projet, de scheme et d'IPA alignés sur la sortie
+  XcodeGen (`LaTaverne.xcodeproj`, scheme `LaTaverne`, `build/LaTaverne.ipa`)
+  au lieu de la variante avec espace qui faisait échouer `scan`,
+  `build_app` et `upload_to_testflight`. Références documentaires
+  (`README.md`, `RELEASING.md`) corrigées dans le même lot.
+
+### Ajouté
+
+- Manifeste de confidentialité Apple (`LaTaverne/PrivacyInfo.xcprivacy`),
+  requis pour la soumission App Store : aucun tracking, aucune donnée
+  collectée, déclaration de la required reason API
+  `NSPrivacyAccessedAPICategoryUserDefaults` (raison `CA92.1`). Inclus
+  dans la phase de ressources de la cible `LaTaverne` via `project.yml`.
+
+### Modifié
+
+- Renommage du pack Picolo vers son titre canonique "Le Taulier"
+  (aligné sur la référence web) dans `premium-catalog.json` et
+  `Packs/picolo-soiree.json`. Les identifiants techniques (`picolo`,
+  `picolo-soiree`, `picolo-chaos`) restent inchangés.
+
 ## [0.2.0] - 2026-08-02
 
 ### Modifié
