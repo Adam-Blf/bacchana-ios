@@ -12,6 +12,7 @@ final class AppState: ObservableObject {
         case borderland
         case prompt(packID: String)
         case roulette
+        case tribunal
         case recap
     }
 

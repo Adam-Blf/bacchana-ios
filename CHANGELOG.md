@@ -4,6 +4,26 @@ Toutes les modifications notables de La Taverne iOS sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 versionnement [semver](https://semver.org/lang/fr/).
 
+## [0.5.0] - 2026-08-03
+
+### Ajouté
+
+- Mode "Le Pilori" (tribunal) : phases intro → collecte (passe-le-téléphone
+  + écriture secrète, 200 caractères max) ou chefs d'accusation embarqués
+  → défense → vote à main levée → verdict, portées fidèlement depuis
+  `la-taverne/src/content/tribunal.ts` et `TribunalScreen.tsx`
+  (`TribunalContent.swift`, `TribunalSession.swift`, LaTaverneCore).
+- `TribunalSession` : moteur pur (aléatoire injectable), tire une
+  accusation au hasard puis un accusé excluant son auteur
+  (`pickAccused`), majorité coupable incrémente une pénalité locale.
+  Ne mute jamais `Player` : le récap de fin de procès (`TribunalRecapView`,
+  intégré à `TribunalView`) lit `penaltyCounts` en interne au lieu de
+  passer par `RecapView`.
+- Tuile "Le Pilori" dans le hub (minimum 3 joueurs pour garder un accusé
+  distinct de l'auteur), route `.tribunal` dans `AppState`/`RootView`,
+  `session_completed` (`mode: "tribunal"`, `turns: trialsPlayed`) au
+  retour au hub.
+
 ## [0.4.0] - 2026-08-03
 
 ### Ajouté
