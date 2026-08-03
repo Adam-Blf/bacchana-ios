@@ -24,6 +24,8 @@ struct RootView: View {
                 AuctionView()
             case .quiz:
                 QuizView()
+            case .ranking:
+                RankingView()
             case .recap:
                 RecapView()
             }

@@ -20,6 +20,7 @@ struct HubView: View {
                     tribunalTile
                     auctionTile
                     quizTile
+                    rankingTile
 
                     ForEach(catalog) { entry in
                         PackTile(entry: entry, isUnlocked: !entry.premium || appState.entitlements.isPremium) {
@@ -215,6 +216,56 @@ struct HubView: View {
         }
         .accessibilityLabel("Quitte ou Trinque, le quiz")
     }
+
+    /// Le Tableau d'Honneur a besoin d'un juge et d'au moins trois candidats à
+    /// classer pour que le podium ait un sens.
+    private let rankingMinPlayers = 4
+
+    private var canPlayRanking: Bool {
+        appState.playerNames.count >= rankingMinPlayers
+    }
+
+    private var rankingTile: some View {
+        Button {
+            guard canPlayRanking else { return }
+            appState.route = .ranking
+        } label: {
+            VStack(alignment: .leading, spacing: 8) {
+                Image(systemName: "trophy.fill")
+                    .font(.system(size: 28))
+                    .foregroundStyle(Theme.Color.neon)
+                Spacer()
+                Text("LE TABLEAU D'HONNEUR")
+                    .font(Theme.Font.display(18))
+                    .foregroundStyle(Theme.Color.ink)
+                Text("Le classement")
+                    .font(Theme.Font.body(12))
+                    .foregroundStyle(Theme.Color.inkSecondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(16)
+            .frame(height: 140)
+            .background(Theme.Color.surface)
+            .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.card))
+            .overlay(
+                RoundedRectangle(cornerRadius: Theme.Radius.card)
+                    .stroke(Theme.Color.neon.opacity(0.4), lineWidth: 1)
+            )
+            .opacity(canPlayRanking ? 1 : 0.55)
+            .overlay(alignment: .bottomTrailing) {
+                if !canPlayRanking {
+                    Image(systemName: "person.3.fill")
+                        .foregroundStyle(Theme.Color.inkMuted)
+                        .padding(12)
+                }
+            }
+        }
+        .accessibilityLabel(
+            canPlayRanking
+                ? "Le Tableau d'Honneur, le classement"
+                : "Le Tableau d'Honneur, minimum \(rankingMinPlayers) joueurs"
+        )
+    }
 }
 
 private struct PackTile: View {
@@ -285,6 +336,7 @@ private struct PackTile: View {
         case .roulette: return "circle.grid.cross.fill"
         case .auction: return "megaphone.fill"
         case .quiz: return "questionmark.diamond.fill"
+        case .ranking: return "trophy.fill"
         }
     }
 }
