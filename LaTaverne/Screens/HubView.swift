@@ -18,6 +18,7 @@ struct HubView: View {
                     borderlandTile
                     rouletteTile
                     tribunalTile
+                    auctionTile
 
                     ForEach(catalog) { entry in
                         PackTile(entry: entry, isUnlocked: !entry.premium || appState.entitlements.isPremium) {
@@ -155,6 +156,35 @@ struct HubView: View {
                 : "Le Pilori, minimum \(tribunalMinPlayers) joueurs"
         )
     }
+
+    private var auctionTile: some View {
+        Button {
+            appState.route = .auction
+        } label: {
+            VStack(alignment: .leading, spacing: 8) {
+                Image(systemName: "megaphone.fill")
+                    .font(.system(size: 28))
+                    .foregroundStyle(Theme.Color.neon)
+                Spacer()
+                Text("LA CRIÉE")
+                    .font(Theme.Font.display(18))
+                    .foregroundStyle(Theme.Color.ink)
+                Text("L'enchère")
+                    .font(Theme.Font.body(12))
+                    .foregroundStyle(Theme.Color.inkSecondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(16)
+            .frame(height: 140)
+            .background(Theme.Color.surface)
+            .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.card))
+            .overlay(
+                RoundedRectangle(cornerRadius: Theme.Radius.card)
+                    .stroke(Theme.Color.neon.opacity(0.4), lineWidth: 1)
+            )
+        }
+        .accessibilityLabel("La Criée, l'enchère")
+    }
 }
 
 private struct PackTile: View {
@@ -223,6 +253,7 @@ private struct PackTile: View {
         case .sevenSeconds: return "timer"
         case .tribunal: return "scalemass.fill"
         case .roulette: return "circle.grid.cross.fill"
+        case .auction: return "megaphone.fill"
         }
     }
 }

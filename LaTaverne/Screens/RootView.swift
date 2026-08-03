@@ -20,6 +20,8 @@ struct RootView: View {
                 RouletteView()
             case .tribunal:
                 TribunalView()
+            case .auction:
+                AuctionView()
             case .recap:
                 RecapView()
             }
