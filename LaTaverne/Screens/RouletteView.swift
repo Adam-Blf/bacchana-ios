@@ -3,7 +3,7 @@ import UIKit
 import LaTaverneCore
 
 /// La Roulette - "La Roue du Destin". Embedded game mode: no content pack,
-/// no named player, no recap. 8-segment wheel, casino-style spin animation,
+/// no named player, no recap. 40-segment wheel, casino-style spin animation,
 /// then a fixed result card. Mirrors
 /// `la-taverne/src/components/screens/RouletteScreen.tsx`.
 struct RouletteView: View {
