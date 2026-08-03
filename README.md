@@ -21,7 +21,7 @@ validée par la CI avant merge.
 ## Stack
 
 - Swift 5.10, SwiftUI, iOS 17+
-- XcodeGen (`project.yml`) pour générer `La Taverne.xcodeproj`
+- XcodeGen (`project.yml`) pour générer `LaTaverne.xcodeproj`
 - XCTest pour la couverture du moteur de jeu
 - GitHub Actions (`macos-15`) pour build + tests
 
@@ -30,7 +30,7 @@ validée par la CI avant merge.
 ```bash
 brew install xcodegen
 xcodegen generate
-open La Taverne.xcodeproj
+open LaTaverne.xcodeproj
 ```
 
 Pour resynchroniser les packs de contenu depuis `la-taverne-content` (dépôt
