@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.11.0] - 2026-08-03
+
+- Contenu natif de La Roue du Destin porté de 8 à 40 segments et Le Pilori
+  de 10 à 40 chefs d'accusation, à parité avec `la-taverne/src/content/
+  roulette.ts` et `tribunal.ts` (commit c52783b, PR web #49). Store-safe :
+  zéro alcool nommé, uniquement pénalités abstraites, défis d'ambiance et
+  griefs de soirée.
+- Commentaire de `RouletteView` corrigé (8-segment -> 40-segment wheel).
+- Vérification anti-résidus : aucune mention Abel Studio/Abel Labs,
+  BlackOut ou La Tournée dans les chaînes visibles ou la doc iOS.
+- Note de parité : les sous-titres de mode du web (Action ou Vérité,
+  Je n'ai jamais, C'est un 10 mais, 7 Secondes) n'ont pas d'équivalent
+  affiché côté iOS - le Hub affiche des tuiles par pack (sous-titre
+  Classique/Extrême propre à chaque pack), pas une tuile par mode comme
+  sur le web. Aucun changement de copie appliqué là où le concept
+  n'existe pas, pour ne pas écraser un sous-titre de pack correct.
+
 ## [0.10.0] - 2026-08-03
 
 - Contenu des packs gratuits porte a 80 items chacun (sync depuis la-taverne-content 1.10.0).
