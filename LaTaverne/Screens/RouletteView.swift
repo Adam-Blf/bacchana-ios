@@ -11,7 +11,7 @@ struct RouletteView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let segments = RouletteContent.segments
-    private let wheelColors: [Color] = [Theme.Color.neon, SwiftUI.Color(hex: 0xFFD029)]
+    private let wheelColors: [Color] = [Theme.Color.neon, Theme.Color.popYellow]
     private var segmentAngle: Double { 360.0 / Double(segments.count) }
 
     @State private var rotation: Double = 0

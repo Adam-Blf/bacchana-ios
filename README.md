@@ -1,16 +1,17 @@
 # La Taverne iOS
 
-[![version](https://img.shields.io/badge/version-0.11.0-D4A437?style=flat-square)](CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-0.12.0-D4A437?style=flat-square)](CHANGELOG.md)
 [![CI](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-taverne-ios/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Adam-Blf/la-taverne-ios/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-taverne-ios/release.yml?label=release&style=flat-square)](RELEASING.md)
 [![platform](https://img.shields.io/badge/platform-iOS%2017%2B-001329?style=flat-square)](project.yml)
 [![license](https://img.shields.io/badge/license-proprietary-D4A437?style=flat-square)](LICENSE)
 
 App iOS native de La Taverne, jeu de cartes et de défis pour soirées entre
-adultes. Direction artistique néobrutalisme taverne, thème clair par
-défaut : papier crème, encre noire, accent orange, ombres dures noires,
-carte blanche géante comme élément signature. Le jeu de cartes s'appelle
-Le Coupe-Gorge.
+adultes. Direction artistique néobrutalisme taverne, thèmes clair et
+sombre : papier crème ou encre neutre (jamais de brun/bois), accent
+orange, ombres dures noires, carte blanche géante comme élément
+signature. Bascule clair/sombre/système persistée, discrète dans le Hub.
+Le jeu de cartes s'appelle Le Coupe-Gorge.
 
 Développé sur Windows. Aucun compilateur Swift local n'est disponible sur
 cette machine : le projet Xcode est **généré par XcodeGen** depuis
@@ -55,7 +56,8 @@ python scripts/gen_app_icon.py
 flowchart TD
     subgraph Core["La TaverneCore (framework, logique pure, zéro dépendance UI)"]
         Deck["Deck / Card / Rank / Suit"]
-        Player["Player / PlayerRotation"]
+        Player["Player / PlayerRotation (gender + relationship optionnels, locaux)"]
+        Targeting["Targeting (gender-m/f, pair, single, couple - RNG injectable)"]
         Penalty["PenaltyCalculator / ContestState"]
         Engine["BorderlandEngine"]
         Content["ContentPack (Codable) / ContentLibrary"]
@@ -68,8 +70,8 @@ flowchart TD
     end
 
     subgraph App["La Taverne (SwiftUI app)"]
-        Theme["Theme (palette taverne / polices, tokens.json v2)"]
-        Welcome["WelcomeView (check-in joueurs)"]
+        Theme["Theme (palette taverne clair/sombre, polices, tokens.css)"]
+        Welcome["WelcomeView (check-in joueurs + genre/statut facultatifs)"]
         Hub["HubView (grille des modes)"]
         Borderland["BorderlandView (Le Coupe-Gorge : carte, flip, contest)"]
         PromptView["PromptView (générique multi-modes)"]
@@ -105,6 +107,8 @@ flowchart TD
     Engine --> Player
     Engine --> Penalty
     Prompt --> Content
+    PromptView -.resolves via.-> Targeting
+    Targeting --> Player
     TribunalSession --> Player
     TribunalSession -.mirrors.-> Prompt
     QuizSession --> Player
@@ -145,6 +149,38 @@ de `la-taverne-content` reste à retirer côté dépôt frère lors du prochain
   cartes verrouillées du Hub. Le contenu réel n'est jamais livré tant que
   le billing n'est pas branché (zéro spoiler dans le binaire gratuit).
 
+## Thème clair/sombre
+
+`Theme.Color` est entièrement dynamique : chaque token résout vers sa paire
+clair/sombre via un `UIColor` calculé au trait collection courant (voir
+`Theme.dynamic(light:dark:)`), donc aucun écran n'a besoin de connaître le
+thème actif. La préférence (`ThemeMode` : système / clair / sombre) vit dans
+`AppState.themeMode`, persistée (`UserDefaults`), appliquée via
+`.preferredColorScheme` sur la `WindowGroup`. Bascule discrète dans le Hub
+(icône soleil/lune, à côté de Récap). Le sombre reste sur une encre neutre
+(`#141216`/`#1D1B20`), jamais teintée bois/brun, à parité avec
+`la-taverne/src/styles/tokens.css`.
+
+## Genre et statut relationnel des joueurs (facultatif)
+
+Chaque joueur peut déclarer sur `WelcomeView`, dans un panneau replié par
+défaut (icône réglages à côté de son nom) : un genre (Homme / Femme / Autre)
+et/ou un statut relationnel (Célibataire / En couple). Les deux champs
+restent optionnels et ne bloquent jamais la partie.
+
+- **Stockage** : `Player.gender` / `Player.relationship`
+  (`LaTaverneCore/Player.swift`), 100 % local (`UserDefaults` via
+  `AppState.playerAttributes`), **jamais envoyés en analytics** (aucun call
+  site de `AnalyticsProviding.track` ne référence ces champs).
+- **Ciblage de contenu** : `LaTaverneCore/Targeting.swift` résout
+  `PromptTarget.genderMasculine/.genderFeminine/.single/.couple/.pair` vers
+  un ou deux joueurs concrets, RNG injectable et seedable par tour
+  (`Targeting.seededRng`) pour rester stable entre deux re-rendus du même
+  tour. Si personne à table n'a déclaré l'attribut demandé, repli gracieux
+  sur un joueur actif tiré au hasard - la partie ne bloque jamais. Affiché
+  sur `PromptView` sous forme de bannière "C'est à … de jouer", à parité
+  avec `la-taverne/src/components/screens/PromptGameScreen.tsx`.
+
 ## Conformité App Store
 
 - **Âge** : 17+, contenu réservé aux adultes, aucune référence à l'alcool
@@ -165,8 +201,9 @@ de `la-taverne-content` reste à retirer côté dépôt frère lors du prochain
 - **Vie privée** : `Analytics/AnalyticsProviding` est désactivée par défaut
   (`isEnabled = false`), aucune télémétrie n'est envoyée sans consentement
   explicite, même quand une clé PostHog est configurée. Aucune donnée
-  personnelle collectée en v0.1 (les noms de joueurs restent en local,
-  `UserDefaults`, jamais transmis).
+  personnelle collectée en v0.1 (les noms de joueurs, ainsi que le genre et
+  le statut relationnel optionnels déclarés depuis la v0.12.0, restent en
+  local, `UserDefaults`, jamais transmis).
 - **Polices et assets** : entièrement embarqués (`Resources/Fonts/`,
   `Assets.xcassets`), aucune dépendance CDN, fonctionne hors ligne.
 

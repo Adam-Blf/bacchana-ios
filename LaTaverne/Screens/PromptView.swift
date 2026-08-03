@@ -23,6 +23,10 @@ struct PromptView: View {
                 rulesBanner
             }
 
+            if let targetLabel {
+                targetBanner(targetLabel)
+            }
+
             if let item = currentItem {
                 promptCard(for: item)
             } else {
@@ -81,6 +85,45 @@ struct PromptView: View {
         .padding(12)
         .background(Theme.Color.surfaceElevated)
         .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
+    }
+
+    /// Cible de contenu (genre / statut relationnel / paire) : résolue de
+    /// façon déterministe par tour (seed = item + numéro de tour, via le
+    /// nombre de cartes déjà défaussées) pour ne jamais changer entre deux
+    /// re-rendus du même tour. Reste gracieux - un prompt sans `targets`
+    /// n'affiche aucune bannière. Mirrors `PromptGameScreen.tsx`.
+    private var targetPlayers: [Player] {
+        guard let item = currentItem, let target = item.targets, Targeting.isResolvable(target), let session else {
+            return []
+        }
+        let seed = "\(item.id)-\(session.discardPile.count)"
+        return Targeting.resolve(players: appState.activePlayers, target: target, rng: Targeting.seededRng(seed))
+    }
+
+    private var targetLabel: String? {
+        switch targetPlayers.count {
+        case 0:
+            return nil
+        case 1:
+            return "C'est à \(targetPlayers[0].name) de jouer"
+        default:
+            return "C'est à \(targetPlayers.map(\.name).joined(separator: " et ")) de jouer"
+        }
+    }
+
+    private func targetBanner(_ label: String) -> some View {
+        HStack {
+            Image(systemName: "target")
+                .foregroundStyle(Theme.Color.orangeInk)
+            Text(label)
+                .font(Theme.Font.body(13, weight: .medium))
+                .foregroundStyle(Theme.Color.orangeInk)
+            Spacer()
+        }
+        .padding(12)
+        .background(Theme.Color.surfaceElevated)
+        .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
+        .accessibilityElement(children: .combine)
     }
 
     private func promptCard(for item: PromptItem) -> some View {
