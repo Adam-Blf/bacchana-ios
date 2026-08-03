@@ -84,6 +84,11 @@ public enum Targeting {
     /// Tiny mulberry32 PRNG - deterministic, good enough for non-cryptographic
     /// UI randomness. Reference class (not a struct) so the seeded generator
     /// closure returned by `seededRng` can mutate its own state across calls.
+    ///
+    /// Shifts must be logical (unsigned), matching the web reference's `>>>` -
+    /// a first port using Swift's arithmetic `>>` on `Int32` sign-extended
+    /// negative states and collapsed the distribution (caught by
+    /// `TargetingTests.testCanResolveDifferentlyForADifferentSeed`).
     private final class Mulberry32 {
         private var state: Int32
 
@@ -91,12 +96,16 @@ public enum Targeting {
             self.state = seed
         }
 
+        private func unsignedShift(_ value: Int32, _ count: UInt32) -> Int32 {
+            Int32(bitPattern: UInt32(bitPattern: value) >> count)
+        }
+
         func next() -> Double {
             state = state &+ 0x6D2B79F5
             var t = state
-            t = (t ^ (t >> 15)) &* (t | 1)
-            t ^= t &+ ((t ^ (t >> 7)) &* (t | 61))
-            let result = UInt32(bitPattern: t ^ (t >> 14))
+            t = (t ^ unsignedShift(t, 15)) &* (t | 1)
+            t = (t &+ (t ^ unsignedShift(t, 7)) &* (t | 61)) ^ t
+            let result = UInt32(bitPattern: t ^ unsignedShift(t, 14))
             return Double(result) / 4294967296.0
         }
     }
