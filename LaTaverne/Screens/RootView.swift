@@ -18,6 +18,8 @@ struct RootView: View {
                 PromptView(packID: packID)
             case .roulette:
                 RouletteView()
+            case .tribunal:
+                TribunalView()
             case .recap:
                 RecapView()
             }

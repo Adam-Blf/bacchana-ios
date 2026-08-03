@@ -17,6 +17,7 @@ struct HubView: View {
                 LazyVGrid(columns: columns, spacing: 12) {
                     borderlandTile
                     rouletteTile
+                    tribunalTile
 
                     ForEach(catalog) { entry in
                         PackTile(entry: entry, isUnlocked: !entry.premium || appState.entitlements.isPremium) {
@@ -103,6 +104,56 @@ struct HubView: View {
             )
         }
         .accessibilityLabel("La Roue du Destin, la roulette")
+    }
+
+    /// Le Pilori needs an author and at least one other player to accuse,
+    /// so the trial pool never collapses back onto its own writer.
+    private let tribunalMinPlayers = 3
+
+    private var canPlayTribunal: Bool {
+        appState.playerNames.count >= tribunalMinPlayers
+    }
+
+    private var tribunalTile: some View {
+        Button {
+            guard canPlayTribunal else { return }
+            appState.route = .tribunal
+        } label: {
+            VStack(alignment: .leading, spacing: 8) {
+                Image(systemName: "scalemass.fill")
+                    .font(.system(size: 28))
+                    .foregroundStyle(Theme.Color.neon)
+                Spacer()
+                Text("LE PILORI")
+                    .font(Theme.Font.display(18))
+                    .foregroundStyle(Theme.Color.ink)
+                Text("Le tribunal")
+                    .font(Theme.Font.body(12))
+                    .foregroundStyle(Theme.Color.inkSecondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(16)
+            .frame(height: 140)
+            .background(Theme.Color.surface)
+            .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.card))
+            .overlay(
+                RoundedRectangle(cornerRadius: Theme.Radius.card)
+                    .stroke(Theme.Color.neon.opacity(0.4), lineWidth: 1)
+            )
+            .opacity(canPlayTribunal ? 1 : 0.55)
+            .overlay(alignment: .bottomTrailing) {
+                if !canPlayTribunal {
+                    Image(systemName: "person.3.fill")
+                        .foregroundStyle(Theme.Color.inkMuted)
+                        .padding(12)
+                }
+            }
+        }
+        .accessibilityLabel(
+            canPlayTribunal
+                ? "Le Pilori, le tribunal"
+                : "Le Pilori, minimum \(tribunalMinPlayers) joueurs"
+        )
     }
 }
 
