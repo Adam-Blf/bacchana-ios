@@ -1,4 +1,4 @@
-name: LaTaverne
+name: Meskova
 options:
   bundleIdPrefix: com.beloucif
   deploymentTarget:
@@ -10,7 +10,7 @@ settings:
   base:
     SWIFT_VERSION: 5.10
     IPHONEOS_DEPLOYMENT_TARGET: "17.0"
-    MARKETING_VERSION: "0.13.0"
+    MARKETING_VERSION: "0.14.0"
     CURRENT_PROJECT_VERSION: "1"
     ENABLE_USER_SCRIPT_SANDBOXING: NO
     SWIFT_STRICT_CONCURRENCY: complete
@@ -24,63 +24,64 @@ packages:
     from: 3.69.0
 
 targets:
-  LaTaverneCore:
+  MeskovaCore:
     type: framework
     platform: iOS
     sources:
-      - path: LaTaverneCore/Sources/LaTaverneCore
+      - path: MeskovaCore/Sources/MeskovaCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.lataverne.core
+        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.meskova.core
         GENERATE_INFOPLIST_FILE: YES
         DEFINES_MODULE: YES
         SKIP_INSTALL: YES
 
-  LaTaverneTests:
+  MeskovaTests:
     type: bundle.unit-test
     platform: iOS
     sources:
-      - path: LaTaverneTests
+      - path: MeskovaTests
     dependencies:
-      - target: LaTaverneCore
+      - target: MeskovaCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.lataverne.coretests
+        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.meskova.coretests
         GENERATE_INFOPLIST_FILE: YES
 
-  LaTaverne:
+  Meskova:
     type: application
     platform: iOS
     sources:
-      - path: LaTaverne
+      - path: Meskova
         excludes:
           - "**/.DS_Store"
           - "Resources/Packs/**"
           - "PrivacyInfo.xcprivacy"
       # Apple privacy manifest: forced into the resources build phase so it
       # ships at the app bundle root (required for App Store submission).
-      - path: LaTaverne/PrivacyInfo.xcprivacy
+      - path: Meskova/PrivacyInfo.xcprivacy
         buildPhase: resources
       # Folder reference (blue folder): preserves the Packs/ subdirectory in
       # the built bundle, required by ContentLibrary's
       # `subdirectory: "Packs"` lookup.
-      - path: LaTaverne/Resources/Packs
+      - path: Meskova/Resources/Packs
         type: folder
         buildPhase: resources
     dependencies:
-      - target: LaTaverneCore
+      - target: MeskovaCore
         embed: true
       - package: RevenueCat
         product: RevenueCat
       - package: PostHog
         product: PostHog
     configFiles:
-      Debug: LaTaverne/Config/Config.xcconfig
-      Release: LaTaverne/Config/Config.xcconfig
+      Debug: Meskova/Config/Config.xcconfig
+      Release: Meskova/Config/Config.xcconfig
     info:
-      path: LaTaverne/Info.plist
+      path: Meskova/Info.plist
       properties:
-        CFBundleDisplayName: La Taverne
+        CFBundleDisplayName: Meskova
+        CFBundleName: Meskova
         UILaunchScreen: {}
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
@@ -97,40 +98,40 @@ targets:
           - SpaceGrotesk-Bold.ttf
           - SpaceMono-Regular.ttf
           - SpaceMono-Bold.ttf
-        NSUserTrackingUsageDescription: "La Taverne n'utilise aucun suivi publicitaire."
+        NSUserTrackingUsageDescription: "Meskova n'utilise aucun suivi publicitaire."
         REVENUECAT_API_KEY: "$(REVENUECAT_API_KEY)"
         POSTHOG_API_KEY: "$(POSTHOG_API_KEY)"
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.lataverne
-        PRODUCT_NAME: LaTaverne
+        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.meskova
+        PRODUCT_NAME: Meskova
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         TARGETED_DEVICE_FAMILY: "1,2"
         SUPPORTS_MACCATALYST: NO
 
 schemes:
-  LaTaverne:
+  Meskova:
     build:
       targets:
-        LaTaverne: all
-        LaTaverneCore: all
-        LaTaverneTests: [test]
+        Meskova: all
+        MeskovaCore: all
+        MeskovaTests: [test]
     test:
       config: Debug
       targets:
-        - LaTaverneTests
+        - MeskovaTests
     run:
       config: Debug
     archive:
       config: Release
 
-  LaTaverneCore:
+  MeskovaCore:
     build:
       targets:
-        LaTaverneCore: all
-        LaTaverneTests: [test]
+        MeskovaCore: all
+        MeskovaTests: [test]
     test:
       config: Debug
       targets:
-        - LaTaverneTests
+        - MeskovaTests
