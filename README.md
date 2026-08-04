@@ -1,6 +1,6 @@
 # La Taverne iOS
 
-[![version](https://img.shields.io/badge/version-0.12.0-D4A437?style=flat-square)](CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-0.13.0-D4A437?style=flat-square)](CHANGELOG.md)
 [![CI](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-taverne-ios/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Adam-Blf/la-taverne-ios/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-taverne-ios/release.yml?label=release&style=flat-square)](RELEASING.md)
 [![platform](https://img.shields.io/badge/platform-iOS%2017%2B-001329?style=flat-square)](project.yml)
@@ -83,6 +83,7 @@ flowchart TD
         WouldYouRatherView["WouldYouRatherView (Tu préfères, embarqué, récap local)"]
         Recap["RecapView (podium)"]
         Paywall["PaywallView (3 offres, achat + restauration)"]
+        Settings["SettingsView (apparence, premium, confidentialité, légal, réinitialisation)"]
         Billing["Billing: EntitlementProviding (RevenueCatEntitlements si clé, sinon StubEntitlements)"]
         Analytics["Analytics: AnalyticsProviding (PostHogAnalytics si clé + consentement, sinon StubAnalytics)"]
     end
@@ -125,8 +126,12 @@ flowchart TD
     App -.loads.-> Resources
     Hub -.gates premium.-> Billing
     Hub --> Paywall
+    Hub --> Settings
     Paywall -.purchase/restore.-> Billing
     Paywall -.paywall_shown/dismissed/purchase_*.-> Analytics
+    Settings -.premium status/restore.-> Billing
+    Settings -.consent toggle.-> Analytics
+    Settings --> Paywall
 ```
 
 ## Contenu
@@ -200,7 +205,10 @@ restent optionnels et ne bloquent jamais la partie.
   suppression de compte devra être ajoutée avant soumission (guideline 5.1.1v).
 - **Vie privée** : `Analytics/AnalyticsProviding` est désactivée par défaut
   (`isEnabled = false`), aucune télémétrie n'est envoyée sans consentement
-  explicite, même quand une clé PostHog est configurée. Aucune donnée
+  explicite, même quand une clé PostHog est configurée. Le consentement se
+  pilote depuis `SettingsView` (interrupteur "Mesure d'audience", section
+  Confidentialité) - `AppState.analyticsConsent`, persisté, jamais
+  pré-coché, répercuté sur `analytics.isEnabled` (v0.13.0). Aucune donnée
   personnelle collectée en v0.1 (les noms de joueurs, ainsi que le genre et
   le statut relationnel optionnels déclarés depuis la v0.12.0, restent en
   local, `UserDefaults`, jamais transmis).
@@ -238,8 +246,16 @@ sans clé, l'app tourne entièrement en mode invité, jamais de crash.
   écrans désactivés, uniquement les événements explicites déjà en place
   (`session_completed`, etc.) plus `paywall_shown`, `paywall_dismissed`,
   `purchase_started`, `purchase_completed`, `restore_completed`. Capture
-  coupée tant que `isEnabled` n'est pas activé par un écran de
-  consentement (à venir).
+  coupée tant que `isEnabled` n'est pas activé, via l'interrupteur de
+  consentement de `SettingsView` (section Confidentialité).
+- **Réglages** : `Screens/SettingsView.swift`, accessible depuis l'icône
+  engrenage du Hub. Apparence (thème système/clair/sombre), statut premium
+  + accès au paywall + restauration des achats, consentement analytics,
+  lien vers la politique de confidentialité et les mentions légales/CGU
+  (renvoie vers `lataverne.beloucif.com`, ces textes n'ont pas encore
+  d'écran natif ni de route URL dédiée côté web), à propos (version,
+  éditeur), réinitialisation de la tablée (joueurs + partie en cours,
+  jamais le statut premium).
 
 ## Ce qu'il reste pour TestFlight
 

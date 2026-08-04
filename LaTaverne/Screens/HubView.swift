@@ -73,8 +73,20 @@ struct HubView: View {
             .frame(minHeight: 44)
 
             themeToggle
+            settingsButton
         }
         .padding(.top, 16)
+    }
+
+    private var settingsButton: some View {
+        Button {
+            appState.route = .settings
+        } label: {
+            Image(systemName: "gearshape.fill")
+                .foregroundStyle(Theme.Color.inkSecondary)
+        }
+        .frame(width: 44, height: 44)
+        .accessibilityLabel("Réglages")
     }
 
     /// Bascule discrète clair/sombre, place identique au web (`HubScreen.tsx`).

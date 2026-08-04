@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.13.0] - 2026-08-04
+
+### Ajouté
+
+- Écran Réglages (`SettingsView.swift`), accessible depuis l'icône engrenage du Hub, à
+  parité avec `la-taverne/src/components/screens/SettingsScreen.tsx` : apparence
+  (système/clair/sombre), statut premium + accès au paywall + restauration des achats,
+  consentement RGPD pour la mesure d'audience (nouveau `AppState.analyticsConsent`,
+  persisté, jamais pré-coché) avec lien vers la politique de confidentialité, section
+  légale (mentions/CGU/confidentialité, renvoie vers `lataverne.beloucif.com` en
+  attendant un portage natif), à propos (version, éditeur Adam Beloucif / BLF Labs), et
+  réinitialisation de la tablée (`AppState.resetTablee()`, ne touche jamais au premium).
+  Note de parité : la section "Mes règles" du web est omise, `LaTaverneCore` n'a pas
+  encore de moteur de règles personnalisées.
+
+### Corrigé
+
+- `PaywallView` : le titre "La Taverne Premium" passe de l'encre à l'accent orange
+  (`Theme.Color.orangeInk`) - en encre il se fondait avec le fond/la bordure du même ton
+  dans les deux thèmes, illisible.
+
 ## [0.12.0] - 2026-08-03
 
 ### Ajouté

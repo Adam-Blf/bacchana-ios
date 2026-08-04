@@ -34,6 +34,7 @@ final class AppState: ObservableObject {
         case wouldYouRather
         case recap
         case paywall
+        case settings
     }
 
     @Published var route: Route = .welcome
@@ -55,6 +56,17 @@ final class AppState: ObservableObject {
         didSet { UserDefaults.standard.set(themeMode.rawValue, forKey: themeModeKey) }
     }
 
+    /// Consentement RGPD pour la mesure d'audience (PostHog), persisté et jamais pré-coché -
+    /// mirroring the web's `consentStore`. Répercuté sur `analytics.isEnabled` à chaque
+    /// changement, y compris au lancement (voir `init`), puisque `PostHogAnalytics` redémarre
+    /// toujours opt-out par défaut.
+    @Published var analyticsConsent: Bool {
+        didSet {
+            UserDefaults.standard.set(analyticsConsent, forKey: analyticsConsentKey)
+            analytics.isEnabled = analyticsConsent
+        }
+    }
+
     /// Live `Player` instances for the current session, created once when a
     /// game mode starts so stat totals (penalties, contests) persist across
     /// screens and land on `RecapView`.
@@ -66,6 +78,7 @@ final class AppState: ObservableObject {
     private let playerNamesKey = "lataverne.playerNames"
     private let playerAttributesKey = "lataverne.playerAttributes"
     private let themeModeKey = "lataverne.themeMode"
+    private let analyticsConsentKey = "lataverne.analyticsConsent"
 
     init(entitlements: EntitlementProviding = EntitlementsFactory.make(),
          analytics: AnalyticsProviding = AnalyticsFactory.make()) {
@@ -80,6 +93,11 @@ final class AppState: ObservableObject {
         }
         let storedMode = UserDefaults.standard.string(forKey: themeModeKey).flatMap(ThemeMode.init(rawValue:))
         self.themeMode = storedMode ?? .system
+        self.analyticsConsent = UserDefaults.standard.bool(forKey: analyticsConsentKey)
+        // Property observers do not fire for a value set during `init`, so the analytics
+        // provider is synced here explicitly - required for `PostHogAnalytics`, which always
+        // restarts opt-out (see its `init`).
+        self.analytics.isEnabled = self.analyticsConsent
     }
 
     private func persistPlayerNames() {
@@ -137,5 +155,14 @@ final class AppState: ObservableObject {
 
     var canStart: Bool {
         playerNames.count >= 2
+    }
+
+    /// Efface la tablée (joueurs, attributs, session en cours) sur cet appareil, sans jamais
+    /// toucher au statut premium ni au consentement analytics - appelé depuis `SettingsView`
+    /// après confirmation, mirroring the web's `clearPlayers()` + `resetGame()`.
+    func resetTablee() {
+        playerNames = []
+        playerAttributes = []
+        activePlayers = []
     }
 }
