@@ -32,6 +32,8 @@ struct RootView: View {
                 RecapView()
             case .paywall:
                 PaywallView()
+            case .settings:
+                SettingsView()
             }
         }
         .animation(.easeInOut(duration: Theme.Motion.base), value: appState.route)

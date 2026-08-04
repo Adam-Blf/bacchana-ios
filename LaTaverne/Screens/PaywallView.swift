@@ -67,7 +67,10 @@ struct PaywallView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("LA TAVERNE PREMIUM")
                     .font(Theme.Font.display(26))
-                    .foregroundStyle(Theme.Color.ink)
+                    // Accent orange, pas l'encre : AA vérifié (`orangeInk`, cf. Theme.swift)
+                    // dans les deux thèmes, contrairement à l'encre qui se fondait avec la
+                    // bordure/le fond au même ton en clair comme en sombre.
+                    .foregroundStyle(Theme.Color.orangeInk)
                 Text("Débloque tous les packs premium de la collection")
                     .font(Theme.Font.body(13))
                     .foregroundStyle(Theme.Color.inkSecondary)
