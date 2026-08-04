@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Generate the La Taverne 1024x1024 App Store icon.
+"""Generate the Meskova 1024x1024 App Store icon.
 
 Tavern neobrutalist signature (mirrors tokens.json v2): cream paper
 background, a tilted white card with a black spade pip, hard black offset
 shadow and an orange accent plate behind the card. No transparency
-(App Store icons must be fully opaque).
+(App Store icons must be fully opaque). The tavern icon design itself is
+unchanged by the product rename (v0.14.0, La Taverne -> Meskova) - only
+the output path follows the renamed `Meskova/` app folder.
 
 Usage:
     python scripts/gen_app_icon.py
@@ -16,7 +18,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-OUTPUT = REPO_ROOT / "LaTaverne" / "Assets.xcassets" / "AppIcon.appiconset" / "AppIcon-1024.png"
+OUTPUT = REPO_ROOT / "Meskova" / "Assets.xcassets" / "AppIcon.appiconset" / "AppIcon-1024.png"
 
 SIZE = 1024
 BG = (255, 249, 240, 255)     # #FFF9F0 paper

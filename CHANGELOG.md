@@ -1,5 +1,52 @@
 # Changelog
 
+## [0.14.0] - 2026-08-04
+
+### Changé (renommage produit)
+
+- **Renommage produit "La Taverne" -> "Meskova"** : le nom d'app, de store et
+  de titres devient Meskova partout, mais l'univers narratif de la taverne
+  reste intact - "Le Coupe-Gorge", "Le Pilori", "La Criée", "Le Taulier" et
+  tous les libellés de mode ne changent pas. Seule l'identité produit
+  change, pas le contenu de jeu.
+  - Bundle identifier : `com.beloucif.lataverne` -> `com.beloucif.meskova`
+    (framework `com.beloucif.meskova.core`, tests
+    `com.beloucif.meskova.coretests`). Sans impact utilisateur : l'app n'a
+    jamais été soumise à TestFlight ni à l'App Store (aucun tag de release
+    dans l'historique git, compte Apple Developer Program pas encore créé).
+  - Cible XcodeGen `LaTaverne` -> `Meskova`, module framework
+    `LaTaverneCore` -> `MeskovaCore`, cible de tests `LaTaverneTests` ->
+    `MeskovaTests`, schemes et noms de produit alignés. Dossiers physiques
+    renommés en conséquence (`LaTaverne/` -> `Meskova/`,
+    `LaTaverneCore/Sources/LaTaverneCore/` -> `MeskovaCore/Sources/
+    MeskovaCore/`, `LaTaverneTests/` -> `MeskovaTests/`), historique git
+    préservé (`git mv`).
+  - Tous les `import LaTaverneCore` -> `import MeskovaCore` (app, tests).
+  - `CFBundleDisplayName`/`CFBundleName` -> Meskova, texte ATT
+    (`NSUserTrackingUsageDescription`) mis à jour.
+  - Chaînes visibles renommées : titre `WelcomeView` ("MESKOVA"), en-tête et
+    bouton d'achat `PaywallView` ("MESKOVA PREMIUM" / "Débloquer Meskova
+    Premium"), libellé accessibilité `HubView` ("Découvrir Meskova
+    Premium"), section "À propos" de `SettingsView` ("Meskova").
+  - Clés `UserDefaults` renommées du préfixe `lataverne.` vers `meskova.`
+    (`AppState`) : aucune migration nécessaire, l'app n'a jamais été
+    installée en dehors des simulateurs CI éphémères.
+  - `scripts/sync_content.py` et `scripts/gen_app_icon.py` : chemins de
+    destination mis à jour vers `Meskova/Resources/...` /
+    `Meskova/Assets.xcassets/...` (rappel du bug de chemin déjà corrigé une
+    fois en 0.10.0 - vigilance maintenue au renommage).
+  - CI (`ci.yml`, `release.yml`), `fastlane/Fastfile`, `fastlane/Appfile`,
+    `fastlane/Matchfile`, `RELEASING.md`, `README.md` : projet/scheme
+    `Meskova.xcodeproj`/`Meskova`, IPA `build/Meskova.ipa`, `app_identifier`
+    `com.beloucif.meskova`.
+  - **Non modifié, volontairement** : l'identifiant d'entitlement
+    RevenueCat reste littéralement `"La Taverne Pro"` (non renommable sans
+    migration du dashboard RevenueCat, seul le libellé affiché change).
+    Aucune intégration Supabase ajoutée. Dépôt GitHub, remote et badges
+    inchangés (`Adam-Blf/la-taverne-ios`). Domaine `lataverne.beloucif.com`
+    référencé depuis `SettingsView` laissé en l'état, décision DNS/web hors
+    périmètre de ce renommage iOS.
+
 ## [0.13.0] - 2026-08-04
 
 ### Ajouté
