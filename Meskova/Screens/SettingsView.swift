@@ -237,7 +237,7 @@ struct SettingsView: View {
                     Text("Version \(appVersion)")
                         .font(Theme.Font.mono(11))
                         .foregroundStyle(Theme.Color.inkMuted)
-                    Text("Éditeur : Adam Beloucif, nom commercial BLF Labs")
+                    Text("Éditeur : Adam Beloucif, nom commercial BLF Lab's")
                         .font(Theme.Font.body(12))
                         .foregroundStyle(Theme.Color.inkSecondary)
                 }
