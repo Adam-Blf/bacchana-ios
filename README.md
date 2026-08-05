@@ -1,14 +1,14 @@
-# Meskova iOS
+# La Tournée iOS
 
-[![version](https://img.shields.io/badge/version-0.14.1-D4A437?style=flat-square)](CHANGELOG.md)
-[![CI](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-taverne-ios/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Adam-Blf/la-taverne-ios/actions/workflows/ci.yml)
-[![release](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-taverne-ios/release.yml?label=release&style=flat-square)](RELEASING.md)
+[![version](https://img.shields.io/badge/version-0.15.0-D4A437?style=flat-square)](CHANGELOG.md)
+[![CI](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-tournee-ios/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Adam-Blf/la-tournee-ios/actions/workflows/ci.yml)
+[![release](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-tournee-ios/release.yml?label=release&style=flat-square)](RELEASING.md)
 [![platform](https://img.shields.io/badge/platform-iOS%2017%2B-001329?style=flat-square)](project.yml)
 [![license](https://img.shields.io/badge/license-proprietary-D4A437?style=flat-square)](LICENSE)
 
-App iOS native de Meskova, jeu de cartes et de défis pour soirées entre
-adultes (dépôt GitHub `la-taverne-ios`, inchangé - seul le produit se
-renomme, voir CHANGELOG 0.14.0). Direction artistique néobrutalisme
+App iOS native de La Tournée, jeu de cartes et de défis pour soirées entre
+adultes (dépôt GitHub `la-tournee-ios`, renommé en conséquence - voir
+CHANGELOG 0.15.0). Direction artistique néobrutalisme
 taverne, thèmes clair et sombre : papier crème ou encre neutre (jamais de
 brun/bois), accent orange, ombres dures noires, carte blanche géante comme
 élément signature. Bascule clair/sombre/système persistée, discrète dans
@@ -24,7 +24,7 @@ validée par la CI avant merge.
 ## Stack
 
 - Swift 5.10, SwiftUI, iOS 17+
-- XcodeGen (`project.yml`) pour générer `Meskova.xcodeproj`
+- XcodeGen (`project.yml`) pour générer `LaTournee.xcodeproj`
 - XCTest pour la couverture du moteur de jeu
 - GitHub Actions (`macos-15`) pour build + tests
 - RevenueCat (`purchases-ios` 5.83.0) pour le billing, PostHog
@@ -36,7 +36,7 @@ validée par la CI avant merge.
 ```bash
 brew install xcodegen
 xcodegen generate
-open Meskova.xcodeproj
+open LaTournee.xcodeproj
 ```
 
 Pour resynchroniser les packs de contenu depuis `la-taverne-content` (dépôt
@@ -56,7 +56,7 @@ python scripts/gen_app_icon.py
 
 ```mermaid
 flowchart TD
-    subgraph Core["MeskovaCore (framework, logique pure, zéro dépendance UI)"]
+    subgraph Core["LaTourneeCore (framework, logique pure, zéro dépendance UI)"]
         Deck["Deck / Card / Rank / Suit"]
         Player["Player / PlayerRotation (gender + relationship optionnels, locaux)"]
         Targeting["Targeting (gender-m/f, pair, single, couple - RNG injectable)"]
@@ -72,7 +72,7 @@ flowchart TD
         ThemePalette["ThemePalette (hex bruts clair/sombre, source unique - miroir tokens.css)"]
     end
 
-    subgraph App["Meskova (SwiftUI app)"]
+    subgraph App["La Tournée (SwiftUI app)"]
         Theme["Theme (SwiftUI Color depuis ThemePalette, polices)"]
         Welcome["WelcomeView (check-in joueurs + genre/statut facultatifs)"]
         Hub["HubView (grille des modes)"]
@@ -152,9 +152,9 @@ de `la-taverne-content` reste à retirer côté dépôt frère lors du prochain
 `sync_content.py` pour éviter qu'il ne réapparaisse dans le catalogue.
 
 - **Packs gratuits** (`premium=false`) : copiés intégralement dans
-  `Meskova/Resources/Packs/`, embarqués dans le binaire.
+  `LaTournee/Resources/Packs/`, embarqués dans le binaire.
 - **Packs premium** : seules les métadonnées (titre, mode, intensité)
-  vivent dans `Meskova/Resources/premium-catalog.json`, pour afficher les
+  vivent dans `LaTournee/Resources/premium-catalog.json`, pour afficher les
   cartes verrouillées du Hub. Le contenu réel n'est jamais livré tant que
   le billing n'est pas branché (zéro spoiler dans le binaire gratuit).
 
@@ -162,7 +162,7 @@ de `la-taverne-content` reste à retirer côté dépôt frère lors du prochain
 
 `Theme.Color` est entièrement dynamique : chaque token résout vers sa paire
 clair/sombre via un `UIColor` calculé au trait collection courant (voir
-`Theme.dynamic(light:dark:)`), construit depuis `MeskovaCore.ThemePalette`
+`Theme.dynamic(light:dark:)`), construit depuis `LaTourneeCore.ThemePalette`
 (source unique de hex bruts, miroir de `la-taverne/src/styles/tokens.css`),
 donc aucun écran n'a besoin de connaître le thème actif. La préférence
 (`ThemeMode` : système / clair / sombre) vit dans `AppState.themeMode`,
@@ -180,7 +180,7 @@ Même logique pour `cardInk` sur `cardFace` (carte blanche fixe). Un rouge
 d'UI sémantique (erreur, action destructive, compte à rebours) utilise
 `Theme.Color.danger` (thémable), jamais `cardRed` (fixe, réservé aux pips
 de carte). Vérifié mécaniquement en CI par
-`MeskovaTests/ContrastGuardTests.swift`, qui calcule le ratio WCAG 2.1 réel
+`LaTourneeTests/ContrastGuardTests.swift`, qui calcule le ratio WCAG 2.1 réel
 de chaque paire encre/fond dérivée de `ThemePalette`.
 
 ## Genre et statut relationnel des joueurs (facultatif)
@@ -191,10 +191,10 @@ et/ou un statut relationnel (Célibataire / En couple). Les deux champs
 restent optionnels et ne bloquent jamais la partie.
 
 - **Stockage** : `Player.gender` / `Player.relationship`
-  (`MeskovaCore/Player.swift`), 100 % local (`UserDefaults` via
+  (`LaTourneeCore/Player.swift`), 100 % local (`UserDefaults` via
   `AppState.playerAttributes`), **jamais envoyés en analytics** (aucun call
   site de `AnalyticsProviding.track` ne référence ces champs).
-- **Ciblage de contenu** : `MeskovaCore/Targeting.swift` résout
+- **Ciblage de contenu** : `LaTourneeCore/Targeting.swift` résout
   `PromptTarget.genderMasculine/.genderFeminine/.single/.couple/.pair` vers
   un ou deux joueurs concrets, RNG injectable et seedable par tour
   (`Targeting.seededRng`) pour rester stable entre deux re-rendus du même
@@ -237,25 +237,23 @@ restent optionnels et ne bloquent jamais la partie.
 Billing (RevenueCat) et analytics (PostHog) sont **gated par configuration** :
 sans clé, l'app tourne entièrement en mode invité, jamais de crash.
 
-- **Entitlement** : `La Taverne Pro`, identique au web
-  (`la-taverne/src/lib/billing.ts`) - ne jamais renommer sans migrer le
-  dashboard RevenueCat. Identifiant intentionnellement conservé tel quel
-  au renommage produit v0.14.0 (La Taverne -> Meskova) : un identifiant
-  d'entitlement RevenueCat n'est pas renommable sans migration dashboard,
-  seul le libellé affiché ("Meskova Premium") a changé.
+- **Entitlement** : `La Tournee Pro` (sans accent, id exact du dashboard
+  RevenueCat), identique au web (`la-taverne/src/lib/billing.ts`) et à
+  l'Android. Renommé au renommage produit v0.15.0 (Meskova -> La Tournée) -
+  l'app n'étant pas encore publiée, aucun abonné existant à migrer.
 - **Produits** : `premium_monthly` (4,99 €), `premium_yearly` (19,99 €),
   `premium_lifetime` (34,99 €, mis en avant comme meilleure offre),
   offering `default`. Le catalogue de plans et les prix de repli vivent
-  dans `MeskovaCore/PremiumPlan.swift` (pur, testé).
+  dans `LaTourneeCore/PremiumPlan.swift` (pur, testé).
 - **Sélection du provider** : `EntitlementsFactory.make()` /
   `AnalyticsFactory.make()` lisent `REVENUECAT_API_KEY` /
   `POSTHOG_API_KEY` dans l'Info.plist (interpolées depuis
-  `Meskova/Config/Config.xcconfig` + `Config.local.xcconfig`, gitignored).
+  `LaTournee/Config/Config.xcconfig` + `Config.local.xcconfig`, gitignored).
   Clé absente → `StubEntitlements` / `StubAnalytics`, comportement
   identique à avant cette version.
 - **Configuration locale** : copier
-  `Meskova/Config/Config.local.xcconfig.example` vers
-  `Meskova/Config/Config.local.xcconfig` (jamais commité) et renseigner
+  `LaTournee/Config/Config.local.xcconfig.example` vers
+  `LaTournee/Config/Config.local.xcconfig` (jamais commité) et renseigner
   les clés RevenueCat/PostHog réelles.
 - **Paywall** : `Screens/PaywallView.swift`, accessible depuis le bouton
   "Premium" du Hub et depuis tout pack premium verrouillé. Affiche
@@ -281,7 +279,7 @@ sans clé, l'app tourne entièrement en mode invité, jamais de crash.
 
 1. **Compte Apple Developer Program** (99 $/an) rattaché à l'identité
    d'Adam Beloucif ou à une entité, condition préalable à toute soumission.
-2. **App Store Connect** : créer l'app (bundle id `com.beloucif.meskova`),
+2. **App Store Connect** : créer l'app (bundle id `com.beloucif.latournee`),
    remplir fiche (description, mots-clés, captures d'écran, catégorie
    Jeux/Divertissement, classification d'âge 17+).
 3. **Signing** : générer un certificat de distribution + provisioning

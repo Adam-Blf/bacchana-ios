@@ -32,7 +32,7 @@ ExportOptions.plist
 *secret*
 *.token
 *_APIKEY*
-Meskova/Config/Config.local.xcconfig
+LaTournee/Config/Config.local.xcconfig
 
 # macOS
 .DS_Store
