@@ -64,9 +64,7 @@ public enum ThemePalette {
     /// Numerically identical to `cardInk` (same reasoning: a fixed-light
     /// backing), kept as a separate named token to match
     /// `docs/DESIGN_TOKENS.md` section 2bis and `--color-tile-ink` on web.
-    // TEMPORARY REGRESSION INJECTION - proves ContrastGuardTests catches the
-    // reported bug for real (see PR description). Reverted in the next commit.
-    public static let tileInk = Token.dynamic(light: 0x111111, dark: 0xF4EFE6)
+    public static let tileInk = Token.fixed(0x111111)
 
     // MARK: - Semantic states
 
