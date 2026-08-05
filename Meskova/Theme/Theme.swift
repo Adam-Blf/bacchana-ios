@@ -1,55 +1,77 @@
 import SwiftUI
 import UIKit
+import MeskovaCore
 
-/// Meskova design tokens: tavern neobrutalist palette, mirrors
-/// `la-taverne/src/styles/tokens.css` (source of truth for both themes).
-/// Update both when the palette changes. Every `Theme.Color` token is
-/// dynamic: it resolves to its light or dark pair from the same
-/// `UIColor` trait-collection closure, so call sites never need to know
-/// which theme is active - only ``ThemeMode`` (persisted in `AppState`)
-/// decides which scheme SwiftUI resolves against.
+/// Meskova design tokens: tavern neobrutalist palette. Every value below is
+/// built from `MeskovaCore.ThemePalette` - the single, platform-agnostic
+/// source of truth shared with the CI contrast guard
+/// (`MeskovaTests/ContrastGuardTests.swift`) - which itself mirrors
+/// `la-taverne/src/styles/tokens.css` and `docs/DESIGN_TOKENS.md`. Update
+/// `ThemePalette`, not a hex literal here, when the palette changes. Every
+/// `Theme.Color` token built via `.dynamic` resolves to its light or dark
+/// pair from the same `UIColor` trait-collection closure, so call sites
+/// never need to know which theme is active - only ``ThemeMode`` (persisted
+/// in `AppState`) decides which scheme SwiftUI resolves against.
 enum Theme {
     enum Color {
-        // Encre neutre en sombre (JAMAIS de brun/bois) : voir tokens.css pour
-        // les ratios WCAG calculés par token.
-        static let background = SwiftUI.Color.dynamic(light: 0xFFF9F0, dark: 0x141216)
-        static let backgroundRaised = SwiftUI.Color.dynamic(light: 0xFFF3E0, dark: 0x1D1B20)
-        static let surface = SwiftUI.Color.dynamic(light: 0xFFFFFF, dark: 0x1D1B20)
-        static let surfaceElevated = SwiftUI.Color.dynamic(light: 0xFFEFD6, dark: 0x26232B)
+        // Encre neutre en sombre (JAMAIS de brun/bois) : voir ThemePalette
+        // et docs/DESIGN_TOKENS.md pour les ratios WCAG calculés par token.
+        static let background = SwiftUI.Color.dynamic(ThemePalette.background)
+        static let backgroundRaised = SwiftUI.Color.dynamic(ThemePalette.backgroundRaised)
+        static let surface = SwiftUI.Color.dynamic(ThemePalette.surface)
+        static let surfaceElevated = SwiftUI.Color.dynamic(ThemePalette.surfaceElevated)
 
-        static let ink = SwiftUI.Color.dynamic(light: 0x111111, dark: 0xF4EFE6)
-        static let inkSecondary = SwiftUI.Color.dynamic(light: 0x44444A, dark: 0xA39DB0)
-        static let inkMuted = SwiftUI.Color.dynamic(light: 0x6B6B70, dark: 0x837D8F)
+        static let ink = SwiftUI.Color.dynamic(ThemePalette.ink)
+        static let inkSecondary = SwiftUI.Color.dynamic(ThemePalette.inkSecondary)
+        static let inkMuted = SwiftUI.Color.dynamic(ThemePalette.inkMuted)
 
         /// "neon" garde son nom historique de token : c'est l'accent de marque (orange).
-        static let neon = SwiftUI.Color.dynamic(light: 0xFA5600, dark: 0xFF7A2E)
-        static let neonDeep = SwiftUI.Color.dynamic(light: 0xE24E00, dark: 0xE86014)
-        static let neonSoft = SwiftUI.Color.dynamic(light: 0xFF8A3D, dark: 0xFF9E5C)
+        static let neon = SwiftUI.Color.dynamic(ThemePalette.neon)
+        static let neonDeep = SwiftUI.Color.dynamic(ThemePalette.neonDeep)
+        static let neonSoft = SwiftUI.Color.dynamic(ThemePalette.neonSoft)
         /// Orange utilisé comme TEXTE (labels, liens) : passe l'AA normal (4.5:1)
         /// en clair (#C74300) ; confondu avec `neon` en sombre où l'accent est
         /// déjà assez clair pour le texte (#FF7A2E, 7.16:1).
-        static let orangeInk = SwiftUI.Color.dynamic(light: 0xC74300, dark: 0xFF7A2E)
+        static let orangeInk = SwiftUI.Color.dynamic(ThemePalette.orangeInk)
 
-        /// Aplats festifs "pop" (tuiles de modes, roulette).
-        static let popYellow = SwiftUI.Color.dynamic(light: 0xFFD029, dark: 0xFFD84D)
-        static let popPink = SwiftUI.Color.dynamic(light: 0xFF6FB2, dark: 0xFF7FBE)
-        static let popBlue = SwiftUI.Color.dynamic(light: 0x6E9BFF, dark: 0x7FB0FF)
-        static let popLime = SwiftUI.Color.dynamic(light: 0x9BE94C, dark: 0xA6F05A)
+        /// Aplats festifs "pop" (tuiles de modes, roulette) : restent CLAIRS
+        /// dans les deux thèmes. Tout texte/icône posé dessus utilise
+        /// `tileInk` (fixe), jamais `ink` (thémable) - piège corrigé le
+        /// 2026-08-04, voir docs/DESIGN_TOKENS.md section 2bis.
+        static let popYellow = SwiftUI.Color.dynamic(ThemePalette.popYellow)
+        static let popPink = SwiftUI.Color.dynamic(ThemePalette.popPink)
+        static let popBlue = SwiftUI.Color.dynamic(ThemePalette.popBlue)
+        static let popLime = SwiftUI.Color.dynamic(ThemePalette.popLime)
 
         /// Carte blanche : élément signature fixe, identique dans les deux thèmes
         /// (métaphore de carte physique), jamais inversée en sombre.
-        static let cardFace = SwiftUI.Color(hex: 0xFFFFFF)
-        static let cardInk = SwiftUI.Color(hex: 0x111111)
+        static let cardFace = SwiftUI.Color(hex: ThemePalette.cardFace.light)
+        static let cardInk = SwiftUI.Color(hex: ThemePalette.cardInk.light)
         /// Rouge des cartes : fixe lui aussi (assombri à 0xC71F2D pour 5.73:1 sur
-        /// `cardFace`, cf. tokens.css).
-        static let cardRed = SwiftUI.Color(hex: 0xC71F2D)
+        /// `cardFace`, cf. ThemePalette). Réservé aux pips physiques (cœur/carreau)
+        /// et au contenu posé sur `cardFace` - jamais un rouge d'UI sémantique,
+        /// utiliser `danger` pour ça (erreur, action destructive, compte à rebours).
+        static let cardRed = SwiftUI.Color(hex: ThemePalette.cardRed.light)
+        /// Encre fixe pour tout texte/icône/bordure posé sur un aplat pop ou
+        /// sur un accent plein (neon/neonDeep/neonSoft) : ces fonds restent
+        /// clairs dans les deux thèmes, donc leur premier plan ne doit
+        /// JAMAIS suivre `ink` (qui s'inverse en sombre). Même valeur que
+        /// `cardInk`, nom distinct pour matcher `--color-tile-ink` (web).
+        static let tileInk = SwiftUI.Color(hex: ThemePalette.tileInk.light)
 
-        static let premium = SwiftUI.Color.dynamic(light: 0x855C12, dark: 0xD9A441)
-        static let success = SwiftUI.Color.dynamic(light: 0x177C50, dark: 0x3EA876)
-        static let warning = SwiftUI.Color.dynamic(light: 0xB45309, dark: 0xD67428)
+        static let premium = SwiftUI.Color.dynamic(ThemePalette.premium)
+        static let success = SwiftUI.Color.dynamic(ThemePalette.success)
+        static let warning = SwiftUI.Color.dynamic(ThemePalette.warning)
+        /// Rouge sémantique thémable (erreur, action destructive, compte à
+        /// rebours) - distinct de `cardRed` (fixe, réservé aux pips/cardFace)
+        /// même si les deux partagent la même valeur en thème clair.
+        static let danger = SwiftUI.Color.dynamic(ThemePalette.danger)
 
-        static let border = SwiftUI.Color.dynamic(light: 0x111111, lightOpacity: 0.15, dark: 0xF4EFE6, darkOpacity: 0.2)
-        static let borderStrong = SwiftUI.Color.dynamic(light: 0x111111, dark: 0xF4EFE6)
+        static let border = SwiftUI.Color.dynamic(
+            light: ThemePalette.ink.light, lightOpacity: 0.15,
+            dark: ThemePalette.ink.dark, darkOpacity: 0.38
+        )
+        static let borderStrong = SwiftUI.Color.dynamic(ThemePalette.ink)
 
         /// Rotation des aplats "pop" pour les icônes des tuiles du Hub -
         /// signature visuelle festive plutôt qu'un accent unique répété sur
@@ -143,5 +165,12 @@ extension SwiftUI.Color {
                 ? UIColor(SwiftUI.Color(hex: darkHex, opacity: darkOpacity))
                 : UIColor(SwiftUI.Color(hex: lightHex, opacity: lightOpacity))
         })
+    }
+
+    /// Builds a dynamic `Color` straight from a `MeskovaCore.ThemePalette`
+    /// token, so `Theme.Color` never hardcodes a hex value that could drift
+    /// from the shared source of truth.
+    static func dynamic(_ token: ThemePalette.Token) -> SwiftUI.Color {
+        dynamic(light: token.light, dark: token.dark)
     }
 }

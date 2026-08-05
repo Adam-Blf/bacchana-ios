@@ -1,5 +1,49 @@
 # Changelog
 
+## [0.14.1] - 2026-08-05
+
+### Corrigé (contraste, thème sombre)
+
+- **Texte illisible sur fonds clairs en thème sombre** : signalé en jouant
+  ("du blanc sur du jaune c'est illisible, du blanc sur du vert clair c'est
+  illisible"), déjà corrigé côté web le 2026-08-04, jamais porté sur iOS.
+  Cause racine : `Theme.Color.ink` s'inverse avec le thème (foncé en clair,
+  quasi blanc en sombre) alors que les aplats "pop" et l'accent `neon` /
+  `neonDeep` / `neonSoft` restent CLAIRS dans les deux thèmes - du texte
+  `ink` posé dessus tombait jusqu'à 1.20:1 en sombre (roulette, tuiles du
+  hub, boutons d'action, paywall, réglages, tutoriel).
+  - Nouveau token fixe `Theme.Color.tileInk` (`#111111`, jamais thématisé),
+    appliqué à tout texte/icône posé sur un aplat `pop-*` ou un accent plein
+    (`neon`/`neonDeep`/`neonSoft`) : roue de la roulette, boutons d'action
+    principaux (tous les modes), bouton "+" d'ajout de joueur, bouton
+    d'achat du paywall, bouton primaire des réglages.
+  - Nouveau token thémable `Theme.Color.danger` (distinct de `cardRed`,
+    fixe et réservé aux pips de carte/`cardFace`) : compte à rebours de la
+    Criée, bouton destructif "Réinitialiser la tablée" des réglages -
+    `cardRed` y tombait à 2.38:1 en sombre.
+  - Rampe d'élévation du thème sombre resynchronisée avec la refonte web du
+    2026-08-04 (`surface` `#1D1B20`->`#2E2836`, `surfaceElevated`
+    `#26232B`->`#3C3446`, etc.), `inkMuted` sombre et l'alpha de bordure fine
+    (0.20->0.38) alignés sur `docs/DESIGN_TOKENS.md`.
+  - Textes secondaires posés directement sur `cardFace` (fixe, blanc dans
+    les deux thèmes) basculés sur `cardInk.opacity(0.7)` au lieu de
+    `inkSecondary`/`inkMuted` (thématisables) - même bug, sur fond carte au
+    lieu d'un aplat pop.
+  - Bannières de règles/cible actives du prompt déplacées de
+    `surfaceElevated` vers `backgroundRaised` : `orangeInk` n'atteignait que
+    4.39:1 sur `surfaceElevated` en clair (sous l'AA 4.5:1), détecté par la
+    nouvelle garde de contraste.
+  - Portage exact de la palette web (`la-taverne/src/styles/tokens.css`,
+    `docs/DESIGN_TOKENS.md`) : palette source de vérité extraite dans
+    `MeskovaCore/Sources/MeskovaCore/ThemePalette.swift` (hex bruts,
+    platform-agnostic), `Meskova/Theme/Theme.swift` ne construit plus les
+    `Color` que depuis cette source unique.
+- **Garde mécanique de contraste** (`MeskovaTests/ContrastGuardTests.swift`) :
+  calcule le ratio WCAG 2.1 réel de chaque paire encre/fond dérivée de
+  `ThemePalette` (pas une liste écrite à la main), dans les deux thèmes, et
+  échoue sous 4.5:1 (texte normal) ou 3:1 (texte large/objet UI). Tourne en
+  CI sur chaque PR (`MeskovaTests`, cible `MeskovaCore`).
+
 ## [0.14.0] - 2026-08-04
 
 ### Changé (renommage produit)

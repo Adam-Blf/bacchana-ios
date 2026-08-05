@@ -156,7 +156,9 @@ struct PaywallView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
         }
-        .foregroundStyle(Theme.Color.ink)
+        // tileInk sur neonDeep (plein, clair dans les 2 themes) ; ink sur
+        // surface (thematisee) tant que l'achat n'est pas pret.
+        .foregroundStyle(purchaseReady ? Theme.Color.tileInk : Theme.Color.ink)
         .background(purchaseReady ? Theme.Color.neonDeep : Theme.Color.surface)
         .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
         .disabled(!purchaseReady || isPurchasing)

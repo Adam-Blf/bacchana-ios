@@ -126,9 +126,11 @@ struct QuizView: View {
     private func questionCard(session: QuizSessionState, question: QuizQuestion) -> some View {
         VStack(spacing: 16) {
             HStack(spacing: 8) {
+                // cardInk, pas ink : ces badges sont nichés dans questionCard,
+                // dont le fond est cardFace (fixe blanc), même tinté à 25-30%.
                 Text(question.category.label.uppercased())
                     .font(Theme.Font.mono(10, weight: .bold))
-                    .foregroundStyle(Theme.Color.ink)
+                    .foregroundStyle(Theme.Color.cardInk)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
                     .background(Theme.Color.neonSoft.opacity(0.3))
@@ -136,7 +138,7 @@ struct QuizView: View {
 
                 Text("\(session.currentPoints) point\(session.currentPoints > 1 ? "s" : "") en jeu")
                     .font(Theme.Font.mono(10, weight: .bold))
-                    .foregroundStyle(Theme.Color.ink)
+                    .foregroundStyle(Theme.Color.cardInk)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
                     .background(Theme.Color.premium.opacity(0.25))
@@ -183,7 +185,8 @@ struct QuizView: View {
             if let lastOutcome = session.lastOutcome {
                 Text(outcomeText(lastOutcome))
                     .font(Theme.Font.mono(11, weight: .bold))
-                    .foregroundStyle(Theme.Color.inkSecondary)
+                    // cardInk (fixe) attenue : pose directement sur cardFace.
+                    .foregroundStyle(Theme.Color.cardInk.opacity(0.7))
                     .multilineTextAlignment(.center)
                     .textCase(.uppercase)
             }
@@ -272,7 +275,8 @@ struct QuizView: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
         }
-        .foregroundStyle(Theme.Color.ink)
+        // tileInk : fond neonDeep plein, clair dans les 2 themes.
+        .foregroundStyle(Theme.Color.tileInk)
         .background(Theme.Color.neonDeep)
         .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
         .opacity(isDisabled ? 0.5 : 1)
@@ -405,7 +409,8 @@ private struct QuizRecapView: View {
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
                 }
-                .foregroundStyle(Theme.Color.ink)
+                // tileInk : fond neonDeep plein, clair dans les 2 themes.
+                .foregroundStyle(Theme.Color.tileInk)
                 .background(Theme.Color.neonDeep)
                 .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
 

@@ -79,7 +79,9 @@ struct AuctionView: View {
                 .foregroundStyle(Theme.Color.neon)
             Text("LE THÈME")
                 .font(Theme.Font.mono(11, weight: .bold))
-                .foregroundStyle(Theme.Color.inkMuted)
+                // cardInk (fixe) attenue, pas inkMuted (thematisee) : label pose
+                // directement sur cardFace, fixe blanc dans les 2 themes.
+                .foregroundStyle(Theme.Color.cardInk.opacity(0.7))
             Text(theme.text)
                 .font(Theme.Font.display(22))
                 .foregroundStyle(Theme.Color.cardInk)
@@ -137,7 +139,9 @@ struct AuctionView: View {
         VStack(spacing: 12) {
             Text("\(secondsLeft)s")
                 .font(Theme.Font.display(44))
-                .foregroundStyle(secondsLeft <= 10 ? Theme.Color.cardRed : Theme.Color.ink)
+                // danger, pas cardRed : compte a rebours = rouge d'UI semantique
+                // thematisable, cardRed reste reserve aux pips/cardFace.
+                .foregroundStyle(secondsLeft <= 10 ? Theme.Color.danger : Theme.Color.ink)
                 .accessibilityAddTraits(.updatesFrequently)
 
             Text("Cite-les ! La table valide chaque bonne réponse.")
@@ -161,7 +165,10 @@ struct AuctionView: View {
                 }
                 .accessibilityElement(children: .combine)
 
-                controlButton(systemImage: "plus", label: "Compter une bonne réponse", background: Theme.Color.neonSoft, bordered: true) {
+                controlButton(
+                    systemImage: "plus", label: "Compter une bonne réponse",
+                    background: Theme.Color.neonSoft, foreground: Theme.Color.tileInk, bordered: true
+                ) {
                     handleCite()
                 }
             }
@@ -219,7 +226,10 @@ struct AuctionView: View {
                 .frame(minWidth: 80)
                 .accessibilityLabel(accessibilityLabel)
 
-            controlButton(systemImage: "plus", label: incrementLabel, background: Theme.Color.neonSoft, bordered: true, action: onIncrement)
+            controlButton(
+                systemImage: "plus", label: incrementLabel,
+                background: Theme.Color.neonSoft, foreground: Theme.Color.tileInk, bordered: true, action: onIncrement
+            )
         }
     }
 
@@ -227,12 +237,15 @@ struct AuctionView: View {
         systemImage: String,
         label: String,
         background: SwiftUI.Color,
+        // ink par defaut (fond surface, thematise) ; les appelants sur un
+        // aplat plein (neonSoft) passent tileInk explicitement, cf. plus bas.
+        foreground: SwiftUI.Color = Theme.Color.ink,
         bordered: Bool,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: action) {
             Image(systemName: systemImage)
-                .foregroundStyle(Theme.Color.ink)
+                .foregroundStyle(foreground)
                 .frame(width: 48, height: 48)
         }
         .background(background)
@@ -283,7 +296,8 @@ struct AuctionView: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
         }
-        .foregroundStyle(Theme.Color.ink)
+        // tileInk : fond neonDeep plein, clair dans les 2 themes.
+        .foregroundStyle(Theme.Color.tileInk)
         .background(Theme.Color.neonDeep)
         .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
         .opacity(isDisabled ? 0.5 : 1)

@@ -299,7 +299,7 @@ struct SettingsView: View {
         .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
         .overlay(
             RoundedRectangle(cornerRadius: Theme.Radius.control)
-                .stroke(style == .destructive ? Theme.Color.cardRed.opacity(0.5) : .clear, lineWidth: 1)
+                .stroke(style == .destructive ? Theme.Color.danger.opacity(0.5) : .clear, lineWidth: 1)
         )
         .frame(minHeight: 44)
         .disabled(disabled)
@@ -308,10 +308,13 @@ struct SettingsView: View {
 
     private func foregroundColor(for style: ButtonStyleKind) -> Color {
         switch style {
-        case .primary: return Theme.Color.ink
+        // tileInk : fond neonDeep plein, clair dans les 2 themes.
+        case .primary: return Theme.Color.tileInk
         case .secondary: return Theme.Color.ink
         case .ghost: return Theme.Color.inkSecondary
-        case .destructive: return Theme.Color.cardRed
+        // danger (thematisee), pas cardRed (fixe, reserve aux pips/cardFace) :
+        // cardRed comme texte ici tombait a 2.38:1 en sombre.
+        case .destructive: return Theme.Color.danger
         }
     }
 
@@ -320,7 +323,7 @@ struct SettingsView: View {
         case .primary: return Theme.Color.neonDeep
         case .secondary: return Theme.Color.surface
         case .ghost: return .clear
-        case .destructive: return Theme.Color.cardRed.opacity(0.1)
+        case .destructive: return Theme.Color.danger.opacity(0.1)
         }
     }
 }

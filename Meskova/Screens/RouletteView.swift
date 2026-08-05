@@ -74,8 +74,12 @@ struct RouletteView: View {
                     WheelSlice(index: index, total: segments.count)
                         .fill(wheelColors[index % wheelColors.count])
 
+                    // tileInk, pas ink : cette bordure separe deux aplats pop/neon
+                    // (toujours clairs), l'encre thematisee y deviendrait quasi
+                    // invisible en sombre (contrairement a l'anneau exterieur
+                    // ci-dessous, qui cadre contre le canvas et reste en ink).
                     WheelSlice(index: index, total: segments.count)
-                        .stroke(Theme.Color.ink, lineWidth: 3)
+                        .stroke(Theme.Color.tileInk, lineWidth: 3)
 
                     segmentLabel(segment, index: index)
                 }
@@ -102,7 +106,8 @@ struct RouletteView: View {
 
         return Text(segment.label)
             .font(Theme.Font.mono(9, weight: .bold))
-            .foregroundStyle(Theme.Color.ink)
+            // tileInk : ce libelle est pose sur un aplat pop/neon plein, cf. wheel.
+            .foregroundStyle(Theme.Color.tileInk)
             .multilineTextAlignment(.center)
             .frame(width: 72)
             .lineLimit(2)
@@ -139,7 +144,9 @@ struct RouletteView: View {
                 .multilineTextAlignment(.center)
             Text(segment.detail)
                 .font(Theme.Font.body(14))
-                .foregroundStyle(Theme.Color.inkSecondary)
+                // cardInk (fixe) attenue, pas inkSecondary (thematisee) : ce texte
+                // est pose directement sur cardFace, fixe blanc dans les 2 themes.
+                .foregroundStyle(Theme.Color.cardInk.opacity(0.7))
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
@@ -163,7 +170,8 @@ struct RouletteView: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
         }
-        .foregroundStyle(Theme.Color.ink)
+        // tileInk : fond neonDeep plein, clair dans les 2 themes.
+        .foregroundStyle(Theme.Color.tileInk)
         .background(Theme.Color.neonDeep)
         .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
         .opacity(spinning ? 0.7 : 1)

@@ -186,7 +186,8 @@ struct TribunalView: View {
                 if session?.current?.authorID != nil {
                     Text("accusation anonyme de la table")
                         .font(Theme.Font.mono(10, weight: .bold))
-                        .foregroundStyle(Theme.Color.inkMuted)
+                        // cardInk (fixe) attenue : pose directement sur cardFace.
+                        .foregroundStyle(Theme.Color.cardInk.opacity(0.7))
                         .textCase(.uppercase)
                 }
             }
@@ -339,7 +340,8 @@ struct TribunalView: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
         }
-        .foregroundStyle(Theme.Color.ink)
+        // tileInk : fond neonDeep plein, clair dans les 2 themes.
+        .foregroundStyle(Theme.Color.tileInk)
         .background(Theme.Color.neonDeep)
         .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
         .opacity(isDisabled ? 0.5 : 1)
@@ -508,7 +510,8 @@ private struct TribunalRecapView: View {
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
                 }
-                .foregroundStyle(Theme.Color.ink)
+                // tileInk : fond neonDeep plein, clair dans les 2 themes.
+                .foregroundStyle(Theme.Color.tileInk)
                 .background(Theme.Color.neonDeep)
                 .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
 
