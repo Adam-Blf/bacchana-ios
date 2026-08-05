@@ -12,7 +12,10 @@ settings:
     IPHONEOS_DEPLOYMENT_TARGET: "17.0"
     MARKETING_VERSION: "0.15.0"
     CURRENT_PROJECT_VERSION: "1"
-    ENABLE_USER_SCRIPT_SANDBOXING: NO
+    # No target declares a build phase script and no dependency ships a build
+    # tool plugin, so the sandbox costs nothing and contains any script that
+    # would later run next to signing certificates.
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
     SWIFT_STRICT_CONCURRENCY: complete
 
 packages:
