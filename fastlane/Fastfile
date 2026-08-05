@@ -15,8 +15,8 @@ platform :ios do
 
     # Run tests on simulator
     scan(
-      project: "LaTournee.xcodeproj",
-      scheme: "LaTournee",
+      project: "Bacchus.xcodeproj",
+      scheme: "Bacchus",
       destination: "generic/platform=iOS Simulator",
       clean: true,
       skip_package_ipa: true,
@@ -29,8 +29,8 @@ platform :ios do
     sh("xcodegen generate")
 
     build_app(
-      project: "LaTournee.xcodeproj",
-      scheme: "LaTournee",
+      project: "Bacchus.xcodeproj",
+      scheme: "Bacchus",
       configuration: "Release",
       destination: "generic/platform=iOS Simulator",
       skip_package_ipa: true,
@@ -50,26 +50,26 @@ platform :ios do
     match(
       type: "appstore",
       readonly: is_ci,
-      app_identifier: "com.beloucif.latournee"
+      app_identifier: "com.beloucif.bacchus"
     ) if ENV["MATCH_GIT_URL"]
 
     # Build IPA for App Store
     build_app(
-      project: "LaTournee.xcodeproj",
-      scheme: "LaTournee",
+      project: "Bacchus.xcodeproj",
+      scheme: "Bacchus",
       configuration: "Release",
       destination: "generic/platform=iOS",
       export_method: "app-store",
       code_signing_identity: "Apple Distribution: Adam Beloucif (XXXXXXXXXX)",
-      provisioning_profile_specifier: "match AppStore com.beloucif.latournee",
+      provisioning_profile_specifier: "match AppStore com.beloucif.bacchus",
       clean: true,
       output_directory: "build"
     )
 
     # Upload to TestFlight
     upload_to_testflight(
-      app_identifier: "com.beloucif.latournee",
-      ipa: "build/LaTournee.ipa",
+      app_identifier: "com.beloucif.bacchus",
+      ipa: "build/Bacchus.ipa",
       skip_waiting_for_build_processing: false,
       skip_submission: true
     )
@@ -90,26 +90,26 @@ platform :ios do
     match(
       type: "appstore",
       readonly: is_ci,
-      app_identifier: "com.beloucif.latournee"
+      app_identifier: "com.beloucif.bacchus"
     ) if ENV["MATCH_GIT_URL"]
 
     # Build IPA
     build_app(
-      project: "LaTournee.xcodeproj",
-      scheme: "LaTournee",
+      project: "Bacchus.xcodeproj",
+      scheme: "Bacchus",
       configuration: "Release",
       destination: "generic/platform=iOS",
       export_method: "app-store",
       code_signing_identity: "Apple Distribution: Adam Beloucif (XXXXXXXXXX)",
-      provisioning_profile_specifier: "match AppStore com.beloucif.latournee",
+      provisioning_profile_specifier: "match AppStore com.beloucif.bacchus",
       clean: true,
       output_directory: "build"
     )
 
     # Submit to App Store for review
     deliver(
-      app_identifier: "com.beloucif.latournee",
-      ipa: "build/LaTournee.ipa",
+      app_identifier: "com.beloucif.bacchus",
+      ipa: "build/Bacchus.ipa",
       skip_screenshots: true,
       skip_metadata: false,
       automatic_release: false,
@@ -133,7 +133,7 @@ platform :ios do
     match(
       type: "appstore",
       readonly: false,
-      app_identifier: "com.beloucif.latournee",
+      app_identifier: "com.beloucif.bacchus",
       force: false
     )
   end
