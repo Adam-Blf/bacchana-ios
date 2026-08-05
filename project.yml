@@ -101,7 +101,6 @@ targets:
           - SpaceGrotesk-Bold.ttf
           - SpaceMono-Regular.ttf
           - SpaceMono-Bold.ttf
-        NSUserTrackingUsageDescription: "La Tournée n'utilise aucun suivi publicitaire."
         REVENUECAT_API_KEY: "$(REVENUECAT_API_KEY)"
         POSTHOG_API_KEY: "$(POSTHOG_API_KEY)"
     settings:
