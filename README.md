@@ -1,6 +1,6 @@
 # La Tournée iOS
 
-[![version](https://img.shields.io/badge/version-0.15.0-D4A437?style=flat-square)](CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-0.15.1-D4A437?style=flat-square)](CHANGELOG.md)
 [![CI](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-tournee-ios/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Adam-Blf/la-tournee-ios/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-tournee-ios/release.yml?label=release&style=flat-square)](RELEASING.md)
 [![platform](https://img.shields.io/badge/platform-iOS%2017%2B-001329?style=flat-square)](project.yml)
@@ -26,7 +26,8 @@ validée par la CI avant merge.
 - Swift 5.10, SwiftUI, iOS 17+
 - XcodeGen (`project.yml`) pour générer `LaTournee.xcodeproj`
 - XCTest pour la couverture du moteur de jeu
-- GitHub Actions (`macos-15`) pour build + tests
+- GitHub Actions (`macos-15`) pour build + tests, plus un job `secrets`
+  (gitleaks, historique complet) sur chaque push et chaque PR
 - RevenueCat (`purchases-ios` 5.83.0) pour le billing, PostHog
   (`posthog-ios` 3.69.0) pour l'analytics, les deux gated par clé de
   configuration (voir Monétisation)
@@ -38,6 +39,11 @@ brew install xcodegen
 xcodegen generate
 open LaTournee.xcodeproj
 ```
+
+En local, `brew install xcodegen` suffit. En CI, XcodeGen est installé depuis
+l'archive de release **2.46.0**, checksum SHA-256 vérifié avant extraction :
+le build doit être reproductible et ne pas dépendre de la version du jour
+d'une formule Homebrew.
 
 Pour resynchroniser les packs de contenu depuis `la-taverne-content` (dépôt
 frère, chemin relatif `../la-taverne-content`) :
@@ -292,7 +298,12 @@ sans clé, l'app tourne entièrement en mode invité, jamais de crash.
    déploiement.
 5. **Secrets CI** : si l'upload TestFlight est automatisé, stocker
    `APP_STORE_CONNECT_API_KEY` (clé API App Store Connect, format JSON/P8)
-   en secret GitHub Actions, jamais en clair dans le repo.
+   en secret GitHub Actions, jamais en clair dans le repo. Garde-fous déjà
+   en place (v0.15.1) : actions tierces épinglées au SHA de commit, jeton
+   `GITHUB_TOKEN` en `contents: read` sauf sur le job qui publie la
+   release, scan gitleaks sur l'historique complet, `.gitignore` couvrant
+   les formes de jetons et le matériel de signature (`*.p8`, `*.p12`,
+   `*.mobileprovision`, `*.cer`, `*.key`, `*.pem`).
 6. **Icône finale** : le PNG 1024x1024 généré par `scripts/gen_app_icon.py`
    est une v1 fonctionnelle, à faire relire par un regard design avant
    soumission finale.

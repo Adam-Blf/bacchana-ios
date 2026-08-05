@@ -10,7 +10,7 @@ settings:
   base:
     SWIFT_VERSION: 5.10
     IPHONEOS_DEPLOYMENT_TARGET: "17.0"
-    MARKETING_VERSION: "0.15.0"
+    MARKETING_VERSION: "0.15.1"
     CURRENT_PROJECT_VERSION: "1"
     # No target declares a build phase script and no dependency ships a build
     # tool plugin, so the sandbox costs nothing and contains any script that

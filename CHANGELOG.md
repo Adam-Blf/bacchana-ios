@@ -1,5 +1,53 @@
 # Changelog
 
+## [0.15.1] - 2026-08-05
+
+### Sécurité (durcissement chaîne de build)
+
+- **Actions tierces épinglées au SHA de commit** (`ci.yml`, `release.yml`) :
+  un tag `@v4` est mutable, l'auteur d'une action compromise peut le
+  déplacer vers du code hostile qui s'exécuterait avec le jeton du dépôt.
+  Chaque `uses:` pointe désormais un commit immuable, le tag d'origine
+  restant en commentaire pour la lisibilité et les mises à jour :
+  `actions/checkout` `11d5960a326750d5838078e36cf38b85af677262` (v4.4.0),
+  `actions/upload-artifact` `ea165f8d65b6e75b540449e92b4886f43607fa02`
+  (v4.6.2), `ruby/setup-ruby` `95ef2b042f9d7a56d8268cba8559e2842e2ad01b`
+  (v1.321.0), `softprops/action-gh-release`
+  `3bb12739c298aeb8a4eeaf626c5b8d85266b0e65` (v2.6.2),
+  `gitleaks/gitleaks-action` `ff98106e4c7b2bc287b24eaf42907196329070c7`
+  (v2.3.9).
+- **Permissions du `GITHUB_TOKEN` restreintes** : `contents: read` au
+  niveau des deux workflows. Seul `build-and-upload` (release.yml) est
+  élevé à `contents: write`, parce qu'il publie la GitHub Release. Aucun
+  job de CI ne peut plus écrire dans le dépôt.
+- **Scan de secrets en CI** : nouveau job `secrets` dans `ci.yml`
+  (`ubuntu-latest`, checkout `fetch-depth: 0` puis gitleaks), sur push et
+  pull request, aligné sur le job équivalent du dépôt web `la-taverne`.
+  Un identifiant fuité fait échouer la CI au lieu d'être découvert après
+  coup, ce qui compte d'autant plus que des certificats de signature et
+  une clé App Store Connect transiteront bientôt par ce dépôt.
+- **`.gitignore` défensif** : ajout des formes de jetons (`sbp_*`,
+  `ghp_*`, `gho_*`, `ghs_*`, `github_pat_*`, `sk_*`) et du matériel de
+  signature restant (`*.key`, `*.certSigningRequest`, `*.provisionprofile`,
+  `AuthKey_*.p8`), en complément des motifs déjà présents. Vérifié avant
+  ajout : aucun fichier suivi par git ne correspond à ces motifs.
+- **Bac à sable des scripts de build réactivé** :
+  `ENABLE_USER_SCRIPT_SANDBOXING` repasse de `NO` à `YES`. Vérifié avant
+  bascule : aucune cible ne déclare de phase de script et aucune
+  dépendance (RevenueCat, PostHog) ne fournit de build tool plugin, donc
+  le sandbox ne coûte rien et confinera tout script ajouté plus tard à
+  côté des certificats.
+- **`NSUserTrackingUsageDescription` retiré** : l'app n'appelle jamais
+  `ATTrackingManager` ni `AppTrackingTransparency` (vérifié par recherche
+  sur toutes les sources Swift) et `PrivacyInfo.xcprivacy` déclare
+  `NSPrivacyTracking = false`. Une chaîne d'usage sans usage réel n'attire
+  qu'une question du reviewer Apple.
+- **XcodeGen épinglé en CI** : `brew install xcodegen` (version du jour,
+  build non reproductible) remplacé par le téléchargement de l'archive de
+  release 2.46.0 avec vérification SHA-256 (`4d9e34b6...96806`) avant
+  extraction, dans les trois jobs concernés. Le `brew install` reste
+  documenté pour le poste de développement local.
+
 ## [0.15.0] - 2026-08-05
 
 ### Changé (renommage produit)
