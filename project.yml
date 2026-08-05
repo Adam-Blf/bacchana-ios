@@ -1,4 +1,4 @@
-name: LaTournee
+name: Bacchus
 options:
   bundleIdPrefix: com.beloucif
   deploymentTarget:
@@ -10,7 +10,7 @@ settings:
   base:
     SWIFT_VERSION: 5.10
     IPHONEOS_DEPLOYMENT_TARGET: "17.0"
-    MARKETING_VERSION: "0.15.1"
+    MARKETING_VERSION: "0.16.0"
     CURRENT_PROJECT_VERSION: "1"
     # No target declares a build phase script and no dependency ships a build
     # tool plugin, so the sandbox costs nothing and contains any script that
@@ -27,64 +27,64 @@ packages:
     from: 3.69.0
 
 targets:
-  LaTourneeCore:
+  BacchusCore:
     type: framework
     platform: iOS
     sources:
-      - path: LaTourneeCore/Sources/LaTourneeCore
+      - path: BacchusCore/Sources/BacchusCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.latournee.core
+        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.bacchus.core
         GENERATE_INFOPLIST_FILE: YES
         DEFINES_MODULE: YES
         SKIP_INSTALL: YES
 
-  LaTourneeTests:
+  BacchusTests:
     type: bundle.unit-test
     platform: iOS
     sources:
-      - path: LaTourneeTests
+      - path: BacchusTests
     dependencies:
-      - target: LaTourneeCore
+      - target: BacchusCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.latournee.coretests
+        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.bacchus.coretests
         GENERATE_INFOPLIST_FILE: YES
 
-  LaTournee:
+  Bacchus:
     type: application
     platform: iOS
     sources:
-      - path: LaTournee
+      - path: Bacchus
         excludes:
           - "**/.DS_Store"
           - "Resources/Packs/**"
           - "PrivacyInfo.xcprivacy"
       # Apple privacy manifest: forced into the resources build phase so it
       # ships at the app bundle root (required for App Store submission).
-      - path: LaTournee/PrivacyInfo.xcprivacy
+      - path: Bacchus/PrivacyInfo.xcprivacy
         buildPhase: resources
       # Folder reference (blue folder): preserves the Packs/ subdirectory in
       # the built bundle, required by ContentLibrary's
       # `subdirectory: "Packs"` lookup.
-      - path: LaTournee/Resources/Packs
+      - path: Bacchus/Resources/Packs
         type: folder
         buildPhase: resources
     dependencies:
-      - target: LaTourneeCore
+      - target: BacchusCore
         embed: true
       - package: RevenueCat
         product: RevenueCat
       - package: PostHog
         product: PostHog
     configFiles:
-      Debug: LaTournee/Config/Config.xcconfig
-      Release: LaTournee/Config/Config.xcconfig
+      Debug: Bacchus/Config/Config.xcconfig
+      Release: Bacchus/Config/Config.xcconfig
     info:
-      path: LaTournee/Info.plist
+      path: Bacchus/Info.plist
       properties:
-        CFBundleDisplayName: La Tournée
-        CFBundleName: La Tournée
+        CFBundleDisplayName: Bacchus
+        CFBundleName: Bacchus
         UILaunchScreen: {}
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
@@ -105,35 +105,35 @@ targets:
         POSTHOG_API_KEY: "$(POSTHOG_API_KEY)"
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.latournee
-        PRODUCT_NAME: LaTournee
+        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.bacchus
+        PRODUCT_NAME: Bacchus
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         TARGETED_DEVICE_FAMILY: "1,2"
         SUPPORTS_MACCATALYST: NO
 
 schemes:
-  LaTournee:
+  Bacchus:
     build:
       targets:
-        LaTournee: all
-        LaTourneeCore: all
-        LaTourneeTests: [test]
+        Bacchus: all
+        BacchusCore: all
+        BacchusTests: [test]
     test:
       config: Debug
       targets:
-        - LaTourneeTests
+        - BacchusTests
     run:
       config: Debug
     archive:
       config: Release
 
-  LaTourneeCore:
+  BacchusCore:
     build:
       targets:
-        LaTourneeCore: all
-        LaTourneeTests: [test]
+        BacchusCore: all
+        BacchusTests: [test]
     test:
       config: Debug
       targets:
-        - LaTourneeTests
+        - BacchusTests

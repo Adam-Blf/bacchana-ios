@@ -1,14 +1,14 @@
-# La Tournée iOS
+# Bacchus iOS
 
-[![version](https://img.shields.io/badge/version-0.15.1-D4A437?style=flat-square)](CHANGELOG.md)
-[![CI](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-tournee-ios/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Adam-Blf/la-tournee-ios/actions/workflows/ci.yml)
-[![release](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-tournee-ios/release.yml?label=release&style=flat-square)](RELEASING.md)
+[![version](https://img.shields.io/badge/version-0.16.0-D4A437?style=flat-square)](CHANGELOG.md)
+[![CI](https://img.shields.io/github/actions/workflow/status/Adam-Blf/bacchus-ios/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Adam-Blf/bacchus-ios/actions/workflows/ci.yml)
+[![release](https://img.shields.io/github/actions/workflow/status/Adam-Blf/bacchus-ios/release.yml?label=release&style=flat-square)](RELEASING.md)
 [![platform](https://img.shields.io/badge/platform-iOS%2017%2B-001329?style=flat-square)](project.yml)
 [![license](https://img.shields.io/badge/license-proprietary-D4A437?style=flat-square)](LICENSE)
 
-App iOS native de La Tournée, jeu de cartes et de défis pour soirées entre
-adultes (dépôt GitHub `la-tournee-ios`, renommé en conséquence - voir
-CHANGELOG 0.15.0). Direction artistique néobrutalisme
+App iOS native de Bacchus, jeu de cartes et de défis pour soirées entre
+adultes (dépôt GitHub `bacchus-ios`, renommé en conséquence - voir
+CHANGELOG 0.16.0). Direction artistique néobrutalisme
 taverne, thèmes clair et sombre : papier crème ou encre neutre (jamais de
 brun/bois), accent orange, ombres dures noires, carte blanche géante comme
 élément signature. Bascule clair/sombre/système persistée, discrète dans
@@ -24,7 +24,7 @@ validée par la CI avant merge.
 ## Stack
 
 - Swift 5.10, SwiftUI, iOS 17+
-- XcodeGen (`project.yml`) pour générer `LaTournee.xcodeproj`
+- XcodeGen (`project.yml`) pour générer `Bacchus.xcodeproj`
 - XCTest pour la couverture du moteur de jeu
 - GitHub Actions (`macos-15`) pour build + tests, plus un job `secrets`
   (gitleaks, historique complet) sur chaque push et chaque PR
@@ -37,7 +37,7 @@ validée par la CI avant merge.
 ```bash
 brew install xcodegen
 xcodegen generate
-open LaTournee.xcodeproj
+open Bacchus.xcodeproj
 ```
 
 En local, `brew install xcodegen` suffit. En CI, XcodeGen est installé depuis
@@ -45,8 +45,8 @@ l'archive de release **2.46.0**, checksum SHA-256 vérifié avant extraction :
 le build doit être reproductible et ne pas dépendre de la version du jour
 d'une formule Homebrew.
 
-Pour resynchroniser les packs de contenu depuis `la-taverne-content` (dépôt
-frère, chemin relatif `../la-taverne-content`) :
+Pour resynchroniser les packs de contenu depuis `bacchus-content` (dépôt
+frère, chemin relatif `../bacchus-content`) :
 
 ```bash
 python scripts/sync_content.py
@@ -62,7 +62,7 @@ python scripts/gen_app_icon.py
 
 ```mermaid
 flowchart TD
-    subgraph Core["LaTourneeCore (framework, logique pure, zéro dépendance UI)"]
+    subgraph Core["BacchusCore (framework, logique pure, zéro dépendance UI)"]
         Deck["Deck / Card / Rank / Suit"]
         Player["Player / PlayerRotation (gender + relationship optionnels, locaux)"]
         Targeting["Targeting (gender-m/f, pair, single, couple - RNG injectable)"]
@@ -78,7 +78,7 @@ flowchart TD
         ThemePalette["ThemePalette (hex bruts clair/sombre, source unique - miroir tokens.css)"]
     end
 
-    subgraph App["La Tournée (SwiftUI app)"]
+    subgraph App["Bacchus (SwiftUI app)"]
         Theme["Theme (SwiftUI Color depuis ThemePalette, polices)"]
         Welcome["WelcomeView (check-in joueurs + genre/statut facultatifs)"]
         Hub["HubView (grille des modes)"]
@@ -147,20 +147,20 @@ flowchart TD
 ## Contenu
 
 Les packs de contenu (Action ou Vérité, Picolo, etc.) sont maintenus dans le
-dépôt frère `la-taverne-content` et synchronisés ici via
+dépôt frère `bacchus-content` et synchronisés ici via
 `scripts/sync_content.py` :
 
 `Tu préfères` n'est plus un pack de prompt : depuis la v0.9.0 c'est un mode
 embarqué à mécanique de vote (`WouldYouRatherSession.swift`,
 `WouldYouRatherContent.swift`, `WouldYouRatherView.swift`), au même titre que
 Quitte ou Trinque ou Le Tableau d'Honneur. Le pack `tu-preferes-classique`
-de `la-taverne-content` reste à retirer côté dépôt frère lors du prochain
+de `bacchus-content` reste à retirer côté dépôt frère lors du prochain
 `sync_content.py` pour éviter qu'il ne réapparaisse dans le catalogue.
 
 - **Packs gratuits** (`premium=false`) : copiés intégralement dans
-  `LaTournee/Resources/Packs/`, embarqués dans le binaire.
+  `Bacchus/Resources/Packs/`, embarqués dans le binaire.
 - **Packs premium** : seules les métadonnées (titre, mode, intensité)
-  vivent dans `LaTournee/Resources/premium-catalog.json`, pour afficher les
+  vivent dans `Bacchus/Resources/premium-catalog.json`, pour afficher les
   cartes verrouillées du Hub. Le contenu réel n'est jamais livré tant que
   le billing n'est pas branché (zéro spoiler dans le binaire gratuit).
 
@@ -168,8 +168,8 @@ de `la-taverne-content` reste à retirer côté dépôt frère lors du prochain
 
 `Theme.Color` est entièrement dynamique : chaque token résout vers sa paire
 clair/sombre via un `UIColor` calculé au trait collection courant (voir
-`Theme.dynamic(light:dark:)`), construit depuis `LaTourneeCore.ThemePalette`
-(source unique de hex bruts, miroir de `la-taverne/src/styles/tokens.css`),
+`Theme.dynamic(light:dark:)`), construit depuis `BacchusCore.ThemePalette`
+(source unique de hex bruts, miroir de `bacchus-site/src/styles/tokens.css`),
 donc aucun écran n'a besoin de connaître le thème actif. La préférence
 (`ThemeMode` : système / clair / sombre) vit dans `AppState.themeMode`,
 persistée (`UserDefaults`), appliquée via `.preferredColorScheme` sur la
@@ -186,7 +186,7 @@ Même logique pour `cardInk` sur `cardFace` (carte blanche fixe). Un rouge
 d'UI sémantique (erreur, action destructive, compte à rebours) utilise
 `Theme.Color.danger` (thémable), jamais `cardRed` (fixe, réservé aux pips
 de carte). Vérifié mécaniquement en CI par
-`LaTourneeTests/ContrastGuardTests.swift`, qui calcule le ratio WCAG 2.1 réel
+`BacchusTests/ContrastGuardTests.swift`, qui calcule le ratio WCAG 2.1 réel
 de chaque paire encre/fond dérivée de `ThemePalette`.
 
 ## Genre et statut relationnel des joueurs (facultatif)
@@ -197,17 +197,17 @@ et/ou un statut relationnel (Célibataire / En couple). Les deux champs
 restent optionnels et ne bloquent jamais la partie.
 
 - **Stockage** : `Player.gender` / `Player.relationship`
-  (`LaTourneeCore/Player.swift`), 100 % local (`UserDefaults` via
+  (`BacchusCore/Player.swift`), 100 % local (`UserDefaults` via
   `AppState.playerAttributes`), **jamais envoyés en analytics** (aucun call
   site de `AnalyticsProviding.track` ne référence ces champs).
-- **Ciblage de contenu** : `LaTourneeCore/Targeting.swift` résout
+- **Ciblage de contenu** : `BacchusCore/Targeting.swift` résout
   `PromptTarget.genderMasculine/.genderFeminine/.single/.couple/.pair` vers
   un ou deux joueurs concrets, RNG injectable et seedable par tour
   (`Targeting.seededRng`) pour rester stable entre deux re-rendus du même
   tour. Si personne à table n'a déclaré l'attribut demandé, repli gracieux
   sur un joueur actif tiré au hasard - la partie ne bloque jamais. Affiché
   sur `PromptView` sous forme de bannière "C'est à … de jouer", à parité
-  avec `la-taverne/src/components/screens/PromptGameScreen.tsx`.
+  avec `bacchus-site/src/components/screens/PromptGameScreen.tsx`.
 
 ## Conformité App Store
 
@@ -243,23 +243,24 @@ restent optionnels et ne bloquent jamais la partie.
 Billing (RevenueCat) et analytics (PostHog) sont **gated par configuration** :
 sans clé, l'app tourne entièrement en mode invité, jamais de crash.
 
-- **Entitlement** : `La Tournee Pro` (sans accent, id exact du dashboard
-  RevenueCat), identique au web (`la-taverne/src/lib/billing.ts`) et à
-  l'Android. Renommé au renommage produit v0.15.0 (Meskova -> La Tournée) -
-  l'app n'étant pas encore publiée, aucun abonné existant à migrer.
+- **Entitlement** : `Bacchus Pro` (sans accent, id exact du dashboard
+  RevenueCat, déjà créé), identique au web (`bacchus-site/src/lib/billing.ts`)
+  et à l'Android. Renommé au renommage produit v0.16.0 (Bacchus -> Bacchus,
+  nom définitif) - l'app n'étant pas encore publiée, aucun abonné existant à
+  migrer.
 - **Produits** : `premium_monthly` (4,99 €), `premium_yearly` (19,99 €),
   `premium_lifetime` (34,99 €, mis en avant comme meilleure offre),
   offering `default`. Le catalogue de plans et les prix de repli vivent
-  dans `LaTourneeCore/PremiumPlan.swift` (pur, testé).
+  dans `BacchusCore/PremiumPlan.swift` (pur, testé).
 - **Sélection du provider** : `EntitlementsFactory.make()` /
   `AnalyticsFactory.make()` lisent `REVENUECAT_API_KEY` /
   `POSTHOG_API_KEY` dans l'Info.plist (interpolées depuis
-  `LaTournee/Config/Config.xcconfig` + `Config.local.xcconfig`, gitignored).
+  `Bacchus/Config/Config.xcconfig` + `Config.local.xcconfig`, gitignored).
   Clé absente → `StubEntitlements` / `StubAnalytics`, comportement
   identique à avant cette version.
 - **Configuration locale** : copier
-  `LaTournee/Config/Config.local.xcconfig.example` vers
-  `LaTournee/Config/Config.local.xcconfig` (jamais commité) et renseigner
+  `Bacchus/Config/Config.local.xcconfig.example` vers
+  `Bacchus/Config/Config.local.xcconfig` (jamais commité) et renseigner
   les clés RevenueCat/PostHog réelles.
 - **Paywall** : `Screens/PaywallView.swift`, accessible depuis le bouton
   "Premium" du Hub et depuis tout pack premium verrouillé. Affiche
@@ -276,7 +277,7 @@ sans clé, l'app tourne entièrement en mode invité, jamais de crash.
   engrenage du Hub. Apparence (thème système/clair/sombre), statut premium
   + accès au paywall + restauration des achats, consentement analytics,
   lien vers la politique de confidentialité et les mentions légales/CGU
-  (renvoie vers `lataverne.beloucif.com`, ces textes n'ont pas encore
+  (renvoie vers `bacchus.beloucif.com`, ces textes n'ont pas encore
   d'écran natif ni de route URL dédiée côté web), à propos (version,
   éditeur), réinitialisation de la tablée (joueurs + partie en cours,
   jamais le statut premium).
@@ -285,7 +286,7 @@ sans clé, l'app tourne entièrement en mode invité, jamais de crash.
 
 1. **Compte Apple Developer Program** (99 $/an) rattaché à l'identité
    d'Adam Beloucif ou à une entité, condition préalable à toute soumission.
-2. **App Store Connect** : créer l'app (bundle id `com.beloucif.latournee`),
+2. **App Store Connect** : créer l'app (bundle id `com.beloucif.bacchus`),
    remplir fiche (description, mots-clés, captures d'écran, catégorie
    Jeux/Divertissement, classification d'âge 17+).
 3. **Signing** : générer un certificat de distribution + provisioning

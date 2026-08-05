@@ -1,5 +1,58 @@
 # Changelog
 
+## [0.16.0] - 2026-08-05
+
+### Changé (renommage produit, définitif)
+
+- **Renommage produit "La Tournée" -> "Bacchus"** (sixième nom du produit,
+  définitif) : l'univers narratif de la taverne reste intact - "Le
+  Coupe-Gorge", "Le Pilori", "La Criée", "Le Taulier" ne changent pas.
+  - Bundle identifier : `com.beloucif.latournee` -> `com.beloucif.bacchus`
+    (framework `com.beloucif.bacchus.core`, tests
+    `com.beloucif.bacchus.coretests`), aligné sur l'Android qui utilise déjà
+    exactement cet identifiant. Toujours aucun impact utilisateur, l'app
+    n'est pas publiée (aucun tag de release, compte Apple Developer Program
+    pas encore créé).
+  - Cible XcodeGen `LaTournee` -> `Bacchus`, module framework
+    `LaTourneeCore` -> `BacchusCore`, cible de tests `LaTourneeTests` ->
+    `BacchusTests`. Dossiers physiques renommés en conséquence
+    (`LaTournee/` -> `Bacchus/`, `LaTourneeCore/Sources/LaTourneeCore/` ->
+    `BacchusCore/Sources/BacchusCore/`, `LaTourneeTests/` -> `BacchusTests/`),
+    historique git préservé (`git mv`). Tous les `import LaTourneeCore` ->
+    `import BacchusCore`, fichier `LaTourneeApp.swift` -> `BacchusApp.swift`
+    (`struct LaTourneeApp` -> `struct BacchusApp`).
+  - `CFBundleDisplayName`/`CFBundleName` -> "Bacchus" (sans accent, aligné
+    Android `strings.xml` `app_name`). Chaînes visibles renommées : titre
+    `WelcomeView` ("LA TOURNÉE" -> "BACCHUS"), en-tête et bouton d'achat
+    `PaywallView` ("LA TOURNÉE PREMIUM" -> "BACCHUS PREMIUM" / "Débloquer
+    Bacchus Premium"), libellé accessibilité `HubView` ("Découvrir Bacchus
+    Premium"), section "À propos" de `SettingsView` ("Bacchus").
+  - Clés `UserDefaults` renommées du préfixe `latournee.` vers `bacchus.`
+    (`AppState`) : toujours aucune migration nécessaire, app jamais publiée.
+  - Identifiant d'entitlement RevenueCat (`RevenueCatEntitlements.swift`)
+    **renommé** (`"La Tournee Pro"` -> `"Bacchus Pro"`, sans accent, id
+    technique déjà créé côté dashboard RevenueCat, aligné sur l'Android) -
+    toujours aucun abonné existant à migrer.
+  - `scripts/sync_content.py` : le dépôt frère de contenu a lui aussi été
+    renommé (`la-taverne-content` -> `bacchus-content`, seul son dossier
+    change, pas son contenu ni l'univers taverne) - `CONTENT_ROOT` mis à
+    jour en conséquence, en plus des chemins de destination
+    `Bacchus/Resources/...`. `scripts/gen_app_icon.py` : chemin de sortie
+    mis à jour vers `Bacchus/Assets.xcassets/...` (même piège de chemin que
+    0.10.0, 0.14.0 et 0.15.0, revérifié).
+  - `SettingsView.swift` (`legalURL`) : `latournee.beloucif.com` ->
+    `bacchus.beloucif.com`, aligné sur le domaine déjà utilisé côté
+    Android. Le README référençait encore par erreur l'ancien
+    `lataverne.beloucif.com` (drift de doc non corrigé au renommage 0.15.0),
+    corrigé dans le même lot.
+  - CI (`ci.yml`, `release.yml`), `fastlane/Fastfile`, `fastlane/Appfile`,
+    `fastlane/Matchfile`, `RELEASING.md`, `README.md`, `LICENSE` : toutes
+    les références `LaTournee`/`la-tournee` mises à jour vers
+    `Bacchus`/`bacchus`. Badges et dépôt GitHub `Adam-Blf/bacchus-ios`
+    (repo déjà renommé côté GitHub avant cette PR, ancienne URL
+    `Adam-Blf/la-tournee-ios` toujours valide par redirection mais mise à
+    jour ici).
+
 ## [0.15.1] - 2026-08-05
 
 ### Sécurité (durcissement chaîne de build)
