@@ -10,8 +10,8 @@ import MeskovaCore
 /// untouched. A RevenueCat entitlement identifier is not renameable in place - changing it here
 /// without a matching dashboard migration would silently break entitlement checks for every
 /// customer. Only the user-facing label changed (see `PaywallView`/`SettingsView`, "Meskova
-/// Premium"); the dashboard entitlement itself stays "La Taverne Pro".
-private let premiumEntitlementID = "La Taverne Pro"
+/// Premium"); the dashboard entitlement itself stays "Meskova Pro".
+private let premiumEntitlementID = "Meskova Pro"
 
 /// Real billing provider, created by `EntitlementsFactory` only when a RevenueCat API key is
 /// configured. Talks to StoreKit through RevenueCat; the rest of the app only ever sees

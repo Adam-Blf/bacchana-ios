@@ -1,8 +1,8 @@
 # Meskova iOS
 
 [![version](https://img.shields.io/badge/version-0.14.1-D4A437?style=flat-square)](CHANGELOG.md)
-[![CI](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-taverne-ios/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Adam-Blf/la-taverne-ios/actions/workflows/ci.yml)
-[![release](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-taverne-ios/release.yml?label=release&style=flat-square)](RELEASING.md)
+[![CI](https://img.shields.io/github/actions/workflow/status/Adam-Blf/meskova-ios/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Adam-Blf/meskova-ios/actions/workflows/ci.yml)
+[![release](https://img.shields.io/github/actions/workflow/status/Adam-Blf/meskova-ios/release.yml?label=release&style=flat-square)](RELEASING.md)
 [![platform](https://img.shields.io/badge/platform-iOS%2017%2B-001329?style=flat-square)](project.yml)
 [![license](https://img.shields.io/badge/license-proprietary-D4A437?style=flat-square)](LICENSE)
 
@@ -237,7 +237,7 @@ restent optionnels et ne bloquent jamais la partie.
 Billing (RevenueCat) et analytics (PostHog) sont **gated par configuration** :
 sans clé, l'app tourne entièrement en mode invité, jamais de crash.
 
-- **Entitlement** : `La Taverne Pro`, identique au web
+- **Entitlement** : `Meskova Pro`, identique au web
   (`la-taverne/src/lib/billing.ts`) - ne jamais renommer sans migrer le
   dashboard RevenueCat. Identifiant intentionnellement conservé tel quel
   au renommage produit v0.14.0 (La Taverne -> Meskova) : un identifiant
