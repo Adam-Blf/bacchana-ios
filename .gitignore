@@ -34,6 +34,24 @@ ExportOptions.plist
 *_APIKEY*
 LaTournee/Config/Config.local.xcconfig
 
+# Defense in depth: token shapes and key material, whatever the directory.
+# Nothing tracked matched these patterns when they were added.
+*.key
+*.pem
+*.p8
+*.p12
+*.cer
+*.certSigningRequest
+*.mobileprovision
+*.provisionprofile
+sbp_*
+ghp_*
+gho_*
+ghs_*
+github_pat_*
+sk_*
+AuthKey_*.p8
+
 # macOS
 .DS_Store
 
