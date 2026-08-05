@@ -38,8 +38,8 @@ jobs:
         run: |
           set -o pipefail
           xcodebuild test \
-            -project Meskova.xcodeproj \
-            -scheme Meskova \
+            -project LaTournee.xcodeproj \
+            -scheme LaTournee \
             -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
             -skipMacroValidation \
             CODE_SIGNING_ALLOWED=NO
@@ -75,8 +75,8 @@ jobs:
         run: |
           set -o pipefail
           xcodebuild build \
-            -project Meskova.xcodeproj \
-            -scheme Meskova \
+            -project LaTournee.xcodeproj \
+            -scheme LaTournee \
             -configuration Release \
             -destination 'generic/platform=iOS Simulator' \
             CODE_SIGNING_ALLOWED=NO

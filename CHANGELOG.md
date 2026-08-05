@@ -1,5 +1,50 @@
 # Changelog
 
+## [0.15.0] - 2026-08-05
+
+### Changé (renommage produit)
+
+- **Renommage produit "Meskova" -> "La Tournée"** (cinquième nom du
+  produit) : l'univers narratif de la taverne reste intact - "Le
+  Coupe-Gorge", "Le Pilori", "La Criée", "Le Taulier" ne changent pas.
+  - Bundle identifier : `com.beloucif.meskova` -> `com.beloucif.latournee`
+    (framework `com.beloucif.latournee.core`, tests
+    `com.beloucif.latournee.coretests`). Toujours aucun impact utilisateur,
+    l'app n'est pas publiée.
+  - Cible XcodeGen `Meskova` -> `LaTournee`, module framework
+    `MeskovaCore` -> `LaTourneeCore`, cible de tests `MeskovaTests` ->
+    `LaTourneeTests`. Dossiers physiques renommés en conséquence
+    (`Meskova/` -> `LaTournee/`, `MeskovaCore/Sources/MeskovaCore/` ->
+    `LaTourneeCore/Sources/LaTourneeCore/`, `MeskovaTests/` ->
+    `LaTourneeTests/`), historique git préservé (`git mv`). Tous les
+    `import MeskovaCore` -> `import LaTourneeCore`.
+  - `CFBundleDisplayName`/`CFBundleName` -> "La Tournée", texte ATT
+    (`NSUserTrackingUsageDescription`) mis à jour. Chaînes visibles
+    renommées : titre `WelcomeView` ("LA TOURNÉE"), en-tête et bouton
+    d'achat `PaywallView` ("LA TOURNÉE PREMIUM" / "Débloquer La Tournée
+    Premium"), libellé accessibilité `HubView` ("Découvrir La Tournée
+    Premium"), section "À propos" de `SettingsView` ("La Tournée").
+  - Clés `UserDefaults` renommées du préfixe `meskova.` vers `latournee.`
+    (`AppState`) : toujours aucune migration nécessaire, app jamais
+    publiée.
+  - Contrairement au rebrand précédent, l'identifiant d'entitlement
+    RevenueCat (`RevenueCatEntitlements.swift`) est cette fois
+    **renommé** (`"La Taverne Pro"` -> `"La Tournee Pro"`, sans accent,
+    id technique exact créé côté dashboard RevenueCat) - toujours aucun
+    abonné existant à migrer.
+  - `scripts/sync_content.py` et `scripts/gen_app_icon.py` : chemins de
+    destination mis à jour vers `LaTournee/Resources/...` /
+    `LaTournee/Assets.xcassets/...` (même piège de chemin que 0.10.0 et
+    0.14.0, revérifié).
+  - `SettingsView.swift` (`legalURL`) : `lataverne.beloucif.com` ->
+    `latournee.beloucif.com` (actif), plus besoin d'attendre une
+    décision DNS/web séparée.
+  - CI (`ci.yml`, `release.yml`), `fastlane/Fastfile`, `fastlane/Appfile`,
+    `fastlane/Matchfile`, `RELEASING.md`, `README.md`, `LICENSE` :
+    projet/scheme `LaTournee.xcodeproj`/`LaTournee`, IPA
+    `build/LaTournee.ipa`, `app_identifier` `com.beloucif.latournee`.
+    Badges et dépôt GitHub `Adam-Blf/la-tournee-ios` (repo renommé).
+
 ## [0.14.1] - 2026-08-05
 
 ### Corrigé (contraste, thème sombre)
@@ -35,14 +80,14 @@
     nouvelle garde de contraste.
   - Portage exact de la palette web (`la-taverne/src/styles/tokens.css`,
     `docs/DESIGN_TOKENS.md`) : palette source de vérité extraite dans
-    `MeskovaCore/Sources/MeskovaCore/ThemePalette.swift` (hex bruts,
-    platform-agnostic), `Meskova/Theme/Theme.swift` ne construit plus les
+    `LaTourneeCore/Sources/LaTourneeCore/ThemePalette.swift` (hex bruts,
+    platform-agnostic), `LaTournee/Theme/Theme.swift` ne construit plus les
     `Color` que depuis cette source unique.
-- **Garde mécanique de contraste** (`MeskovaTests/ContrastGuardTests.swift`) :
+- **Garde mécanique de contraste** (`LaTourneeTests/ContrastGuardTests.swift`) :
   calcule le ratio WCAG 2.1 réel de chaque paire encre/fond dérivée de
   `ThemePalette` (pas une liste écrite à la main), dans les deux thèmes, et
   échoue sous 4.5:1 (texte normal) ou 3:1 (texte large/objet UI). Tourne en
-  CI sur chaque PR (`MeskovaTests`, cible `MeskovaCore`).
+  CI sur chaque PR (`LaTourneeTests`, cible `LaTourneeCore`).
 
 ## [0.14.0] - 2026-08-04
 
@@ -160,7 +205,7 @@
 - Contenu des packs gratuits porte a 80 items chacun (sync depuis la-taverne-content 1.10.0).
 - Correction du script scripts/sync_content.py : chemin de destination LaTaverne (le nom de dossier reel, sans espace).
 
-Toutes les modifications notables de La Taverne iOS sont documentées ici.
+Toutes les modifications notables de La Tournée iOS sont documentées ici.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
 versionnement [semver](https://semver.org/lang/fr/).
 

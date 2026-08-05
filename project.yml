@@ -1,4 +1,4 @@
-name: Meskova
+name: LaTournee
 options:
   bundleIdPrefix: com.beloucif
   deploymentTarget:
@@ -10,7 +10,7 @@ settings:
   base:
     SWIFT_VERSION: 5.10
     IPHONEOS_DEPLOYMENT_TARGET: "17.0"
-    MARKETING_VERSION: "0.14.1"
+    MARKETING_VERSION: "0.15.0"
     CURRENT_PROJECT_VERSION: "1"
     ENABLE_USER_SCRIPT_SANDBOXING: NO
     SWIFT_STRICT_CONCURRENCY: complete
@@ -24,64 +24,64 @@ packages:
     from: 3.69.0
 
 targets:
-  MeskovaCore:
+  LaTourneeCore:
     type: framework
     platform: iOS
     sources:
-      - path: MeskovaCore/Sources/MeskovaCore
+      - path: LaTourneeCore/Sources/LaTourneeCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.meskova.core
+        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.latournee.core
         GENERATE_INFOPLIST_FILE: YES
         DEFINES_MODULE: YES
         SKIP_INSTALL: YES
 
-  MeskovaTests:
+  LaTourneeTests:
     type: bundle.unit-test
     platform: iOS
     sources:
-      - path: MeskovaTests
+      - path: LaTourneeTests
     dependencies:
-      - target: MeskovaCore
+      - target: LaTourneeCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.meskova.coretests
+        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.latournee.coretests
         GENERATE_INFOPLIST_FILE: YES
 
-  Meskova:
+  LaTournee:
     type: application
     platform: iOS
     sources:
-      - path: Meskova
+      - path: LaTournee
         excludes:
           - "**/.DS_Store"
           - "Resources/Packs/**"
           - "PrivacyInfo.xcprivacy"
       # Apple privacy manifest: forced into the resources build phase so it
       # ships at the app bundle root (required for App Store submission).
-      - path: Meskova/PrivacyInfo.xcprivacy
+      - path: LaTournee/PrivacyInfo.xcprivacy
         buildPhase: resources
       # Folder reference (blue folder): preserves the Packs/ subdirectory in
       # the built bundle, required by ContentLibrary's
       # `subdirectory: "Packs"` lookup.
-      - path: Meskova/Resources/Packs
+      - path: LaTournee/Resources/Packs
         type: folder
         buildPhase: resources
     dependencies:
-      - target: MeskovaCore
+      - target: LaTourneeCore
         embed: true
       - package: RevenueCat
         product: RevenueCat
       - package: PostHog
         product: PostHog
     configFiles:
-      Debug: Meskova/Config/Config.xcconfig
-      Release: Meskova/Config/Config.xcconfig
+      Debug: LaTournee/Config/Config.xcconfig
+      Release: LaTournee/Config/Config.xcconfig
     info:
-      path: Meskova/Info.plist
+      path: LaTournee/Info.plist
       properties:
-        CFBundleDisplayName: Meskova
-        CFBundleName: Meskova
+        CFBundleDisplayName: La Tournée
+        CFBundleName: La Tournée
         UILaunchScreen: {}
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
@@ -98,40 +98,40 @@ targets:
           - SpaceGrotesk-Bold.ttf
           - SpaceMono-Regular.ttf
           - SpaceMono-Bold.ttf
-        NSUserTrackingUsageDescription: "Meskova n'utilise aucun suivi publicitaire."
+        NSUserTrackingUsageDescription: "La Tournée n'utilise aucun suivi publicitaire."
         REVENUECAT_API_KEY: "$(REVENUECAT_API_KEY)"
         POSTHOG_API_KEY: "$(POSTHOG_API_KEY)"
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.meskova
-        PRODUCT_NAME: Meskova
+        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.latournee
+        PRODUCT_NAME: LaTournee
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         TARGETED_DEVICE_FAMILY: "1,2"
         SUPPORTS_MACCATALYST: NO
 
 schemes:
-  Meskova:
+  LaTournee:
     build:
       targets:
-        Meskova: all
-        MeskovaCore: all
-        MeskovaTests: [test]
+        LaTournee: all
+        LaTourneeCore: all
+        LaTourneeTests: [test]
     test:
       config: Debug
       targets:
-        - MeskovaTests
+        - LaTourneeTests
     run:
       config: Debug
     archive:
       config: Release
 
-  MeskovaCore:
+  LaTourneeCore:
     build:
       targets:
-        MeskovaCore: all
-        MeskovaTests: [test]
+        LaTourneeCore: all
+        LaTourneeTests: [test]
     test:
       config: Debug
       targets:
-        - MeskovaTests
+        - LaTourneeTests

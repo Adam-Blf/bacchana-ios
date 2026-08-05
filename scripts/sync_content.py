@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Sync Meskova content packs from la-taverne-content into the iOS app bundle.
+"""Sync La Tournee content packs from la-taverne-content into the iOS app bundle.
 
 Copies every free (premium=false) pack verbatim into
-Meskova/Resources/Packs/, and writes a premium-catalog.json with metadata
+LaTournee/Resources/Packs/, and writes a premium-catalog.json with metadata
 only (no items) for every pack, so the Hub can render locked premium cards
 without shipping their content.
 
@@ -11,13 +11,13 @@ Usage:
 
 Idempotent: safe to re-run, overwrites its own output only.
 
-Note (v0.14.0 product rename): the sibling content repo stays named
-`la-taverne-content` - only the iOS app product was renamed to Meskova, not
-the shared content repo or its game universe (mode names, "Le Taulier",
+Note (v0.15.0 product rename, Meskova -> La Tournee): the sibling content
+repo stays named `la-taverne-content` - only the iOS app product renamed,
+not the shared content repo or its game universe (mode names, "Le Taulier",
 etc. are unchanged). `PACKS_DST`/`CATALOG_DST` below point at the renamed
-`Meskova/` folder (formerly `LaTaverne/`) - this is the destination path
-that broke silently once before (see CHANGELOG 0.10.0); keep it in sync
-with the actual iOS app folder name.
+`LaTournee/` folder - this is the destination path that broke silently
+once before (see CHANGELOG 0.10.0); keep it in sync with the actual iOS
+app folder name at every rename.
 """
 from __future__ import annotations
 
@@ -29,8 +29,8 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CONTENT_ROOT = REPO_ROOT.parent / "la-taverne-content"
 PACKS_SRC = CONTENT_ROOT / "content" / "fr" / "packs"
-PACKS_DST = REPO_ROOT / "Meskova" / "Resources" / "Packs"
-CATALOG_DST = REPO_ROOT / "Meskova" / "Resources" / "premium-catalog.json"
+PACKS_DST = REPO_ROOT / "LaTournee" / "Resources" / "Packs"
+CATALOG_DST = REPO_ROOT / "LaTournee" / "Resources" / "premium-catalog.json"
 
 
 def main() -> int:
