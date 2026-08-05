@@ -70,6 +70,12 @@ jobs:
   secrets:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    # gitleaks lists the commits of the pull request, which the default
+    # contents: read is not enough for. Read only: PR comments are disabled
+    # below, a leak fails the job and that is the enforcement we want.
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
@@ -77,3 +83,5 @@ jobs:
       - uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2.3.9
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_COMMENTS: false
+          GITLEAKS_ENABLE_SUMMARY: true
