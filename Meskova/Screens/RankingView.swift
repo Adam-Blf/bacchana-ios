@@ -134,7 +134,8 @@ struct RankingView: View {
             VStack(spacing: 8) {
                 Text("Question secrète - chut !")
                     .font(Theme.Font.mono(10, weight: .bold))
-                    .foregroundStyle(Theme.Color.inkMuted)
+                    // cardInk (fixe) attenue : pose directement sur cardFace.
+                    .foregroundStyle(Theme.Color.cardInk.opacity(0.7))
                     .textCase(.uppercase)
                 Text(round.question.text)
                     .font(Theme.Font.body(16, weight: .medium))
@@ -194,16 +195,18 @@ struct RankingView: View {
     }
 
     private var returnCard: some View {
+        // cardInk (fixe) sur toute la carte : fond cardFace direct, pas de
+        // calque intermediaire, donc jamais ink/inkSecondary (thematisees).
         VStack(spacing: 12) {
             Image(systemName: "eye.fill")
                 .font(.system(size: 30))
-                .foregroundStyle(Theme.Color.ink)
+                .foregroundStyle(Theme.Color.cardInk)
             Text("Podium verrouillé !")
                 .font(Theme.Font.display(26))
-                .foregroundStyle(Theme.Color.ink)
+                .foregroundStyle(Theme.Color.cardInk)
             Text("\(judge?.name ?? "Le juge"), repose le téléphone au centre de la table.")
                 .font(Theme.Font.body(13))
-                .foregroundStyle(Theme.Color.inkSecondary)
+                .foregroundStyle(Theme.Color.cardInk.opacity(0.7))
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
@@ -367,7 +370,8 @@ struct RankingView: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
         }
-        .foregroundStyle(Theme.Color.ink)
+        // tileInk : fond neonDeep plein, clair dans les 2 themes.
+        .foregroundStyle(Theme.Color.tileInk)
         .background(Theme.Color.neonDeep)
         .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
         .opacity(isDisabled ? 0.5 : 1)
@@ -486,7 +490,8 @@ private struct RankingRecapView: View {
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
                 }
-                .foregroundStyle(Theme.Color.ink)
+                // tileInk : fond neonDeep plein, clair dans les 2 themes.
+                .foregroundStyle(Theme.Color.tileInk)
                 .background(Theme.Color.neonDeep)
                 .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
 

@@ -59,7 +59,9 @@ struct WelcomeView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)
             }
-            .foregroundStyle(Theme.Color.ink)
+            // tileInk sur neonDeep (plein, clair dans les 2 themes) ; ink sur
+            // surface (thematisee) quand desactive.
+            .foregroundStyle(appState.canStart ? Theme.Color.tileInk : Theme.Color.ink)
             .background(appState.canStart ? Theme.Color.neonDeep : Theme.Color.surface)
             .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
             .disabled(!appState.canStart)
@@ -196,7 +198,8 @@ struct WelcomeView: View {
 
             Button(action: addPlayer) {
                 Image(systemName: "plus")
-                    .foregroundStyle(Theme.Color.ink)
+                    // tileInk : fond neonDeep plein, clair dans les 2 themes.
+                    .foregroundStyle(Theme.Color.tileInk)
                     .frame(width: 44, height: 44)
                     .background(Theme.Color.neonDeep)
                     .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))

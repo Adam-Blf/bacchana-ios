@@ -1,6 +1,6 @@
 # Meskova iOS
 
-[![version](https://img.shields.io/badge/version-0.14.0-D4A437?style=flat-square)](CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-0.14.1-D4A437?style=flat-square)](CHANGELOG.md)
 [![CI](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-taverne-ios/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Adam-Blf/la-taverne-ios/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/actions/workflow/status/Adam-Blf/la-taverne-ios/release.yml?label=release&style=flat-square)](RELEASING.md)
 [![platform](https://img.shields.io/badge/platform-iOS%2017%2B-001329?style=flat-square)](project.yml)
@@ -69,10 +69,11 @@ flowchart TD
         QuizSession["QuizSession (moteur pur : cagnotte, choice cumuler/distribuer)"]
         RankingSession["RankingSession (moteur pur : podium secret, guessQuestion)"]
         WouldYouRatherSession["WouldYouRatherSession (moteur pur : vote A/B, minorité pénalisée)"]
+        ThemePalette["ThemePalette (hex bruts clair/sombre, source unique - miroir tokens.css)"]
     end
 
     subgraph App["Meskova (SwiftUI app)"]
-        Theme["Theme (palette taverne clair/sombre, polices, tokens.css)"]
+        Theme["Theme (SwiftUI Color depuis ThemePalette, polices)"]
         Welcome["WelcomeView (check-in joueurs + genre/statut facultatifs)"]
         Hub["HubView (grille des modes)"]
         Borderland["BorderlandView (Le Coupe-Gorge : carte, flip, contest)"]
@@ -126,6 +127,7 @@ flowchart TD
     WouldYouRatherView -.uses.-> WouldYouRatherSession
     App -.embeds.-> Core
     App -.loads.-> Resources
+    Theme -.builds Color from.-> ThemePalette
     Hub -.gates premium.-> Billing
     Hub --> Paywall
     Hub --> Settings
@@ -160,13 +162,26 @@ de `la-taverne-content` reste à retirer côté dépôt frère lors du prochain
 
 `Theme.Color` est entièrement dynamique : chaque token résout vers sa paire
 clair/sombre via un `UIColor` calculé au trait collection courant (voir
-`Theme.dynamic(light:dark:)`), donc aucun écran n'a besoin de connaître le
-thème actif. La préférence (`ThemeMode` : système / clair / sombre) vit dans
-`AppState.themeMode`, persistée (`UserDefaults`), appliquée via
-`.preferredColorScheme` sur la `WindowGroup`. Bascule discrète dans le Hub
-(icône soleil/lune, à côté de Récap). Le sombre reste sur une encre neutre
-(`#141216`/`#1D1B20`), jamais teintée bois/brun, à parité avec
-`la-taverne/src/styles/tokens.css`.
+`Theme.dynamic(light:dark:)`), construit depuis `MeskovaCore.ThemePalette`
+(source unique de hex bruts, miroir de `la-taverne/src/styles/tokens.css`),
+donc aucun écran n'a besoin de connaître le thème actif. La préférence
+(`ThemeMode` : système / clair / sombre) vit dans `AppState.themeMode`,
+persistée (`UserDefaults`), appliquée via `.preferredColorScheme` sur la
+`WindowGroup`. Bascule discrète dans le Hub (icône soleil/lune, à côté de
+Récap). Le sombre reste sur une encre neutre (`#141216`/`#2E2836`), jamais
+teintée bois/brun.
+
+**Encre fixe sur fonds clairs (`tileInk`/`cardInk`)** : les aplats "pop"
+(tuiles de modes, roulette) et l'accent `neon`/`neonDeep`/`neonSoft`
+restent clairs dans les deux thèmes - tout texte/icône posé dessus utilise
+`Theme.Color.tileInk` (`#111111`, jamais thématisé), jamais `Theme.Color.ink`
+(qui s'inverse en sombre et y deviendrait illisible, cf. CHANGELOG 0.14.1).
+Même logique pour `cardInk` sur `cardFace` (carte blanche fixe). Un rouge
+d'UI sémantique (erreur, action destructive, compte à rebours) utilise
+`Theme.Color.danger` (thémable), jamais `cardRed` (fixe, réservé aux pips
+de carte). Vérifié mécaniquement en CI par
+`MeskovaTests/ContrastGuardTests.swift`, qui calcule le ratio WCAG 2.1 réel
+de chaque paire encre/fond dérivée de `ThemePalette`.
 
 ## Genre et statut relationnel des joueurs (facultatif)
 

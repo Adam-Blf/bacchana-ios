@@ -121,10 +121,12 @@ struct WouldYouRatherView: View {
     }
 
     private func votingCard(question: WouldYouRatherQuestion, voter: Player) -> some View {
+        // cardInk (fixe), pas inkSecondary/inkMuted : ces deux textes sont
+        // poses directement sur le fond cardFace de cette carte (ci-dessous).
         VStack(spacing: 16) {
             Text("Passe le téléphone à \(voter.name)")
                 .font(Theme.Font.mono(11, weight: .bold))
-                .foregroundStyle(Theme.Color.inkSecondary)
+                .foregroundStyle(Theme.Color.cardInk.opacity(0.7))
                 .textCase(.uppercase)
 
             optionButton(text: question.optionA, systemImage: "a.circle.fill") {
@@ -133,7 +135,7 @@ struct WouldYouRatherView: View {
 
             Text("OU")
                 .font(Theme.Font.display(16))
-                .foregroundStyle(Theme.Color.inkMuted)
+                .foregroundStyle(Theme.Color.cardInk.opacity(0.7))
 
             optionButton(text: question.optionB, systemImage: "b.circle.fill") {
                 handleVote(playerId: voter.id, side: .optionB)
@@ -162,7 +164,10 @@ struct WouldYouRatherView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(16)
         }
-        .foregroundStyle(Theme.Color.cardInk)
+        // ink (thematisee), pas cardInk : ce bouton porte son propre fond
+        // surface opaque, pas cardFace - cardInk (fixe) y deviendrait illisible
+        // en sombre (surface passe au foncé, cardInk reste noir).
+        .foregroundStyle(Theme.Color.ink)
         .background(Theme.Color.surface)
         .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
         .overlay(
@@ -203,7 +208,8 @@ struct WouldYouRatherView: View {
         HStack {
             Text(label)
                 .font(Theme.Font.body(14, weight: .medium))
-                .foregroundStyle(Theme.Color.cardInk)
+                // ink (thematisee), pas cardInk : fond propre surface, pas cardFace.
+                .foregroundStyle(Theme.Color.ink)
                 .multilineTextAlignment(.leading)
             Spacer()
             Text("\(count)")
@@ -250,7 +256,8 @@ struct WouldYouRatherView: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
         }
-        .foregroundStyle(Theme.Color.ink)
+        // tileInk : fond neonDeep plein, clair dans les 2 themes.
+        .foregroundStyle(Theme.Color.tileInk)
         .background(Theme.Color.neonDeep)
         .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
     }
@@ -354,7 +361,8 @@ private struct WouldYouRatherRecapView: View {
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
                 }
-                .foregroundStyle(Theme.Color.ink)
+                // tileInk : fond neonDeep plein, clair dans les 2 themes.
+                .foregroundStyle(Theme.Color.tileInk)
                 .background(Theme.Color.neonDeep)
                 .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
 

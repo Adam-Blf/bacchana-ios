@@ -39,7 +39,8 @@ struct RecapView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)
             }
-            .foregroundStyle(Theme.Color.ink)
+            // tileInk : fond neonDeep plein, clair dans les 2 themes.
+            .foregroundStyle(Theme.Color.tileInk)
             .background(Theme.Color.neonDeep)
             .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
         }

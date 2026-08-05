@@ -83,7 +83,10 @@ struct PromptView: View {
             }
         }
         .padding(12)
-        .background(Theme.Color.surfaceElevated)
+        // backgroundRaised, pas surfaceElevated : orangeInk n'atteint que
+        // 4.39:1 sur surfaceElevated en clair (sous l'AA 4.5:1), decouvert
+        // par la garde de contraste. 4.53:1 sur backgroundRaised.
+        .background(Theme.Color.backgroundRaised)
         .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
     }
 
@@ -121,7 +124,10 @@ struct PromptView: View {
             Spacer()
         }
         .padding(12)
-        .background(Theme.Color.surfaceElevated)
+        // backgroundRaised, pas surfaceElevated : orangeInk n'atteint que
+        // 4.39:1 sur surfaceElevated en clair (sous l'AA 4.5:1), decouvert
+        // par la garde de contraste. 4.53:1 sur backgroundRaised.
+        .background(Theme.Color.backgroundRaised)
         .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
         .accessibilityElement(children: .combine)
     }
@@ -153,7 +159,9 @@ struct PromptView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)
             }
-            .foregroundStyle(Theme.Color.ink)
+            // tileInk : fond quasi-plein (success a 85%), clair dans les 2 themes -
+            // ink (thematisee) y tombe a 3.39:1 en sombre, sous le seuil AA.
+            .foregroundStyle(Theme.Color.tileInk)
             .background(Theme.Color.success.opacity(0.85))
             .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
 
@@ -163,7 +171,8 @@ struct PromptView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)
             }
-            .foregroundStyle(Theme.Color.ink)
+            // tileInk : fond neonDeep plein, clair dans les 2 themes.
+            .foregroundStyle(Theme.Color.tileInk)
             .background(Theme.Color.neonDeep)
             .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
         }
