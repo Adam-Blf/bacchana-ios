@@ -1,7 +1,7 @@
 # Appfile for fastlane
 # Docs: https://docs.fastlane.tools/actions/app/
 
-app_identifier "com.beloucif.bacchus"
+app_identifier "com.beloucif.bacchana"
 
 apple_id ENV["FASTLANE_APPLE_ID"] || "adam.beloucif@efrei.net"
 

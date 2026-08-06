@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Generate the Bacchus 1024x1024 App Store icon.
+"""Generate the Bacchana 1024x1024 App Store icon.
 
 Tavern neobrutalist signature (mirrors tokens.json v2): cream paper
 background, a tilted white card with a black spade pip, hard black offset
 shadow and an orange accent plate behind the card. No transparency
 (App Store icons must be fully opaque). The tavern icon design itself is
-unchanged by the product rename (v0.16.0, La Tournee -> Bacchus, final name) -
-only the output path follows the renamed `Bacchus/` app folder.
+unchanged by the product rename (v0.16.0, La Tournee -> Bacchana, final name) -
+only the output path follows the renamed `Bacchana/` app folder.
 
 Usage:
     python scripts/gen_app_icon.py
@@ -18,7 +18,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-OUTPUT = REPO_ROOT / "Bacchus" / "Assets.xcassets" / "AppIcon.appiconset" / "AppIcon-1024.png"
+OUTPUT = REPO_ROOT / "Bacchana" / "Assets.xcassets" / "AppIcon.appiconset" / "AppIcon-1024.png"
 
 SIZE = 1024
 BG = (255, 249, 240, 255)     # #FFF9F0 paper
