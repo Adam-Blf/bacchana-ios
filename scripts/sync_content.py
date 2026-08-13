@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Sync Bacchus content packs from bacchus-content into the iOS app bundle.
+"""Sync Bacchana content packs from bacchana-content into the iOS app bundle.
 
 Copies every free (premium=false) pack verbatim into
-Bacchus/Resources/Packs/, and writes a premium-catalog.json with metadata
+Bacchana/Resources/Packs/, and writes a premium-catalog.json with metadata
 only (no items) for every pack, so the Hub can render locked premium cards
 without shipping their content.
 
@@ -11,12 +11,12 @@ Usage:
 
 Idempotent: safe to re-run, overwrites its own output only.
 
-Note (v0.16.0 product rename, La Tournee -> Bacchus, final name): the sibling
+Note (v0.16.0 product rename, La Tournee -> Bacchana, final name): the sibling
 content repo folder itself was also renamed this time, from
-`la-taverne-content` to `bacchus-content` (only its folder name changed -
+`la-taverne-content` to `bacchana-content` (only its folder name changed -
 the game universe content, mode names, "Le Taulier", etc. are unchanged).
 `CONTENT_ROOT`/`PACKS_DST`/`CATALOG_DST` below point at the renamed
-`bacchus-content`/`Bacchus/` folders - this is the destination path that
+`bacchana-content`/`Bacchana/` folders - this is the destination path that
 broke silently once before (see CHANGELOG 0.10.0); keep it in sync with the
 actual sibling repo and iOS app folder names at every rename.
 """
@@ -28,10 +28,10 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-CONTENT_ROOT = REPO_ROOT.parent / "bacchus-content"
+CONTENT_ROOT = REPO_ROOT.parent / "bacchana-content"
 PACKS_SRC = CONTENT_ROOT / "content" / "fr" / "packs"
-PACKS_DST = REPO_ROOT / "Bacchus" / "Resources" / "Packs"
-CATALOG_DST = REPO_ROOT / "Bacchus" / "Resources" / "premium-catalog.json"
+PACKS_DST = REPO_ROOT / "Bacchana" / "Resources" / "Packs"
+CATALOG_DST = REPO_ROOT / "Bacchana" / "Resources" / "premium-catalog.json"
 
 
 def main() -> int:

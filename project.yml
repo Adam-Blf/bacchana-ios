@@ -1,4 +1,4 @@
-name: Bacchus
+name: Bacchana
 options:
   bundleIdPrefix: com.beloucif
   deploymentTarget:
@@ -27,64 +27,64 @@ packages:
     from: 3.69.0
 
 targets:
-  BacchusCore:
+  BacchanaCore:
     type: framework
     platform: iOS
     sources:
-      - path: BacchusCore/Sources/BacchusCore
+      - path: BacchanaCore/Sources/BacchanaCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.bacchus.core
+        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.bacchana.core
         GENERATE_INFOPLIST_FILE: YES
         DEFINES_MODULE: YES
         SKIP_INSTALL: YES
 
-  BacchusTests:
+  BacchanaTests:
     type: bundle.unit-test
     platform: iOS
     sources:
-      - path: BacchusTests
+      - path: BacchanaTests
     dependencies:
-      - target: BacchusCore
+      - target: BacchanaCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.bacchus.coretests
+        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.bacchana.coretests
         GENERATE_INFOPLIST_FILE: YES
 
-  Bacchus:
+  Bacchana:
     type: application
     platform: iOS
     sources:
-      - path: Bacchus
+      - path: Bacchana
         excludes:
           - "**/.DS_Store"
           - "Resources/Packs/**"
           - "PrivacyInfo.xcprivacy"
       # Apple privacy manifest: forced into the resources build phase so it
       # ships at the app bundle root (required for App Store submission).
-      - path: Bacchus/PrivacyInfo.xcprivacy
+      - path: Bacchana/PrivacyInfo.xcprivacy
         buildPhase: resources
       # Folder reference (blue folder): preserves the Packs/ subdirectory in
       # the built bundle, required by ContentLibrary's
       # `subdirectory: "Packs"` lookup.
-      - path: Bacchus/Resources/Packs
+      - path: Bacchana/Resources/Packs
         type: folder
         buildPhase: resources
     dependencies:
-      - target: BacchusCore
+      - target: BacchanaCore
         embed: true
       - package: RevenueCat
         product: RevenueCat
       - package: PostHog
         product: PostHog
     configFiles:
-      Debug: Bacchus/Config/Config.xcconfig
-      Release: Bacchus/Config/Config.xcconfig
+      Debug: Bacchana/Config/Config.xcconfig
+      Release: Bacchana/Config/Config.xcconfig
     info:
-      path: Bacchus/Info.plist
+      path: Bacchana/Info.plist
       properties:
-        CFBundleDisplayName: Bacchus
-        CFBundleName: Bacchus
+        CFBundleDisplayName: Bacchana
+        CFBundleName: Bacchana
         UILaunchScreen: {}
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
@@ -105,35 +105,35 @@ targets:
         POSTHOG_API_KEY: "$(POSTHOG_API_KEY)"
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.bacchus
-        PRODUCT_NAME: Bacchus
+        PRODUCT_BUNDLE_IDENTIFIER: com.beloucif.bacchana
+        PRODUCT_NAME: Bacchana
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         TARGETED_DEVICE_FAMILY: "1,2"
         SUPPORTS_MACCATALYST: NO
 
 schemes:
-  Bacchus:
+  Bacchana:
     build:
       targets:
-        Bacchus: all
-        BacchusCore: all
-        BacchusTests: [test]
+        Bacchana: all
+        BacchanaCore: all
+        BacchanaTests: [test]
     test:
       config: Debug
       targets:
-        - BacchusTests
+        - BacchanaTests
     run:
       config: Debug
     archive:
       config: Release
 
-  BacchusCore:
+  BacchanaCore:
     build:
       targets:
-        BacchusCore: all
-        BacchusTests: [test]
+        BacchanaCore: all
+        BacchanaTests: [test]
     test:
       config: Debug
       targets:
-        - BacchusTests
+        - BacchanaTests
