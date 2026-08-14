@@ -13,7 +13,7 @@ Idempotent: safe to re-run, overwrites its own output only.
 
 Note (v0.16.0 product rename, La Tournee -> Bacchana, final name): the sibling
 content repo folder itself was also renamed this time, from
-`la-taverne-content` to `bacchana-content` (only its folder name changed -
+`bacchana-content` to `bacchana-content` (only its folder name changed -
 the game universe content, mode names, "Le Taulier", etc. are unchanged).
 `CONTENT_ROOT`/`PACKS_DST`/`CATALOG_DST` below point at the renamed
 `bacchana-content`/`Bacchana/` folders - this is the destination path that
