@@ -58,3 +58,8 @@ AuthKey_*.p8
 # Editor
 .vscode/
 .idea/
+
+# Espace de travail local de l outillage - worktrees, reglages de session.
+# Ajoute le 2026-08-31 : un `git add -A` avait embarque une COPIE COMPLETE du
+# depot dans lui-meme (119 fichiers), parce que rien ne l ignorait.
+.claude/

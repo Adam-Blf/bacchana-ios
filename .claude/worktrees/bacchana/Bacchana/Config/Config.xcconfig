@@ -1,8 +1,0 @@
-// Committed base config: safe empty defaults, zero secret. Real values live in
-// Config.local.xcconfig (gitignored, never committed) - copy Config.local.xcconfig.example and
-// fill it in locally. Without it (a fresh clone, or CI), both keys stay empty and the app runs
-// in guest mode: StubEntitlements/StubAnalytics, no crash, no network call.
-REVENUECAT_API_KEY =
-POSTHOG_API_KEY =
-
-#include? "Config.local.xcconfig"
