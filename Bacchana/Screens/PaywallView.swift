@@ -2,23 +2,29 @@ import SwiftUI
 import BacchanaCore
 
 /// Bacchana Premium paywall. Reachable from the Hub header ("Premium") and from any locked
-/// premium pack tile. Always shows the three advertised plans with their real price (transparent
-/// pricing, no misleading free trial): monthly 4,99 €, annual 19,99 €, lifetime 34,99 €
-/// highlighted as the best offer. Without a configured billing provider (guest mode,
-/// `StubEntitlements`), the purchase button stays disabled with "Bientôt disponible" - never a
-/// broken checkout.
+/// premium pack tile. Shows ONE offer with its real store price - a single payment at 12,99 €,
+/// no subscription and no misleading free trial. Without a configured billing provider (guest
+/// mode, `StubEntitlements`), the purchase button stays disabled with "Bientôt disponible" -
+/// never a broken checkout.
+///
+/// There is no plan picker, and that absence is the argument: the screen has nothing to
+/// arbitrate because there is nothing to arbitrate. It used to offer three plans, two of them
+/// subscriptions, which contradicted the one thing the product promises.
 struct PaywallView: View {
     @EnvironmentObject private var appState: AppState
 
     @State private var packages: [PremiumPackage] = []
-    @State private var selectedPlan: PremiumPlan = .lifetime
     @State private var isLoadingPackages = true
     @State private var isPurchasing = false
     @State private var isRestoring = false
     @State private var statusMessage: String?
 
+    /// The only plan there is. No `@State`: a picker with one option is a screen asking a
+    /// question it already knows the answer to.
+    private let plan: PremiumPlan = .lifetime
+
     private var purchaseReady: Bool {
-        packages.contains { $0.id == selectedPlan }
+        packages.contains { $0.id == plan }
     }
 
     var body: some View {
@@ -27,15 +33,11 @@ struct PaywallView: View {
             subtitle
 
             ScrollView {
-                VStack(spacing: 10) {
-                    ForEach(PremiumPlan.catalogOrder, id: \.self) { plan in
-                        planRow(for: plan)
-                    }
-                }
-                .padding(.top, 4)
+                planRow(for: plan)
+                    .padding(.top, 4)
 
-                Text("Abonnements : renouvellement automatique, résiliable à tout moment. "
-                    + "À vie : paiement unique, sans abonnement.")
+                Text("Paiement unique. Aucun abonnement, aucun renouvellement, "
+                    + "aucun essai gratuit.")
                     .font(Theme.Font.body(11))
                     .foregroundStyle(Theme.Color.inkMuted)
                     .padding(.top, 12)
@@ -100,50 +102,45 @@ struct PaywallView: View {
         }
     }
 
+    /// L'offre, affichée et non proposée au choix. Plus de `Button` : un élément qui réagit au
+    /// doigt promet une alternative, et il n'y en a pas.
     private func planRow(for plan: PremiumPlan) -> some View {
         let package = packages.first { $0.id == plan }
-        let isSelected = selectedPlan == plan
 
-        return Button {
-            selectedPlan = plan
-        } label: {
-            HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: 2) {
-                    HStack(spacing: 8) {
-                        Text(plan.title)
-                            .font(Theme.Font.body(15, weight: .bold))
-                            .foregroundStyle(Theme.Color.ink)
-                        if plan.isHighlighted {
-                            Text("MEILLEURE OFFRE")
-                                .font(Theme.Font.mono(9, weight: .bold))
-                                .foregroundStyle(Theme.Color.premium)
-                                .padding(.horizontal, 6)
-                                .padding(.vertical, 2)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 4)
-                                        .stroke(Theme.Color.premium, lineWidth: 1)
-                                )
-                        }
-                    }
-                    Text(plan.note)
-                        .font(Theme.Font.body(11))
-                        .foregroundStyle(Theme.Color.inkSecondary)
+        return HStack(alignment: .top) {
+            VStack(alignment: .leading, spacing: 2) {
+                HStack(spacing: 8) {
+                    Text(plan.title)
+                        .font(Theme.Font.body(15, weight: .bold))
+                        .foregroundStyle(Theme.Color.ink)
+                    Text("SEULE OFFRE")
+                        .font(Theme.Font.mono(9, weight: .bold))
+                        .foregroundStyle(Theme.Color.premium)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 4)
+                                .stroke(Theme.Color.premium, lineWidth: 1)
+                        )
                 }
-                Spacer()
-                Text(package?.displayPrice ?? plan.fallbackPriceLabel)
-                    .font(Theme.Font.mono(17, weight: .bold))
-                    .foregroundStyle(Theme.Color.ink)
+                Text(plan.note)
+                    .font(Theme.Font.body(11))
+                    .foregroundStyle(Theme.Color.inkSecondary)
             }
-            .padding(16)
-            .frame(minHeight: 56)
-            .background(isSelected ? Theme.Color.premium.opacity(0.1) : Theme.Color.surface)
-            .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
-            .overlay(
-                RoundedRectangle(cornerRadius: Theme.Radius.control)
-                    .stroke(isSelected ? Theme.Color.premium : Theme.Color.border, lineWidth: isSelected ? 2 : 1)
-            )
+            Spacer()
+            Text(package?.displayPrice ?? plan.fallbackPriceLabel)
+                .font(Theme.Font.mono(17, weight: .bold))
+                .foregroundStyle(Theme.Color.ink)
         }
-        .accessibilityAddTraits(isSelected ? [.isSelected] : [])
+        .padding(16)
+        .frame(minHeight: 56)
+        .background(Theme.Color.premium.opacity(0.1))
+        .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
+        .overlay(
+            RoundedRectangle(cornerRadius: Theme.Radius.control)
+                .stroke(Theme.Color.premium, lineWidth: 2)
+        )
+        .accessibilityElement(children: .combine)
         .accessibilityLabel("\(plan.title), \(package?.displayPrice ?? plan.fallbackPriceLabel), \(plan.note)")
     }
 
@@ -179,15 +176,15 @@ struct PaywallView: View {
     }
 
     private func purchase() {
-        guard let package = packages.first(where: { $0.id == selectedPlan }) else { return }
+        guard let package = packages.first(where: { $0.id == plan }) else { return }
         isPurchasing = true
         statusMessage = nil
-        appState.analytics.track("purchase_started", properties: ["plan": selectedPlan.rawValue])
+        appState.analytics.track("purchase_started", properties: ["plan": plan.rawValue])
         Task {
             defer { isPurchasing = false }
             do {
                 try await appState.entitlements.purchase(package)
-                appState.analytics.track("purchase_completed", properties: ["plan": selectedPlan.rawValue])
+                appState.analytics.track("purchase_completed", properties: ["plan": plan.rawValue])
                 if appState.entitlements.isPremium {
                     appState.route = .hub
                 }
