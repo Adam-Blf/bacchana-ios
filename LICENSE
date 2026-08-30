@@ -1,10 +1,48 @@
-Copyright (c) 2026 Adam Beloucif. Tous droits réservés.
+Copyright (c) 2026 Adam Beloucif (BLF Lab's). Tous droits réservés.
 
-Ce dépôt et son contenu (code source, ressources, contenu textuel des packs
-de jeu) sont la propriété exclusive d'Adam Beloucif. Toute reproduction,
-distribution, modification ou utilisation commerciale sans autorisation
-écrite préalable est interdite.
+CE DÉPÔT EST PUBLIC EN LECTURE, IL N'EST PAS LIBRE D'USAGE
+----------------------------------------------------------
 
-Bacchana est une marque et un produit d'Adam Beloucif. Les polices tierces
-embarquées (Anton, Space Grotesk, Space Mono) restent sous licence SIL Open
-Font License 1.1, voir Google Fonts pour le texte complet de chaque licence.
+Le code source, les ressources et le contenu textuel des paquets de jeu sont la
+propriété exclusive d'Adam Beloucif. Ils sont publiés pour être LUS : pour
+examiner le travail, s'en inspirer intellectuellement, en discuter, ou signaler
+un défaut.
+
+Aucune licence n'est accordée pour utiliser, copier, modifier, fusionner,
+publier, distribuer, sous-licencier ou vendre tout ou partie de ce dépôt, ni
+pour en tirer une oeuvre dérivée, sans autorisation écrite préalable.
+
+Bacchana est un produit commercial destiné à l'App Store. Les cartes de contenu
+sont une oeuvre de l'esprit écrite à la main, protégée à ce titre
+indépendamment du code qui les affiche.
+
+
+POLICES DE CARACTÈRES
+---------------------
+
+Les fontes embarquées dans `Bacchana/Resources/Fonts/` - Anton, Space Grotesk
+et Space Mono - restent sous SIL Open Font License 1.1, qui est leur licence et
+non la nôtre. Son texte complet accompagne désormais les fichiers, dans
+`Bacchana/Resources/Fonts/LICENSE-OFL.txt`, parce que l'OFL exige que sa notice
+voyage avec les fontes qu'elle couvre. Ce fichier manquait jusqu'au
+2026-08-31.
+
+Aucune police n'est la propriété d'Adam Beloucif, et rien dans le présent
+fichier ne restreint les droits que l'OFL accorde sur elles.
+
+Note pour qui reprend ce dépôt : ces trois familles sont celles de l'identité
+PRÉCÉDENTE. Le web est passé à Big Shoulders et Chivo, ce port ne l'a pas
+encore suivi. Le jour où il le fera, cette section et le fichier OFL doivent
+suivre le même mouvement.
+
+
+MARQUES
+-------
+
+« Bacchana » et « BLF Lab's » sont des noms commerciaux d'Adam Beloucif. Rien
+ici n'accorde de droit sur eux, ni sur le logotype, ni sur l'identité visuelle.
+
+
+CONTACT
+
+adam.beloucif@efrei.net
