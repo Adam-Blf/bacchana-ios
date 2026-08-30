@@ -32,7 +32,24 @@ ExportOptions.plist
 *secret*
 *.token
 *_APIKEY*
-LaTournee/Config/Config.local.xcconfig
+# Fichier de cles locales (RevenueCat, PostHog). SANS CHEMIN, volontairement.
+#
+# Cette regle a porte pendant des mois `LaTournee/Config/Config.local.xcconfig`,
+# un chemin herite du deuxieme des cinq noms du produit. Un motif qui contient une
+# barre oblique est ANCRE a la racine du depot : il ne correspondait donc plus a
+# rien depuis le renommage, et le vrai fichier - `Bacchana/Config/` - n'etait
+# ignore par aucune autre regle. Prouve le 2026-08-31 par `git check-ignore`,
+# qui le refusait.
+#
+# Rien n'a fuite : le fichier n'existe pas encore sur le disque. Mais six endroits
+# du code et de la documentation affirmaient qu'il etait ignore, et le depot est
+# devenu PUBLIC ce matin. Le premier `git add -A` apres sa creation, le jour du
+# premier essai d'achat reel, aurait publie les deux cles.
+#
+# Sans chemin, la regle attrape le fichier a n'importe quelle profondeur - y
+# compris dans une copie de repertoire d'outillage, ce qui est exactement le
+# scenario qui a embarque 96 fichiers dans ce depot le meme jour.
+Config.local.xcconfig
 
 # Defense in depth: token shapes and key material, whatever the directory.
 # Nothing tracked matched these patterns when they were added.
