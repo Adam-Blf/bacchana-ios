@@ -91,7 +91,7 @@ flowchart TD
         RankingView["RankingView (Le Tableau d'Honneur, embarqué, récap local)"]
         WouldYouRatherView["WouldYouRatherView (Tu préfères, embarqué, récap local)"]
         Recap["RecapView (podium)"]
-        Paywall["PaywallView (une offre, achat + restauration)"]
+        Paywall["PaywallView (3 offres, achat + restauration)"]
         Settings["SettingsView (apparence, premium, confidentialité, légal, réinitialisation)"]
         Billing["Billing: EntitlementProviding (RevenueCatEntitlements si clé, sinon StubEntitlements)"]
         Analytics["Analytics: AnalyticsProviding (PostHogAnalytics si clé + consentement, sinon StubAnalytics)"]
@@ -248,13 +248,10 @@ sans clé, l'app tourne entièrement en mode invité, jamais de crash.
   et à l'Android. Renommé au renommage produit v0.16.0 (Bacchana -> Bacchana,
   nom définitif) - l'app n'étant pas encore publiée, aucun abonné existant à
   migrer.
-- **Produit** : `premium_lifetime` (12,99 €, achat unique non consommable),
-  **seule offre**, offering `default`. Le catalogue et le prix de repli vivent
-  dans `BacchanaCore/PremiumPlan.swift` (pur, testé). Le catalogue a porté
-  trois offres jusqu'au 2026-08-30, dont deux abonnements et un à vie à
-  34,99 € : c'était une dérive par rapport au prix arrêté, verrouillée depuis
-  par `PremiumPlanTests`. Le prix affiché à l'acheteur vient toujours du
-  magasin ; le repli ne sert qu'en mode invité ou hors ligne.
+- **Produits** : `premium_monthly` (4,99 €), `premium_yearly` (19,99 €),
+  `premium_lifetime` (34,99 €, mis en avant comme meilleure offre),
+  offering `default`. Le catalogue de plans et les prix de repli vivent
+  dans `BacchanaCore/PremiumPlan.swift` (pur, testé).
 - **Sélection du provider** : `EntitlementsFactory.make()` /
   `AnalyticsFactory.make()` lisent `REVENUECAT_API_KEY` /
   `POSTHOG_API_KEY` dans l'Info.plist (interpolées depuis
@@ -311,9 +308,7 @@ sans clé, l'app tourne entièrement en mode invité, jamais de crash.
 6. **Icône finale** : le PNG 1024x1024 généré par `scripts/gen_app_icon.py`
    est une v1 fonctionnelle, à faire relire par un regard design avant
    soumission finale.
-7. **Produit App Store Connect** : créer `premium_lifetime` en **achat
-   non consommable** - jamais un abonnement - et l'offering `default` côté
-   tableau de bord RevenueCat, puis tester l'achat et la restauration sur
-   compte bac à sable avant soumission. La restauration native est ce qui
-   rattache un achat au compte Apple du joueur : c'est elle qui rend l'achat
-   à vie récupérable sur un autre appareil, là où le web n'y arrive pas.
+7. **Produits App Store Connect** : créer les 3 produits (`premium_monthly`
+   abonnement, `premium_yearly` abonnement, `premium_lifetime`
+   non-consommable) et l'offering `default` côté dashboard RevenueCat,
+   puis tester l'achat/restauration sur compte sandbox avant soumission.

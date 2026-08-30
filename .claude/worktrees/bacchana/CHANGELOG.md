@@ -1,38 +1,5 @@
 # Changelog
 
-## [0.17.0] - 2026-08-30
-
-### Le paywall vendait un catalogue qui n'existe plus
-
-Le prix a ete arrete le 30/08/2026 : un achat UNIQUE a 12,99 EUR, sans
-abonnement. Le web a suivi, ce port non. `PremiumPlan` portait encore
-`premium_monthly` a 4,99, `premium_yearly` a 19,99 et un a vie a **34,99** - soit
-deux abonnements qui n'existeront dans aucun magasin, et un prix a vie faux de 22
-euros.
-
-Rien ne pouvait l'attraper : des plans et des prix sont des chaines de
-caracteres, et un paywall qui s'affiche est un paywall qui a l'air correct. Il a
-fallu comparer les trois plateformes a la main pour le voir.
-
-- **`PremiumPlan` ne porte plus qu'un cas**, `premium_lifetime` a 12,99 EUR. Il
-  reste une enumeration parce que sa valeur brute est comparee aux identifiants
-  produits du magasin dans `RevenueCatEntitlements`.
-- **Le selecteur de plan disparait**, et cette absence est l'argument : l'ecran
-  n'a plus rien a arbitrer. La ligne d'offre n'est plus un `Button` - un element
-  qui reagit au doigt promet une alternative, et il n'y en a pas.
-- **La pastille passe de « MEILLEURE OFFRE » a « SEULE OFFRE »**. « Meilleure »
-  n'a pas de sens quand il n'y a rien d'autre.
-- **La ligne de transparence tarifaire ne parle plus d'abonnements.** Elle
-  annoncait « renouvellement automatique, resiliable a tout moment » sur un
-  produit qui ne se renouvelle pas.
-- **Six tests verrouillent le catalogue**, dont un qui refuse tout identifiant
-  produit contenant `monthly` ou `yearly`.
-- **README remis d'aplomb** : le diagramme, la liste des produits, et l'etape de
-  creation dans App Store Connect qui demandait encore deux abonnements.
-- Au passage, une reference morte corrigee : `PremiumPlan.swift` designait
-  `bacchana-site/src/lib/billing.ts` comme source du catalogue web, or
-  `bacchana-site` est la vitrine et ne porte aucune facturation.
-
 ## [0.16.0] - 2026-08-05
 
 ### Changé (renommage produit, définitif)

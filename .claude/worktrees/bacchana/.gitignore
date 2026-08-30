@@ -1,0 +1,60 @@
+# Xcode / XcodeGen generated project (regenerated in CI from project.yml)
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+.build/
+.swiftpm/
+
+# Build artifacts
+*.ipa
+*.dSYM.zip
+*.dSYM
+*.xcarchive
+*.xcresult
+
+# Signing / provisioning (never commit)
+*.mobileprovision
+*.p12
+*.cer
+*.p8
+*.pem
+*.keystore
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+ExportOptions.plist
+
+# Secrets
+.env
+.env.*
+*secret*
+*.token
+*_APIKEY*
+LaTournee/Config/Config.local.xcconfig
+
+# Defense in depth: token shapes and key material, whatever the directory.
+# Nothing tracked matched these patterns when they were added.
+*.key
+*.pem
+*.p8
+*.p12
+*.cer
+*.certSigningRequest
+*.mobileprovision
+*.provisionprofile
+sbp_*
+ghp_*
+gho_*
+ghs_*
+github_pat_*
+sk_*
+AuthKey_*.p8
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
