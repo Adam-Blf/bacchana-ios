@@ -249,7 +249,7 @@ struct HubView: View {
                     .font(.system(size: 28))
                     .foregroundStyle(Theme.Color.pop(4))
                 Spacer()
-                Text("QUITTE OU TRINQUE")
+                Text("QUITTE OU DOUBLE")
                     .font(Theme.Font.display(18))
                     .foregroundStyle(Theme.Color.ink)
                 Text("Le quiz")
@@ -266,7 +266,7 @@ struct HubView: View {
                     .stroke(Theme.Color.neon.opacity(0.4), lineWidth: 1)
             )
         }
-        .accessibilityLabel("Quitte ou Trinque, le quiz")
+        .accessibilityLabel("Quitte ou Double, le quiz")
     }
 
     /// Le Tableau d'Honneur a besoin d'un juge et d'au moins trois candidats à

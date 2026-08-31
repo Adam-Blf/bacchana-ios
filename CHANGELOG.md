@@ -1,5 +1,48 @@
 # Changelog
 
+## [0.18.0] - 2026-08-31
+
+### « Quitte ou Trinque » vivait encore ici, trois semaines apres son renommage
+
+Meme defaut que sur le port Android, meme cause : le depot web porte une garde
+anti-lexique depuis le 5 aout, et sa portee est `bacchana/src`. Ce depot n'etait
+couvert par rien. Le renommage du mode quiz en « Quitte ou Double » n'a jamais
+franchi la frontiere du depot.
+
+Ce n'est pas un detail de style. Apple 1.4.3 interdit ce qui « encourage » la
+consommation excessive d'alcool. Le critere n'est pas le mot isole, c'est ce que
+l'ecran donne a lire - et `Text("QUITTE OU TRINQUE")` sur le hub se lit sans
+ambiguite, y compris par un examinateur.
+
+Dix-huit remplacements, dont les libelles VISIBLES du hub et du quiz, les
+etiquettes d'accessibilite, et les trois formulations de « Tu preferes » qui
+annoncaient qui trinque. La carte « rapporte un verre d'eau » est reformulee.
+
+### La garde vit desormais dans CE depot
+
+Portee sur `.swift`, `.yml`, `.md` et `.strings`. Elle est posee AVANT le build
+dans le workflow : elle ne compile rien, donc elle rend son verdict en une
+seconde plutot qu'apres huit minutes de runner macOS. Un examinateur qui refuse
+coute une semaine ; une garde qui repond vite coute une seconde.
+
+Elle porte le meme autocontrole que la version Android : elle refuse de rendre
+un verdict si son propre fichier porte un caractere de controle, si un motif
+n'attrape pas ce qu'il annonce, ou si une phrase anodine en declenche un. Trois
+motifs de garde ont ete casses dans la journee par un antislash-b transforme en
+caractere backspace a travers deux couches d'echappement : le fichier se lit
+normalement et le motif ne correspond plus jamais a rien. Se fier a l'attention
+a echoue trois fois, donc on mesure.
+
+Sa liste d'exemptions est VIDE, contrairement a celle d'Android. Les exemptions
+se posent une par une avec leur raison ecrite ; une liste vide vaut mieux qu'une
+exemption commode.
+
+### Preuve
+
+66 fichiers verifies, zero occurrence. Garde vue rouge en remettant
+`Text("QUITTE OU TRINQUE")` dans le hub. Le build et les tests sont prouves par
+l'integration continue macOS, aucune machine Apple n'etant disponible ici.
+
 ## [0.17.0] - 2026-08-30
 
 ### Le paywall vendait un catalogue qui n'existe plus

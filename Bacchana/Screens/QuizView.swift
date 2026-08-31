@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 import BacchanaCore
 
-/// Quitte ou Trinque - quiz de culture générale à cagnotte. Bonne réponse :
+/// Quitte ou Double - quiz de culture générale à cagnotte. Bonne réponse :
 /// les points rejoignent la cagnotte du joueur, qui choisit ensuite entre
 /// cumuler (tout risquer) ou distribuer. Mauvaise réponse : il prend sa
 /// cagnotte + les points en jeu en pénalités. Mirrors
@@ -61,7 +61,7 @@ struct QuizView: View {
                 Spacer()
 
                 VStack(spacing: 2) {
-                    Text("QUITTE OU TRINQUE")
+                    Text("QUITTE OU DOUBLE")
                         .font(Theme.Font.body(13, weight: .medium))
                         .foregroundStyle(Theme.Color.inkSecondary)
                     if let currentPlayer, session?.phase != .finished {
@@ -250,7 +250,7 @@ struct QuizView: View {
             case .choice:
                 VStack(spacing: 12) {
                     primaryButton("Je distribue mes \(pot) point\(pot > 1 ? "s" : "")", systemImage: "arrow.triangle.branch", action: handleDistribute)
-                    secondaryButton("Je cumule (quitte ou trinque)", systemImage: "flame.fill", action: handleKeep)
+                    secondaryButton("Je cumule (quitte ou double)", systemImage: "flame.fill", action: handleKeep)
                 }
             case .finished:
                 EmptyView()
@@ -349,7 +349,7 @@ struct QuizView: View {
     }
 }
 
-/// Local recap for Quitte ou Trinque: `Player.penalties` never gets mutated
+/// Local recap for Quitte ou Double: `Player.penalties` never gets mutated
 /// by this mode, so the addition is built straight from
 /// `QuizSessionState.penaltyCounts` instead of routing through the shared
 /// `RecapView`.
