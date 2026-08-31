@@ -87,7 +87,7 @@ flowchart TD
         Roulette["RouletteView (La Roue du Destin, embarqué)"]
         TribunalView["TribunalView (Le Pilori, embarqué, récap local)"]
         AuctionView["AuctionView (La Criée, embarqué, chrono 60s)"]
-        QuizView["QuizView (Quitte ou Trinque, embarqué, récap local)"]
+        QuizView["QuizView (Quitte ou Double, embarqué, récap local)"]
         RankingView["RankingView (Le Tableau d'Honneur, embarqué, récap local)"]
         WouldYouRatherView["WouldYouRatherView (Tu préfères, embarqué, récap local)"]
         Recap["RecapView (podium)"]
@@ -153,7 +153,7 @@ dépôt frère `bacchana-content` et synchronisés ici via
 `Tu préfères` n'est plus un pack de prompt : depuis la v0.9.0 c'est un mode
 embarqué à mécanique de vote (`WouldYouRatherSession.swift`,
 `WouldYouRatherContent.swift`, `WouldYouRatherView.swift`), au même titre que
-Quitte ou Trinque ou Le Tableau d'Honneur. Le pack `tu-preferes-classique`
+Quitte ou Double ou Le Tableau d'Honneur. Le pack `tu-preferes-classique`
 de `bacchana-content` reste à retirer côté dépôt frère lors du prochain
 `sync_content.py` pour éviter qu'il ne réapparaisse dans le catalogue.
 

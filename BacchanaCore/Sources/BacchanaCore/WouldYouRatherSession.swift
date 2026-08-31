@@ -3,8 +3,8 @@ import Foundation
 // ============================================
 // TU PRÉFÈRES - moteur pur (testé)
 // Un dilemme A ou B s'affiche, le téléphone tourne, chaque joueur actif tape
-// son camp. Au reveal, la minorité trinque (pénalité locale) ; égalité
-// parfaite ou vote unanime : personne ne trinque.
+// son camp. Au reveal, la minorité est pénalisée (pénalité locale) ; égalité
+// parfaite ou vote unanime : personne ne l'est.
 // Mirrors `bacchana-site/src/core/engine/wouldYouRatherSession.ts`.
 // ============================================
 
@@ -125,7 +125,7 @@ public func countVotes(_ state: WouldYouRatherSessionState) -> (optionA: Int, op
 }
 
 /// The side that lost the vote, or `nil` on a perfect tie or a unanimous
-/// vote (nobody trinque in either case).
+/// vote (nobody is penalised in either case).
 public func minoritySide(_ state: WouldYouRatherSessionState) -> WouldYouRatherSide? {
     let counts = countVotes(state)
     guard counts.optionA != counts.optionB else { return nil }

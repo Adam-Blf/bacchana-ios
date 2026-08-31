@@ -4,7 +4,7 @@ import BacchanaCore
 
 /// Tu préfères - dilemme A ou B à mécanique de vote. Le téléphone tourne,
 /// chaque joueur actif tape son camp en privé. Au reveal, la minorité
-/// trinque ; égalité parfaite ou vote unanime, personne ne trinque. Mirrors
+/// est pénalisée ; égalité parfaite ou vote unanime, personne ne l'est. Mirrors
 /// `bacchana-site/src/components/screens/WouldYouRatherScreen.tsx`.
 ///
 /// The mode keeps its own local `penaltyCounts` via `WouldYouRatherSessionState`
@@ -223,7 +223,7 @@ struct WouldYouRatherView: View {
 
     private func revealText(session: WouldYouRatherSessionState, losingSide: WouldYouRatherSide?) -> String {
         guard losingSide != nil else {
-            return "Égalité ou unanimité : personne ne trinque !"
+            return "Personne n’est pénalisé : égalité ou unanimité."
         }
         let losers = session.players.filter { session.votes[$0.id] == losingSide }
         let names = losers.map(\.name).joined(separator: ", ")

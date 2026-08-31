@@ -22,7 +22,7 @@ public enum QuizCategory: String, Equatable, Sendable, CaseIterable {
     }
 }
 
-/// One question for "Quitte ou Trinque". Mirrors `bacchana-site/src/content/quiz.ts`;
+/// One question for "Quitte ou Double". Mirrors `bacchana-site/src/content/quiz.ts`;
 /// keep both in sync when the deck changes.
 public struct QuizQuestion: Identifiable, Equatable, Sendable {
     public let id: String
@@ -38,7 +38,7 @@ public struct QuizQuestion: Identifiable, Equatable, Sendable {
     }
 }
 
-/// Quitte ou Trinque is an embedded game mode: no content pack, no JSON
+/// Quitte ou Double is an embedded game mode: no content pack, no JSON
 /// source. Questions de culture générale 100 % originales, vérification
 /// orale par la table. Store-safe : jamais d'alcool nommé, uniquement des
 /// « pénalités ».

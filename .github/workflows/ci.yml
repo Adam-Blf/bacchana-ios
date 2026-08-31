@@ -23,6 +23,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
+      # Ajoutee le 2026-08-31, et posee AVANT le build : elle ne compile rien,
+      # donc elle rend son verdict en une seconde plutot qu'apres huit minutes
+      # de runner macOS. Le depot web porte cette garde depuis le 5 aout, mais
+      # sa portee s'arrete a `bacchana/src` : ce depot n'etait couvert par rien,
+      # et le mode quiz s'y appelait encore « Quitte ou Trinque » trois semaines
+      # apres son renommage.
+      - name: Aucun lexique d'alcool a l'ecran
+        run: python3 scripts/check_alcohol_lexicon.py
+
       - name: Show Xcode version
         run: xcodebuild -version
 
