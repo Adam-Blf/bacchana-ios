@@ -307,7 +307,7 @@ struct SettingsView: View {
     private func foregroundColor(for style: ButtonStyleKind) -> Color {
         switch style {
         // tileInk : fond neonDeep plein, clair dans les 2 themes.
-        case .primary: return Theme.Color.tileInk
+        case .primary: return Theme.Color.onAccent
         case .secondary: return Theme.Color.ink
         case .ghost: return Theme.Color.inkSecondary
         // danger (thematisee), pas cardRed (fixe, reserve aux pips/cardFace) :

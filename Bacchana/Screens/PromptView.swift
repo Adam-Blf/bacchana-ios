@@ -161,7 +161,7 @@ struct PromptView: View {
             }
             // tileInk : fond quasi-plein (success a 85%), clair dans les 2 themes -
             // ink (thematisee) y tombe a 3.39:1 en sombre, sous le seuil AA.
-            .foregroundStyle(Theme.Color.tileInk)
+            .foregroundStyle(Theme.Color.onAccent)
             .background(Theme.Color.success.opacity(0.85))
             .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
 
@@ -172,7 +172,7 @@ struct PromptView: View {
                     .padding(.vertical, 16)
             }
             // tileInk : fond neonDeep plein, clair dans les 2 themes.
-            .foregroundStyle(Theme.Color.tileInk)
+            .foregroundStyle(Theme.Color.onAccent)
             .background(Theme.Color.neonDeep)
             .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
         }

@@ -1,7 +1,7 @@
 import Foundation
 
 // ============================================
-// QUITTE OU TRINQUE - moteur pur (testé)
+// QUITTE OU DOUBLE - moteur pur (testé)
 // Chaque joueur répond à tour de rôle à une question qui vaut 1 à 3 points
 // (tirés au hasard). Bonne réponse : les points rejoignent sa cagnotte, puis
 // il choisit - cumuler (la cagnotte grossit, le risque aussi) ou distribuer
@@ -33,7 +33,7 @@ public struct QuizOutcome: Equatable {
     }
 }
 
-/// Value-type engine state for "Quitte ou Trinque". Every transition below
+/// Value-type engine state for "Quitte ou Double". Every transition below
 /// returns a new `QuizSessionState`; `Player` is never mutated, so the mode
 /// renders its own recap from `penaltyCounts` instead of feeding the shared
 /// `RecapView` (which reads `Player.penalties`).

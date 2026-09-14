@@ -11,7 +11,20 @@ struct RouletteView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let segments = RouletteContent.segments
-    private let wheelColors: [Color] = [Theme.Color.neon, Theme.Color.popYellow]
+    /// La rotation des QUATRE AMBRES, comme WHEEL_COLORS dans
+    /// bacchana/src/components/screens/RouletteScreen.tsx.
+    ///
+    /// Elle valait `[neon, popYellow]` : un accent et un ambre alternes. Tant
+    /// que l'accent etait un orange, les deux etaient clairs et une seule
+    /// encre allait sur les deux. Depuis l'alignement du 2026-09-14 l'accent
+    /// vaut pourpre en theme clair : aucune encre ne tient a la fois sur un
+    /// pourpre et sur un ambre au-dessus de 4,5:1. La roue repasse donc sur
+    /// les quatre ambres, qui restent clairs dans les deux themes - et
+    /// `tileInk` y reste la bonne encre, celle qu'elle a toujours ete pour un
+    /// aplat de tuile.
+    private let wheelColors: [Color] = [
+        Theme.Color.aplat1, Theme.Color.aplat2, Theme.Color.aplat3, Theme.Color.aplat4,
+    ]
     private var segmentAngle: Double { 360.0 / Double(segments.count) }
 
     @State private var rotation: Double = 0
@@ -74,7 +87,7 @@ struct RouletteView: View {
                     WheelSlice(index: index, total: segments.count)
                         .fill(wheelColors[index % wheelColors.count])
 
-                    // tileInk, pas ink : cette bordure separe deux aplats pop/neon
+                    // tileInk, pas ink : cette bordure separe deux ambres, clairs
                     // (toujours clairs), l'encre thematisee y deviendrait quasi
                     // invisible en sombre (contrairement a l'anneau exterieur
                     // ci-dessous, qui cadre contre le canvas et reste en ink).
@@ -106,7 +119,7 @@ struct RouletteView: View {
 
         return Text(segment.label)
             .font(Theme.Font.mono(9, weight: .bold))
-            // tileInk : ce libelle est pose sur un aplat pop/neon plein, cf. wheel.
+            // tileInk : ce libelle est pose sur un des quatre ambres, cf. wheel.
             .foregroundStyle(Theme.Color.tileInk)
             .multilineTextAlignment(.center)
             .frame(width: 72)
@@ -171,7 +184,7 @@ struct RouletteView: View {
             .padding(.vertical, 16)
         }
         // tileInk : fond neonDeep plein, clair dans les 2 themes.
-        .foregroundStyle(Theme.Color.tileInk)
+        .foregroundStyle(Theme.Color.onAccent)
         .background(Theme.Color.neonDeep)
         .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
         .opacity(spinning ? 0.7 : 1)

@@ -167,7 +167,7 @@ struct AuctionView: View {
 
                 controlButton(
                     systemImage: "plus", label: "Compter une bonne réponse",
-                    background: Theme.Color.neonSoft, foreground: Theme.Color.tileInk, bordered: true
+                    background: Theme.Color.neonSoft, foreground: Theme.Color.onAccent, bordered: true
                 ) {
                     handleCite()
                 }
@@ -228,7 +228,7 @@ struct AuctionView: View {
 
             controlButton(
                 systemImage: "plus", label: incrementLabel,
-                background: Theme.Color.neonSoft, foreground: Theme.Color.tileInk, bordered: true, action: onIncrement
+                background: Theme.Color.neonSoft, foreground: Theme.Color.onAccent, bordered: true, action: onIncrement
             )
         }
     }
@@ -297,7 +297,7 @@ struct AuctionView: View {
             .padding(.vertical, 16)
         }
         // tileInk : fond neonDeep plein, clair dans les 2 themes.
-        .foregroundStyle(Theme.Color.tileInk)
+        .foregroundStyle(Theme.Color.onAccent)
         .background(Theme.Color.neonDeep)
         .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
         .opacity(isDisabled ? 0.5 : 1)

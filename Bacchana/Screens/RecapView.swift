@@ -40,7 +40,7 @@ struct RecapView: View {
                     .padding(.vertical, 16)
             }
             // tileInk : fond neonDeep plein, clair dans les 2 themes.
-            .foregroundStyle(Theme.Color.tileInk)
+            .foregroundStyle(Theme.Color.onAccent)
             .background(Theme.Color.neonDeep)
             .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
         }

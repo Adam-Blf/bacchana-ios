@@ -4,7 +4,7 @@ import BacchanaCore
 
 /// Tu préfères - dilemme A ou B à mécanique de vote. Le téléphone tourne,
 /// chaque joueur actif tape son camp en privé. Au reveal, la minorité
-/// trinque ; égalité parfaite ou vote unanime, personne ne trinque. Mirrors
+/// prend la pénalité ; égalité parfaite ou vote unanime, personne n'est pénalisé. Mirrors
 /// `bacchana-site/src/components/screens/WouldYouRatherScreen.tsx`.
 ///
 /// The mode keeps its own local `penaltyCounts` via `WouldYouRatherSessionState`
@@ -223,7 +223,7 @@ struct WouldYouRatherView: View {
 
     private func revealText(session: WouldYouRatherSessionState, losingSide: WouldYouRatherSide?) -> String {
         guard losingSide != nil else {
-            return "Égalité ou unanimité : personne ne trinque !"
+            return "Personne n'est pénalisé : égalité ou unanimité."
         }
         let losers = session.players.filter { session.votes[$0.id] == losingSide }
         let names = losers.map(\.name).joined(separator: ", ")
@@ -257,7 +257,7 @@ struct WouldYouRatherView: View {
             .padding(.vertical, 16)
         }
         // tileInk : fond neonDeep plein, clair dans les 2 themes.
-        .foregroundStyle(Theme.Color.tileInk)
+        .foregroundStyle(Theme.Color.onAccent)
         .background(Theme.Color.neonDeep)
         .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
     }
@@ -362,7 +362,7 @@ private struct WouldYouRatherRecapView: View {
                         .padding(.vertical, 16)
                 }
                 // tileInk : fond neonDeep plein, clair dans les 2 themes.
-                .foregroundStyle(Theme.Color.tileInk)
+                .foregroundStyle(Theme.Color.onAccent)
                 .background(Theme.Color.neonDeep)
                 .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.control))
 
