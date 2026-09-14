@@ -34,14 +34,14 @@ enum Theme {
         /// déjà assez clair pour le texte (#FF7A2E, 7.16:1).
         static let orangeInk = SwiftUI.Color.dynamic(ThemePalette.orangeInk)
 
-        /// Aplats festifs "pop" (tuiles de modes, roulette) : restent CLAIRS
-        /// dans les deux thèmes. Tout texte/icône posé dessus utilise
-        /// `tileInk` (fixe), jamais `ink` (thémable) - piège corrigé le
-        /// 2026-08-04, voir docs/DESIGN_TOKENS.md section 2bis.
-        static let popYellow = SwiftUI.Color.dynamic(ThemePalette.popYellow)
-        static let popPink = SwiftUI.Color.dynamic(ThemePalette.popPink)
-        static let popBlue = SwiftUI.Color.dynamic(ThemePalette.popBlue)
-        static let popLime = SwiftUI.Color.dynamic(ThemePalette.popLime)
+        /// Les quatre ambres (tuiles de modes, roulette) : FIXES dans les deux
+        /// thèmes. Tout texte/icône posé dessus utilise `tileInk` (fixe), jamais
+        /// `ink` (thémable) - piège corrigé le 2026-08-04, voir
+        /// docs/DESIGN_TOKENS.md section 2bis.
+        static let aplat1 = SwiftUI.Color(hex: ThemePalette.aplat1.light)
+        static let aplat2 = SwiftUI.Color(hex: ThemePalette.aplat2.light)
+        static let aplat3 = SwiftUI.Color(hex: ThemePalette.aplat3.light)
+        static let aplat4 = SwiftUI.Color(hex: ThemePalette.aplat4.light)
 
         /// Carte blanche : élément signature fixe, identique dans les deux thèmes
         /// (métaphore de carte physique), jamais inversée en sombre.
@@ -52,12 +52,19 @@ enum Theme {
         /// et au contenu posé sur `cardFace` - jamais un rouge d'UI sémantique,
         /// utiliser `danger` pour ça (erreur, action destructive, compte à rebours).
         static let cardRed = SwiftUI.Color(hex: ThemePalette.cardRed.light)
-        /// Encre fixe pour tout texte/icône/bordure posé sur un aplat pop ou
-        /// sur un accent plein (neon/neonDeep/neonSoft) : ces fonds restent
-        /// clairs dans les deux thèmes, donc leur premier plan ne doit
-        /// JAMAIS suivre `ink` (qui s'inverse en sombre). Même valeur que
-        /// `cardInk`, nom distinct pour matcher `--color-tile-ink` (web).
+        /// Encre fixe pour tout texte/icône/bordure posé sur un des quatre
+        /// AMBRES : ces fonds restent clairs dans les deux thèmes, donc leur
+        /// premier plan ne doit JAMAIS suivre `ink` (qui s'inverse en sombre).
+        /// Même valeur que `cardInk`, nom distinct pour matcher
+        /// `--color-tile-ink` (web).
         static let tileInk = SwiftUI.Color(hex: ThemePalette.tileInk.light)
+
+        /// Encre posée sur un aplat d'ACCENT (`neon`, `neonDeep`, `neonSoft`,
+        /// `premium`). Elle valait `tileInk` jusqu'au 2026-09-14, et c'était
+        /// juste tant que l'accent était un ORANGE, clair dans les deux thèmes
+        /// comme les ambres. Il vaut désormais pourpre sur fond clair et jaune
+        /// sur fond pourpre : `tileInk` dessus tombait à 1,72:1.
+        static let onAccent = SwiftUI.Color.dynamic(ThemePalette.onAccent)
 
         static let premium = SwiftUI.Color.dynamic(ThemePalette.premium)
         static let success = SwiftUI.Color.dynamic(ThemePalette.success)
@@ -67,17 +74,35 @@ enum Theme {
         /// même si les deux partagent la même valeur en thème clair.
         static let danger = SwiftUI.Color.dynamic(ThemePalette.danger)
 
+        /// Le filet gravé, seul repère d'élévation du système - il n'y a plus
+        /// d'ombre portée. Les deux thèmes passent à 0,48, la valeur du web :
+        /// 3,14:1 en clair, 3,37:1 en sombre, au-dessus du plancher 1.4.11 pour
+        /// un objet non textuel. Le clair valait 0,15, soit 1,76:1, sous le
+        /// plancher - et c'était documenté comme une exclusion, pas comme un
+        /// choix.
         static let border = SwiftUI.Color.dynamic(
-            light: ThemePalette.ink.light, lightOpacity: 0.15,
-            dark: ThemePalette.ink.dark, darkOpacity: 0.38
+            light: ThemePalette.ink.light, lightOpacity: 0.48,
+            dark: ThemePalette.ink.dark, darkOpacity: 0.48
         )
         static let borderStrong = SwiftUI.Color.dynamic(ThemePalette.ink)
 
-        /// Rotation des aplats "pop" pour les icônes des tuiles du Hub -
-        /// signature visuelle festive plutôt qu'un accent unique répété sur
-        /// chaque mode. `neon` reste l'accent principal (Le Coupe-Gorge, jeu
-        /// signature), les autres suivent.
-        static let popPalette: [SwiftUI.Color] = [neon, popPink, popBlue, popLime, popYellow]
+        /// Rotation de teintes pour les GLYPHES des tuiles du Hub.
+        ///
+        /// ATTENTION, ce n'est PAS la rotation d'aplats du web, et la
+        /// différence est structurelle, pas chromatique : le web remplit la
+        /// tuile d'un ambre et pose le glyphe en `tileInk` par-dessus ; iOS
+        /// garde une tuile `surface` et TEINTE le glyphe. Un ambre sur crème
+        /// ne se voit pas - la rotation ne peut donc pas simplement pointer sur
+        /// `aplat1` à `aplat4`.
+        ///
+        /// Elle valait `[neon, popPink, popBlue, popLime, popYellow]`, cinq
+        /// teintes distinctes. Elle tourne désormais sur la famille d'accent,
+        /// lisible sur `surface` dans les deux thèmes - mais c'est une mesure
+        /// conservatoire : trois nuances d'une même teinte se distinguent moins
+        /// que cinq couleurs. Reconcilier les deux dessins de tuile est une
+        /// décision de design, pas un échange de jetons, et elle reste à
+        /// prendre (voir bacchana/docs/AUDIT_NATIF.md).
+        static let popPalette: [SwiftUI.Color] = [neon, neonSoft, neonDeep]
 
         /// Couleur d'accent pour la tuile de mode d'index `index`, en boucle
         /// sur `popPalette`.
