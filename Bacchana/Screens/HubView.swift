@@ -36,6 +36,7 @@ struct HubView: View {
                             // Continue la rotation "pop" après les 7 tuiles embarquées.
                             accent: Theme.Color.pop(offset + 7),
                             isUnlocked: !entry.premium || appState.entitlements.isPremium,
+                            playerCount: appState.playerNames.count,
                             action: { appState.route = .prompt(packID: entry.id) },
                             onLockedTap: { appState.route = .paywall }
                         )
@@ -249,7 +250,7 @@ struct HubView: View {
                     .font(.system(size: 28))
                     .foregroundStyle(Theme.Color.pop(4))
                 Spacer()
-                Text("QUITTE OU TRINQUE")
+                Text("QUITTE OU DOUBLE")
                     .font(Theme.Font.display(18))
                     .foregroundStyle(Theme.Color.ink)
                 Text("Le quiz")
@@ -266,7 +267,7 @@ struct HubView: View {
                     .stroke(Theme.Color.neon.opacity(0.4), lineWidth: 1)
             )
         }
-        .accessibilityLabel("Quitte ou Trinque, le quiz")
+        .accessibilityLabel("Quitte ou Double, le quiz")
     }
 
     /// Le Tableau d'Honneur a besoin d'un juge et d'au moins trois candidats à
@@ -352,11 +353,41 @@ private struct PackTile: View {
     let entry: PackCatalogEntry
     let accent: Color
     let isUnlocked: Bool
+    let playerCount: Int
     let action: () -> Void
     let onLockedTap: () -> Void
 
+    /// Le plancher DECLARE par le paquet, jamais suppose.
+    ///
+    /// `PackCatalogEntry.minPlayers` arrivait jusqu'ici depuis `premium-catalog.json` -
+    /// Le Taulier et Qui de nous y valent 3 - et personne ne le lisait : la tuile ne
+    /// connaissait qu'un verrou, le premium. Les modes EMBARQUES, eux, etaient bien gardes
+    /// (`tribunalMinPlayers`, `rankingMinPlayers`) ; seuls les modes a paquet passaient au
+    /// travers. Deux joueurs par defaut, comme le web pour un mode sans contrainte propre.
+    private var minPlayers: Int { entry.minPlayers ?? 2 }
+
+    private var hasEnoughPlayers: Bool { playerCount >= minPlayers }
+
+    /// Verrouillee pour une raison ou pour l'autre - mais les deux raisons ne mènent pas au
+    /// meme endroit : le premium ouvre le paywall, le manque de joueurs n'ouvre rien. Une
+    /// tablee de deux n'a pas a payer pour un jeu qui lui manque des joueurs.
+    private var isOpen: Bool { isUnlocked && hasEnoughPlayers }
+
+    /// Un appui : on ouvre, on renvoie au paywall, ou on ne fait rien.
+    ///
+    /// Ecrit en `guard` plutot qu'en ternaire de fermetures : la meme forme que les tuiles
+    /// embarquees de cet ecran, et une forme dont on lit l'ordre des priorites.
+    private func handleTap() {
+        guard isUnlocked else {
+            onLockedTap()
+            return
+        }
+        guard hasEnoughPlayers else { return }
+        action()
+    }
+
     var body: some View {
-        Button(action: isUnlocked ? action : onLockedTap) {
+        Button(action: handleTap) {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Image(systemName: glyph(for: entry.mode))
@@ -392,16 +423,28 @@ private struct PackTile: View {
             .frame(height: 140)
             .background(Theme.Color.surface)
             .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.card))
-            .opacity(isUnlocked ? 1 : 0.55)
+            .opacity(isOpen ? 1 : 0.55)
             .overlay(alignment: .bottomTrailing) {
                 if !isUnlocked {
                     Image(systemName: "lock.fill")
                         .foregroundStyle(Theme.Color.inkMuted)
                         .padding(12)
+                } else if !hasEnoughPlayers {
+                    // Le meme pictogramme que les tuiles embarquees sous leur plancher :
+                    // un cadenas dirait « paye », alors qu'il faut seulement du monde.
+                    Image(systemName: "person.3.fill")
+                        .foregroundStyle(Theme.Color.inkMuted)
+                        .padding(12)
                 }
             }
         }
-        .accessibilityLabel(isUnlocked ? entry.title : "\(entry.title), contenu premium verrouillé")
+        .accessibilityLabel(
+            !isUnlocked
+                ? "\(entry.title), contenu premium verrouillé"
+                : hasEnoughPlayers
+                    ? entry.title
+                    : "\(entry.title), minimum \(minPlayers) joueurs"
+        )
     }
 
     private func glyph(for mode: GameMode) -> String {
