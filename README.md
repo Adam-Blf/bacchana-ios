@@ -1,5 +1,13 @@
 # Bacchana iOS
 
+<!-- adam-badges:start -->
+[![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/bacchana-ios?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/bacchana-ios/commits)
+[![visites](https://hits.sh/github.com/Adam-Blf/bacchana-ios.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/bacchana-ios/)
+[![last commit](https://img.shields.io/github/last-commit/Adam-Blf/bacchana-ios?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/bacchana-ios/commits)
+[![top language](https://img.shields.io/github/languages/top/Adam-Blf/bacchana-ios?style=flat-square)](https://github.com/Adam-Blf/bacchana-ios)
+[![license](https://img.shields.io/github/license/Adam-Blf/bacchana-ios?style=flat-square&color=D4A437)](LICENSE)
+<!-- adam-badges:end -->
+
 [![version](https://img.shields.io/badge/version-0.16.0-D4A437?style=flat-square)](CHANGELOG.md)
 [![CI](https://img.shields.io/github/actions/workflow/status/Adam-Blf/bacchana-ios/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Adam-Blf/bacchana-ios/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/actions/workflow/status/Adam-Blf/bacchana-ios/release.yml?label=release&style=flat-square)](RELEASING.md)
