@@ -1,16 +1,20 @@
 # Matchfile for fastlane match
 # Docs: https://docs.fastlane.tools/actions/match/
+#
+# Signing assets live encrypted in a PRIVATE repository, never in this one.
+# This repository is public: nothing secret may ever land here.
+#
+# Authentication against Apple is passed by the lanes as an App Store Connect
+# API key, so no Apple ID and no two factor prompt is involved. Only the git
+# credentials for the certificates repository are read from here.
 
-git_url ENV["MATCH_GIT_URL"] || "https://github.com/Adam-Blf/certificates.git"
+git_url ENV["MATCH_GIT_URL"]
+git_basic_authorization ENV["MATCH_GIT_BASIC_AUTH"]
 
 storage_mode "git"
-username ENV["FASTLANE_APPLE_ID"] || "adam.beloucif@efrei.net"
-team_id ENV["FASTLANE_TEAM_ID"] || "XXXXXXXXXX"
 
 app_identifier ["com.beloucif.bacchana"]
 type "appstore"
-readonly ENV["MATCH_READONLY"] != "false"  # Default true in CI, false locally for creating new certs
 
-# Passwords
-git_basic_authorization ENV["MATCH_GIT_BASIC_AUTH"] || ""
-match_password ENV["MATCH_PASSWORD"] || ""
+# readonly is set explicitly by each lane: false only in bootstrap_signing and
+# renew_signing, true everywhere else so a build can never mint a certificate.

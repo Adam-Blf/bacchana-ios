@@ -1,19 +1,69 @@
 default_platform(:ios)
 
+APP_IDENTIFIER = "com.beloucif.bacchana".freeze
+PROFILE_NAME = "match AppStore com.beloucif.bacchana".freeze
+
 platform :ios do
-  # Generate Xcode project from project.yml
-  before_all do
-    setup_ci if is_ci
+  # Loads the App Store Connect API key from the environment.
+  #
+  # This is what makes publishing possible without a Mac and without an
+  # interactive Apple ID login: the key authenticates non interactively, so
+  # two factor authentication never blocks the runner. The workflow decodes
+  # the base64 secret into a file and exports ASC_KEY_PATH.
+  #
+  # Returns nil when the key is absent, so unsigned lanes still run.
+  def asc_api_key
+    return nil unless ENV["ASC_KEY_ID"] && ENV["ASC_ISSUER_ID"] && ENV["ASC_KEY_PATH"]
+
+    app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_filepath: ENV["ASC_KEY_PATH"],
+      duration: 1200,
+      in_house: false
+    )
+  end
+
+  # Points the Bacchana target at the match provisioning profile.
+  #
+  # project.yml leaves signing on Xcode's automatic default, which cannot work
+  # on a runner with no signed in Apple account. Only the app target is
+  # switched to manual: the embedded framework targets must keep their own
+  # settings, and a blanket xcargs override would break them.
+  def apply_manual_signing
+    update_code_signing_settings(
+      path: "Bacchana.xcodeproj",
+      use_automatic_signing: false,
+      team_id: ENV["FASTLANE_TEAM_ID"],
+      targets: ["Bacchana"],
+      bundle_identifier: APP_IDENTIFIER,
+      code_sign_identity: "Apple Distribution",
+      profile_name: PROFILE_NAME
+    )
+  end
+
+  def signed_build
+    build_app(
+      project: "Bacchana.xcodeproj",
+      scheme: "Bacchana",
+      configuration: "Release",
+      destination: "generic/platform=iOS",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: { APP_IDENTIFIER => PROFILE_NAME }
+      },
+      clean: true,
+      output_directory: "build",
+      output_name: "Bacchana.ipa"
+    )
   end
 
   desc "Run tests on simulator (CI)"
   lane :test do
     setup_ci if is_ci
 
-    # Generate Xcode project
     sh("xcodegen generate")
 
-    # Run tests on simulator
     scan(
       project: "Bacchana.xcodeproj",
       scheme: "Bacchana",
@@ -39,109 +89,105 @@ platform :ios do
     )
   end
 
+  # One shot lane, run from the bootstrap-signing workflow.
+  #
+  # Creates the distribution certificate and the App Store provisioning
+  # profile in the Apple Developer portal, then stores them encrypted in the
+  # private certificates repository. readonly is false here and only here.
+  # Every other lane consumes what this one produced.
+  desc "Create signing assets and store them in the match repository (one shot)"
+  lane :bootstrap_signing do
+    setup_ci if is_ci
+
+    api_key = asc_api_key
+    UI.user_error!("App Store Connect API key is required to bootstrap signing") if api_key.nil?
+
+    match(
+      type: "appstore",
+      app_identifier: APP_IDENTIFIER,
+      readonly: false,
+      api_key: api_key
+    )
+
+    UI.success("Signing assets are stored in #{ENV['MATCH_GIT_URL']}")
+  end
+
   desc "Build and upload to TestFlight (internal testing)"
   lane :beta do
     setup_ci if is_ci
 
-    # Generate Xcode project
+    api_key = asc_api_key
+
     sh("xcodegen generate")
 
-    # Fetch or create signing certificates via match
     match(
       type: "appstore",
-      readonly: is_ci,
-      app_identifier: "com.beloucif.bacchana"
-    ) if ENV["MATCH_GIT_URL"]
-
-    # Build IPA for App Store
-    build_app(
-      project: "Bacchana.xcodeproj",
-      scheme: "Bacchana",
-      configuration: "Release",
-      destination: "generic/platform=iOS",
-      export_method: "app-store",
-      code_signing_identity: "Apple Distribution: Adam Beloucif (XXXXXXXXXX)",
-      provisioning_profile_specifier: "match AppStore com.beloucif.bacchana",
-      clean: true,
-      output_directory: "build"
+      app_identifier: APP_IDENTIFIER,
+      readonly: true,
+      api_key: api_key
     )
 
-    # Upload to TestFlight
+    apply_manual_signing
+    signed_build
+
     upload_to_testflight(
-      app_identifier: "com.beloucif.bacchana",
+      app_identifier: APP_IDENTIFIER,
       ipa: "build/Bacchana.ipa",
+      api_key: api_key,
       skip_waiting_for_build_processing: false,
       skip_submission: true
     )
-
-    slack(
-      message: "Beta build uploaded to TestFlight",
-      success: true
-    ) if ENV["SLACK_WEBHOOK"]
   end
 
   desc "Build and submit to App Store for review"
   lane :release do
     setup_ci if is_ci
 
+    api_key = asc_api_key
+
     sh("xcodegen generate")
 
-    # Fetch signing certificates
     match(
       type: "appstore",
-      readonly: is_ci,
-      app_identifier: "com.beloucif.bacchana"
-    ) if ENV["MATCH_GIT_URL"]
-
-    # Build IPA
-    build_app(
-      project: "Bacchana.xcodeproj",
-      scheme: "Bacchana",
-      configuration: "Release",
-      destination: "generic/platform=iOS",
-      export_method: "app-store",
-      code_signing_identity: "Apple Distribution: Adam Beloucif (XXXXXXXXXX)",
-      provisioning_profile_specifier: "match AppStore com.beloucif.bacchana",
-      clean: true,
-      output_directory: "build"
+      app_identifier: APP_IDENTIFIER,
+      readonly: true,
+      api_key: api_key
     )
 
-    # Submit to App Store for review
+    apply_manual_signing
+    signed_build
+
     deliver(
-      app_identifier: "com.beloucif.bacchana",
+      app_identifier: APP_IDENTIFIER,
       ipa: "build/Bacchana.ipa",
+      api_key: api_key,
       skip_screenshots: true,
       skip_metadata: false,
       automatic_release: false,
-      force: false,
+      force: true,
       submit_for_review: true,
+      precheck_include_in_app_purchases: false,
       submission_information: {
         export_compliance_encryption_updated: false,
         export_compliance_uses_encryption: false,
         add_id_info_uses_idfa: false
       }
     )
-
-    slack(
-      message: "Release submitted to App Store for review",
-      success: true
-    ) if ENV["SLACK_WEBHOOK"]
   end
 
-  desc "Download provisioning profiles and certificates from match (manual)"
-  lane :sync_certs do
+  desc "Refresh expired signing assets (run from bootstrap-signing with force)"
+  lane :renew_signing do
+    setup_ci if is_ci
+
+    api_key = asc_api_key
+    UI.user_error!("App Store Connect API key is required to renew signing") if api_key.nil?
+
     match(
       type: "appstore",
+      app_identifier: APP_IDENTIFIER,
       readonly: false,
-      app_identifier: "com.beloucif.bacchana",
-      force: false
+      force: true,
+      api_key: api_key
     )
-  end
-
-  error do |lane, exception|
-    slack(
-      message: "Lane #{lane} failed: #{exception}",
-      success: false
-    ) if ENV["SLACK_WEBHOOK"]
   end
 end
